@@ -519,8 +519,6 @@ const recipe = (
     ingredients: ingredients.map(([foodId, grams]) => ({ foodId, grams })),
     gallery,
     video: buildVideoConfig(id, title, mealType, steps),
-    averageRating: budget.recommendedForBudget ? 4.7 : 4.4,
-    ratingsCount: 18 + ingredients.length * 3,
     budget
   };
 };

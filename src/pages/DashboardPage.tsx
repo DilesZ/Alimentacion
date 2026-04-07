@@ -8,19 +8,13 @@ import { formatNumber } from "../lib/nutrition";
 
 export default function DashboardPage() {
   const { plan } = usePlanner();
-  const {
-    comments,
-    downloadedRecipes,
-    favoriteCount,
-    favorites,
-    history,
-    profile
-  } = useUserPreferences();
+  const { downloadedRecipes, favoriteCount, favorites, history } = useUserPreferences();
+  const budgetTargetPerPerson = 250;
 
   usePageMeta({
     title: "Dashboard | Planificador Nutricional Saludable",
     description:
-      "Panel personalizado para usuario demo con favoritos, historial, recetas descargadas y control de presupuesto.",
+      "Panel local con favoritos, historial, recetas descargadas y control de presupuesto.",
     keywords: "dashboard recetas, favoritos, historial, recetas descargadas, presupuesto por persona",
     preloadImage: getPageIllustration("dashboard")
   });
@@ -36,28 +30,28 @@ export default function DashboardPage() {
     .slice(0, 6);
 
   const monthlyCostPerPerson = plan.input.people > 0 ? plan.totalEstimatedCost / plan.input.people : plan.totalEstimatedCost;
-  const budgetDifference = profile.monthlyBudgetTargetPerPerson - monthlyCostPerPerson;
-  const budgetOnTrack = monthlyCostPerPerson <= profile.monthlyBudgetTargetPerPerson;
+  const budgetDifference = budgetTargetPerPerson - monthlyCostPerPerson;
+  const budgetOnTrack = monthlyCostPerPerson <= budgetTargetPerPerson;
 
   return (
     <div className="page-grid">
       <section className="page-hero panel">
         <div>
-          <p className="eyebrow">Dashboard personal</p>
-          <h1>Tu espacio demo con favoritos, historial y recetas offline</h1>
+          <p className="eyebrow">Dashboard local</p>
+          <h1>Tu espacio con favoritos, historial y recetas offline</h1>
           <p className="hero-copy">
-            Este perfil local guarda tu actividad en el navegador para simular una cuenta registrada sin backend real.
+            La actividad se guarda en el navegador para que puedas retomar recetas, descargas y seguimiento sin pasos extra.
           </p>
           <div className="info-inline">
-            <span>{profile.name}</span>
             <span>{favoriteCount} favoritas</span>
             <span>{downloaded.length} descargadas</span>
+            <span>{history.length} vistas recientes</span>
           </div>
         </div>
         <img
           className="hero-image"
           src={getPageIllustration("dashboard")}
-          alt="Panel personalizado del usuario"
+          alt="Panel local de recetas y actividad"
           loading="eager"
           decoding="async"
           fetchPriority="high"
@@ -81,9 +75,9 @@ export default function DashboardPage() {
           <small>Recetas vistas recientemente</small>
         </article>
         <article className="stat-card">
-          <span>Comentarios guardados</span>
-          <strong>{comments.length}</strong>
-          <small>Valoraciones escritas localmente</small>
+          <span>Recetas descargadas</span>
+          <strong>{downloaded.length}</strong>
+          <small>Listas para consultar tambien offline</small>
         </article>
       </section>
 
@@ -94,7 +88,7 @@ export default function DashboardPage() {
         <div className="quick-actions-grid">
           <Link className="quick-action-card" to="/recetas">
             <strong>Explorar recetas</strong>
-            <span>Filtra, puntua y descarga para offline.</span>
+            <span>Filtra, guarda y descarga para offline.</span>
           </Link>
           <Link className="quick-action-card" to="/compras">
             <strong>Revisar compra</strong>

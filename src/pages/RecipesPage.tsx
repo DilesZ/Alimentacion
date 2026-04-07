@@ -62,8 +62,6 @@ export default function RecipesPage() {
   const [onlyDownloaded, setOnlyDownloaded] = useState(false);
   const [selectedRecipeId, setSelectedRecipeId] = useState<string>(recipes[0].id);
   const [servings, setServings] = useState(1);
-  const [commentDraft, setCommentDraft] = useState("");
-  const [commentRating, setCommentRating] = useState(5);
   const [videoVisible, setVideoVisible] = useState(false);
   const [videoValidationState, setVideoValidationState] = useState<"idle" | "checking" | "ready" | "fallback">("idle");
   const [videoRestartKey, setVideoRestartKey] = useState(0);
@@ -71,14 +69,10 @@ export default function RecipesPage() {
   const [timerSeconds, setTimerSeconds] = useState(recipes[0].preparationMinutes * 60);
   const [timerRunning, setTimerRunning] = useState(false);
   const {
-    addComment,
     addRecipeIngredientsToShopping,
-    comments,
     downloadedRecipes,
     favorites,
     markRecipeViewed,
-    rateRecipe,
-    recipeRatings,
     toggleDownloadedRecipe,
     toggleFavorite,
     unitSystem,
@@ -90,9 +84,9 @@ export default function RecipesPage() {
   usePageMeta({
     title: "Recetas | Planificador Nutricional Saludable",
     description:
-      "Consulta, filtra y personaliza recetas con favoritos, porciones, unidades, comentarios, temporizador y soporte offline.",
+      "Consulta, filtra y personaliza recetas con favoritos, porciones, unidades, temporizador y soporte offline.",
     keywords:
-      "recetas saludables, filtros de ingredientes, estrellas, temporizador de cocina, comentarios, modo offline",
+      "recetas saludables, filtros de ingredientes, temporizador de cocina, video, modo offline",
     preloadImage: getPageIllustration("recetas")
   });
 
@@ -158,29 +152,11 @@ export default function RecipesPage() {
     [filteredRecipes, selectedRecipeId]
   );
 
-  const recipeComments = useMemo(
-    () => comments.filter((comment) => comment.recipeId === selectedRecipe.id),
-    [comments, selectedRecipe.id]
-  );
   const youtubeWatchUrl = selectedRecipe.video.youtubeVideoId
     ? getYoutubeWatchUrl(selectedRecipe.video.youtubeVideoId)
     : undefined;
   const youtubeSearchUrl = getYoutubeSearchUrl(selectedRecipe.video.searchQuery);
   const videoWatchEntry = videoWatchHistory[selectedRecipe.id];
-
-  const recipeOverallRating = useMemo(() => {
-    const localRatings = recipeComments.map((comment) => comment.rating);
-    const directRating = recipeRatings[selectedRecipe.id];
-    if (directRating) {
-      localRatings.push(directRating);
-    }
-
-    const totalBase = selectedRecipe.averageRating * selectedRecipe.ratingsCount;
-    const totalLocal = localRatings.reduce((sum, rating) => sum + rating, 0);
-    const totalCount = selectedRecipe.ratingsCount + localRatings.length;
-
-    return round((totalBase + totalLocal) / totalCount);
-  }, [recipeComments, recipeRatings, selectedRecipe]);
 
   useEffect(() => {
     if (!filteredRecipes.some((recipe) => recipe.id === selectedRecipeId) && filteredRecipes[0]) {
@@ -195,10 +171,8 @@ export default function RecipesPage() {
     setVideoVisible(false);
     setVideoRestartKey(0);
     setVideoMetadata(null);
-    setCommentDraft("");
-    setCommentRating(recipeRatings[selectedRecipe.id] ?? 5);
     markRecipeViewed(selectedRecipe.id);
-  }, [markRecipeViewed, recipeRatings, selectedRecipe]);
+  }, [markRecipeViewed, selectedRecipe]);
 
   useEffect(() => {
     let cancelled = false;
@@ -270,12 +244,6 @@ export default function RecipesPage() {
 
     return () => window.clearInterval(intervalId);
   }, [selectedRecipe.title, timerRunning]);
-
-  const handleCommentSubmit = () => {
-    addComment(selectedRecipe.id, commentDraft, commentRating);
-    rateRecipe(selectedRecipe.id, commentRating);
-    setCommentDraft("");
-  };
 
   const handleTimerStart = async () => {
     if ("Notification" in window && Notification.permission === "default") {
@@ -438,24 +406,23 @@ export default function RecipesPage() {
               ))}
             </div>
 
-            <div className="recipe-rating-row">
-              <strong>{formatNumber(recipeOverallRating)} / 5</strong>
-              <span>{selectedRecipe.ratingsCount + recipeComments.length} valoraciones visibles</span>
-              <div className="star-row">
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <button
-                    key={`${selectedRecipe.id}-rating-${value}`}
-                    className={value <= (recipeRatings[selectedRecipe.id] ?? 0) ? "star-button active-star" : "star-button"}
-                    onClick={() => {
-                      setCommentRating(value);
-                      rateRecipe(selectedRecipe.id, value);
-                    }}
-                    aria-label={`Valorar con ${value} estrellas`}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
+            <div className="recipe-overview-grid">
+              <article className="recipe-overview-card">
+                <span>Dificultad</span>
+                <strong>{selectedRecipe.difficulty}</strong>
+              </article>
+              <article className="recipe-overview-card">
+                <span>Cocina</span>
+                <strong>{selectedRecipe.cuisine}</strong>
+              </article>
+              <article className="recipe-overview-card">
+                <span>Raciones base</span>
+                <strong>{selectedRecipe.servings}</strong>
+              </article>
+              <article className="recipe-overview-card">
+                <span>Presupuesto</span>
+                <strong>{selectedRecipe.budget.recommendedForBudget ? "Ajustado" : "Flexible"}</strong>
+              </article>
             </div>
 
             <div className="action-row">
@@ -712,54 +679,6 @@ export default function RecipesPage() {
               <li key={line}>{line}</li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Comentarios y valoraciones</h2>
-        </div>
-        <div className="comment-layout">
-          <div className="comment-form">
-            <label>
-              Tu comentario
-              <textarea
-                value={commentDraft}
-                placeholder="Cuenta si la receta te resulto facil, economica o si hiciste algun cambio."
-                onChange={(event) => setCommentDraft(event.target.value)}
-              />
-            </label>
-            <label>
-              Puntuacion
-              <select value={commentRating} onChange={(event) => setCommentRating(Number(event.target.value))}>
-                {[5, 4, 3, 2, 1].map((value) => (
-                  <option key={value} value={value}>
-                    {value} estrellas
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button className="primary-button" onClick={handleCommentSubmit}>
-              Publicar comentario
-            </button>
-          </div>
-
-          <div className="comment-list">
-            {recipeComments.length === 0 ? (
-              <p className="helper-text">Aun no hay comentarios locales para esta receta.</p>
-            ) : (
-              recipeComments.map((comment) => (
-                <article key={comment.id} className="comment-card">
-                  <div className="recipe-card-header">
-                    <strong>{comment.userName}</strong>
-                    <span>{comment.rating} / 5</span>
-                  </div>
-                  <p>{comment.comment}</p>
-                  <small>{new Date(comment.createdAt).toLocaleString("es-ES")}</small>
-                </article>
-              ))
-            )}
-          </div>
         </div>
       </section>
 

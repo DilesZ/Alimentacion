@@ -8,9 +8,7 @@ import {
   useState
 } from "react";
 import {
-  DemoUserProfile,
   Recipe,
-  RecipeComment,
   RecipeHistoryEntry,
   RecipeIngredient,
   RecipeVideoWatchState,
@@ -18,13 +16,10 @@ import {
 } from "../types";
 
 type PersistedUserState = {
-  profile: DemoUserProfile;
   unitSystem: UnitSystem;
   favorites: string[];
   downloadedRecipes: string[];
   history: RecipeHistoryEntry[];
-  recipeRatings: Record<string, number>;
-  comments: RecipeComment[];
   manualShoppingList: Record<string, number>;
   videoWatchHistory: Record<string, RecipeVideoWatchState>;
 };
@@ -36,29 +31,19 @@ type UserPreferencesContextValue = PersistedUserState & {
   markRecipeViewed: (recipeId: string) => void;
   toggleDownloadedRecipe: (recipeId: string) => void;
   setUnitSystem: (unitSystem: UnitSystem) => void;
-  rateRecipe: (recipeId: string, rating: number) => void;
-  addComment: (recipeId: string, comment: string, rating: number) => void;
   addRecipeIngredientsToShopping: (recipe: Recipe, servings: number) => void;
   removeManualShoppingItem: (foodId: string) => void;
   clearManualShoppingList: () => void;
   markRecipeVideoInteraction: (recipeId: string, action: RecipeVideoWatchState["lastAction"]) => void;
 };
 
-const STORAGE_KEY = "planificador-saludable-user-state-v1";
+const STORAGE_KEY = "planificador-saludable-user-state-v2";
 
 const defaultState: PersistedUserState = {
-  profile: {
-    id: "demo-local",
-    name: "Usuario demo local",
-    location: "Paiporta",
-    monthlyBudgetTargetPerPerson: 250
-  },
   unitSystem: "metric",
   favorites: [],
   downloadedRecipes: [],
   history: [],
-  recipeRatings: {},
-  comments: [],
   manualShoppingList: {},
   videoWatchHistory: {}
 };
@@ -80,14 +65,8 @@ const readInitialState = (): PersistedUserState => {
     return {
       ...defaultState,
       ...parsed,
-      profile: {
-        ...defaultState.profile,
-        ...parsed.profile
-      },
-      recipeRatings: parsed.recipeRatings ?? {},
       manualShoppingList: parsed.manualShoppingList ?? {},
       videoWatchHistory: parsed.videoWatchHistory ?? {},
-      comments: parsed.comments ?? [],
       history: parsed.history ?? [],
       favorites: parsed.favorites ?? [],
       downloadedRecipes: parsed.downloadedRecipes ?? []
@@ -134,38 +113,6 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
 
   const setUnitSystem = useCallback((unitSystem: UnitSystem) => {
     setState((current) => ({ ...current, unitSystem }));
-  }, []);
-
-  const rateRecipe = useCallback((recipeId: string, rating: number) => {
-    setState((current) => ({
-      ...current,
-      recipeRatings: {
-        ...current.recipeRatings,
-        [recipeId]: rating
-      }
-    }));
-  }, []);
-
-  const addComment = useCallback((recipeId: string, comment: string, rating: number) => {
-    const nextComment = comment.trim();
-    if (!nextComment) {
-      return;
-    }
-
-    setState((current) => ({
-      ...current,
-      comments: [
-        {
-          id: `${recipeId}-${Date.now()}`,
-          recipeId,
-          userName: current.profile.name,
-          rating,
-          comment: nextComment,
-          createdAt: new Date().toISOString()
-        },
-        ...current.comments
-      ]
-    }));
   }, []);
 
   const addRecipeIngredientsToShopping = useCallback((recipe: Recipe, servings: number) => {
@@ -225,19 +172,15 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
       markRecipeViewed,
       toggleDownloadedRecipe,
       setUnitSystem,
-      rateRecipe,
-      addComment,
       addRecipeIngredientsToShopping,
       removeManualShoppingItem,
       clearManualShoppingList,
       markRecipeVideoInteraction
     }),
     [
-      addComment,
       addRecipeIngredientsToShopping,
       clearManualShoppingList,
       markRecipeVideoInteraction,
-      rateRecipe,
       removeManualShoppingItem,
       setUnitSystem,
       state,

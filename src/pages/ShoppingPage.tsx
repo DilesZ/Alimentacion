@@ -11,14 +11,10 @@ type CartState = Record<string, number>;
 
 export default function ShoppingPage() {
   const { plan } = usePlanner();
-  const {
-    clearManualShoppingList,
-    manualShoppingList,
-    profile,
-    removeManualShoppingItem
-  } = useUserPreferences();
+  const { clearManualShoppingList, manualShoppingList, removeManualShoppingItem } = useUserPreferences();
   const [cart, setCart] = useState<CartState>({});
   const [checkoutComplete, setCheckoutComplete] = useState(false);
+  const budgetTargetPerPerson = 250;
   const [checkoutData, setCheckoutData] = useState({
     customerName: "",
     email: "",
@@ -83,7 +79,6 @@ export default function ShoppingPage() {
   const manualShoppingTotal = manualItems.reduce((sum, item) => sum + item.estimatedCost, 0);
   const combinedEstimatedTotal = plan.totalEstimatedCost + manualShoppingTotal;
   const perPersonTotal = plan.input.people > 0 ? combinedEstimatedTotal / plan.input.people : combinedEstimatedTotal;
-  const budgetTargetPerPerson = profile.monthlyBudgetTargetPerPerson;
   const budgetOk = perPersonTotal <= budgetTargetPerPerson;
 
   const updateCart = (item: ShoppingListItem, delta: number) => {
@@ -144,7 +139,7 @@ export default function ShoppingPage() {
           <small>{budgetOk ? "Dentro del objetivo de 250 EUR" : "Requiere ajuste"}</small>
         </article>
         <article className="stat-card">
-          <span>Objetivo demo</span>
+          <span>Objetivo mensual</span>
           <strong>{formatNumber(budgetTargetPerPerson)} EUR</strong>
           <small>Presupuesto maximo mensual por persona</small>
         </article>

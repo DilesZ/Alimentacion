@@ -642,7 +642,6 @@ th {
 }
 
 .unit-toggle,
-.star-row,
 .action-row {
   display: flex;
   flex-wrap: wrap;
@@ -662,8 +661,6 @@ th {
 .recipe-detail-panel,
 .recipe-detail-content,
 .tool-card,
-.comment-form,
-.comment-list,
 .transcript-box,
 .video-fallback-card {
   display: grid;
@@ -686,31 +683,8 @@ th {
 
 .recipe-detail-content h2,
 .tool-card h3,
-.comment-card p,
 .transcript-box h3 {
   margin: 0;
-}
-
-.recipe-rating-row {
-  display: grid;
-  gap: 8px;
-}
-
-.star-button {
-  border: 1px solid #d7e2ef;
-  border-radius: 12px;
-  background: #fff;
-  color: #94a3b8;
-  padding: 8px 12px;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.active-star,
-.star-button:hover {
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.45);
-  background: #fffaf0;
 }
 
 .recipe-budget-grid,
@@ -719,7 +693,7 @@ th {
 .quick-actions-grid,
 .mini-recipe-grid,
 .dashboard-grid,
-.comment-layout {
+.recipe-overview-grid {
   display: grid;
   gap: 16px;
 }
@@ -741,9 +715,12 @@ th {
 }
 
 .mini-recipe-grid,
-.dashboard-grid,
-.comment-layout {
+.dashboard-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.recipe-overview-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .budget-pill,
@@ -751,7 +728,7 @@ th {
 .stack-card,
 .tool-card,
 .step-card,
-.comment-card {
+.recipe-overview-card {
   border: 1px solid #e4edf5;
   border-radius: 16px;
   background: #fff;
@@ -773,9 +750,27 @@ th {
 .mini-recipe-card,
 .stack-card,
 .step-card,
-.comment-card,
+.recipe-overview-card,
 .tool-card {
   background: #fff;
+}
+
+.recipe-overview-card {
+  padding: 16px;
+  display: grid;
+  gap: 6px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.recipe-overview-card span {
+  color: #607089;
+  font-size: 0.88rem;
+}
+
+.recipe-overview-card strong {
+  font-size: 1.05rem;
+  color: #172033;
+  text-transform: capitalize;
 }
 
 .stack-list {
@@ -963,17 +958,6 @@ th {
   padding-left: 18px;
 }
 
-.comment-form textarea {
-  min-height: 140px;
-  resize: vertical;
-}
-
-.comment-card {
-  padding: 16px;
-  display: grid;
-  gap: 10px;
-}
-
 .budget-warning {
   border: 1px solid #fed7aa;
   background: #fff7ed;
@@ -1144,7 +1128,7 @@ th {
   .step-gallery-grid,
   .mini-recipe-grid,
   .dashboard-grid,
-  .comment-layout {
+  .recipe-overview-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1199,7 +1183,15 @@ th {
   .form-grid,
   .filter-grid,
   .filter-grid-wide,
-  .calendar-grid {
+  .calendar-grid,
+  .recipe-overview-grid,
+  .recipe-detail-top,
+  .recipe-budget-grid,
+  .recipe-tools-grid,
+  .step-gallery-grid,
+  .mini-recipe-grid,
+  .dashboard-grid,
+  .quick-actions-grid {
     grid-template-columns: 1fr;
   }
 

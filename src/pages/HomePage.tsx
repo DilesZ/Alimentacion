@@ -24,8 +24,9 @@ import { formatNumber, nutrientLabels, nutrientUnits, percentage } from "../lib/
 
 export default function HomePage() {
   const { allergyInput, error, formState, generatePlan, plan, setAllergyInput, setFormState } = usePlanner();
-  const { downloadedCount, favoriteCount, history, profile } = useUserPreferences();
+  const { downloadedCount, favoriteCount, history } = useUserPreferences();
   const [selectedDay, setSelectedDay] = useState(1);
+  const budgetTargetPerPerson = 250;
 
   usePageMeta({
     title: "Inicio | Planificador Nutricional Saludable",
@@ -244,20 +245,20 @@ export default function HomePage() {
         </div>
         <div className="quick-actions-grid">
           <article className="quick-action-card">
-            <strong>{profile.name}</strong>
+            <strong>Actividad local</strong>
             <span>{favoriteCount} favoritas · {downloadedCount} descargadas · {history.length} vistas recientes.</span>
           </article>
           <article className="quick-action-card">
             <strong>{formatNumber(monthlyPerPerson)} EUR por persona</strong>
             <span>
-              {monthlyPerPerson <= profile.monthlyBudgetTargetPerPerson
+              {monthlyPerPerson <= budgetTargetPerPerson
                 ? "La compra sigue dentro del objetivo de 250 EUR por persona."
                 : "Conviene ajustar recetas o lista de compras para no superar el objetivo."}
             </span>
           </article>
           <Link className="quick-action-card" to="/recetas">
             <strong>Recetas interactivas</strong>
-            <span>Valora, comenta, descarga y anade ingredientes a compra desde una sola vista.</span>
+            <span>Guarda, descarga y anade ingredientes a compra desde una sola vista.</span>
           </Link>
         </div>
       </section>

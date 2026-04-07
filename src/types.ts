@@ -104,8 +104,6 @@ export interface Recipe {
   ingredients: RecipeIngredient[];
   gallery: RecipeStepMedia[];
   video: RecipeVideoConfig;
-  averageRating: number;
-  ratingsCount: number;
   budget: RecipeBudgetInsight;
 }
 
@@ -150,25 +148,9 @@ export interface ShoppingListItem {
   alternatives: string[];
 }
 
-export interface RecipeComment {
-  id: string;
-  recipeId: string;
-  userName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-}
-
 export interface RecipeHistoryEntry {
   recipeId: string;
   viewedAt: string;
-}
-
-export interface DemoUserProfile {
-  id: string;
-  name: string;
-  location: string;
-  monthlyBudgetTargetPerPerson: number;
 }
 
 export interface ShoppingSectionGroup {
