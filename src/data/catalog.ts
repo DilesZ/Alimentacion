@@ -65,7 +65,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 389, protein: 16.9, carbs: 66.3, fat: 6.9, fiber: 10.6, iron: 4.7, zinc: 4, magnesium: 177, vitaminB12: 0, vitaminE: 0.4 }),
-    supermarkets: [product("Mercadona", "Cereales y desayuno", 1.8, 500), product("Consum", "Desayuno y galletas", 1.95, 500)],
+    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.1, 500, "alta", "https://tienda.mercadona.es/product/86368/copos-avena-hacendado-paquete"), product("Consum", "Desayuno y galletas", 1.95, 500)],
     alternativeIds: ["brown_rice"]
   },
   {
@@ -75,7 +75,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "sin_gluten"],
     allergens: ["lactosa"],
     nutrientsPer100g: n({ calories: 97, protein: 9, carbs: 3.9, fat: 5, calcium: 120, vitaminB12: 0.5, vitaminA: 40, zinc: 0.6, magnesium: 11 }),
-    supermarkets: [product("Mercadona", "Refrigerados", 1.9, 500), product("Consum", "Yogures y postres", 2.1, 500)],
+    supermarkets: [product("Mercadona", "Refrigerados", 2.2, 1000, "alta", "https://tienda.mercadona.es/product/20512/yogur-griego-natural-hacendado-bote"), product("Consum", "Yogures y postres", 2.1, 500)],
     alternativeIds: ["soy_milk"]
   },
   {
@@ -586,7 +586,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, iron: 0.2 }),
-    supermarkets: [product("Mercadona", "Arroces", 1.25, 1000), product("Consum", "Arroces", 1.35, 1000)],
+    supermarkets: [product("Mercadona", "Arroces", 1.25, 1000, "alta", "https://tienda.mercadona.es/product/5063/arroz-largo-hacendado-paquete"), product("Consum", "Arroces", 1.35, 1000)],
     alternativeIds: ["brown_rice", "whole_pasta"]
   },
   {
