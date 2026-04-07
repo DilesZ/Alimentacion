@@ -36,7 +36,8 @@ const product = (
   section: string,
   price: number,
   packSizeGrams: number,
-  availability: "alta" | "media" = "alta"
+  availability: "alta" | "media" = "alta",
+  mercadonaUrl?: string
 ) => ({
   chain,
   storeLabel: `${chain} Paiporta`,
@@ -44,7 +45,8 @@ const product = (
   section,
   price,
   packSizeGrams,
-  availability
+  availability,
+  url: mercadonaUrl
 });
 
 export const mealLabels: Record<MealType, string> = {
@@ -113,7 +115,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "sin_gluten"],
     allergens: ["huevo"],
     nutrientsPer100g: n({ calories: 143, protein: 12.6, carbs: 0.7, fat: 9.5, vitaminA: 140, vitaminB12: 1.1, vitaminD: 2.2, vitaminE: 1.1, iron: 1.8, zinc: 1.1 }),
-    supermarkets: [product("Mercadona", "Huevos", 2.4, 700), product("Consum", "Huevos", 2.65, 700)],
+    supermarkets: [product("Mercadona", "Huevos", 5.6, 24, "alta", "https://tienda.mercadona.es/product/30167/huevos-tamanos-diferentes-paquete"), product("Consum", "Huevos", 2.65, 700)],
     alternativeIds: ["tofu"]
   },
   {
@@ -133,7 +135,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 89, protein: 1.1, carbs: 22.8, fat: 0.3, fiber: 2.6, vitaminC: 8.7, vitaminB12: 0, magnesium: 27 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.75, 1000), product("Consum", "Frutas y verduras", 1.85, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.55, 1000, "alta", "https://tienda.mercadona.es/product/3824/banana-pieza"), product("Consum", "Frutas y verduras", 1.85, 1000)],
     alternativeIds: ["orange", "kiwi"]
   },
   {
@@ -143,7 +145,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 47, protein: 0.9, carbs: 11.8, fat: 0.1, fiber: 2.4, vitaminC: 53, calcium: 40, vitaminA: 11 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 2.1, 1000), product("Consum", "Frutas y verduras", 2.25, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.85, 1000, "alta", "https://tienda.mercadona.es/product/3235/naranja-mesa-pieza"), product("Consum", "Frutas y verduras", 2.25, 1000)],
     alternativeIds: ["kiwi", "banana"]
   },
   {
@@ -323,7 +325,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 884, fat: 100, vitaminE: 14, vitaminK: 60 }),
-    supermarkets: [product("Mercadona", "Aceites", 6.4, 500), product("Consum", "Aceites", 6.7, 500)],
+    supermarkets: [product("Mercadona", "Aceites", 4.95, 1000, "alta", "https://tienda.mercadona.es/product/4740/aceite-oliva-virgen-extra-hacendado-botella")],
     alternativeIds: ["avocado"]
   },
   {

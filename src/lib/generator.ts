@@ -167,7 +167,8 @@ const toShoppingList = (days: DayPlan[]): { shoppingList: ShoppingSectionGroup[]
       packsNeeded,
       estimatedCost,
       availability: chosenProduct.availability,
-      alternatives: food.alternativeIds.map((id) => foodMap[id]?.name).filter(Boolean)
+      alternatives: food.alternativeIds.map((id) => foodMap[id]?.name).filter(Boolean),
+      url: chosenProduct.url
     };
   });
 

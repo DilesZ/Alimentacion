@@ -133,9 +133,11 @@ export default function ShoppingPage() {
               
               <div className="section-items">
                 {group.items.map((item) => {
-                  const productUrl = item.chain === "Mercadona" 
-                    ? `https://www.mercadona.es/catalog/search?term=${encodeURIComponent(item.productName)}`
-                    : `https://www.consum.es/catalog/search?q=${encodeURIComponent(item.productName)}`;
+                  const productUrl = item.url 
+                    ? item.url 
+                    : (item.chain === "Mercadona" 
+                      ? `https://tienda.mercadona.es/search?term=${encodeURIComponent(item.productName)}`
+                      : `https://www.consum.es/search?q=${encodeURIComponent(item.productName)}`);
                   
                   return (
                     <div key={item.foodId} className="shopping-item">

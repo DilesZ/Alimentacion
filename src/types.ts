@@ -140,6 +140,7 @@ export interface ShoppingListItem {
   estimatedCost: number;
   availability: "alta" | "media";
   alternatives: string[];
+  url?: string;
 }
 
 export interface ShoppingSectionGroup {
