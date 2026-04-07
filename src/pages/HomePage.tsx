@@ -15,7 +15,6 @@ import {
   YAxis
 } from "recharts";
 import { budgetStatusLabel, preferenceOptions, usePlanner } from "../app/PlannerProvider";
-import { useUserPreferences } from "../app/UserPreferencesProvider";
 import { usePageMeta } from "../app/usePageMeta";
 import { foodMap, mealLabels } from "../data/catalog";
 import { summarizeChainSpend, summarizeDailyCoverage } from "../lib/generator";
@@ -24,7 +23,6 @@ import { formatNumber, nutrientLabels, nutrientUnits, percentage } from "../lib/
 
 export default function HomePage() {
   const { allergyInput, error, formState, generatePlan, plan, setAllergyInput, setFormState } = usePlanner();
-  const { downloadedCount, favoriteCount, history } = useUserPreferences();
   const [selectedDay, setSelectedDay] = useState(1);
   const budgetTargetPerPerson = 250;
 
@@ -235,32 +233,29 @@ export default function HomePage() {
         </article>
       </section>
 
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Dashboard rapido</h2>
-          <Link className="primary-button" to="/dashboard">
-            Abrir dashboard
-          </Link>
-        </div>
-        <div className="quick-actions-grid">
-          <article className="quick-action-card">
-            <strong>Actividad local</strong>
-            <span>{favoriteCount} favoritas · {downloadedCount} descargadas · {history.length} vistas recientes.</span>
-          </article>
-          <article className="quick-action-card">
-            <strong>{formatNumber(monthlyPerPerson)} EUR por persona</strong>
-            <span>
-              {monthlyPerPerson <= budgetTargetPerPerson
-                ? "La compra sigue dentro del objetivo de 250 EUR por persona."
-                : "Conviene ajustar recetas o lista de compras para no superar el objetivo."}
-            </span>
-          </article>
-          <Link className="quick-action-card" to="/recetas">
-            <strong>Recetas interactivas</strong>
-            <span>Guarda, descarga y anade ingredientes a compra desde una sola vista.</span>
-          </Link>
-        </div>
-      </section>
+       <section className="panel">
+         <div className="panel-header">
+           <h2>Informacion rapida</h2>
+         </div>
+         <div className="quick-actions-grid">
+           <article className="quick-action-card">
+             <strong>Plan generado</strong>
+             <span>{plan.input.people} personas, {plan.input.days} días</span>
+           </article>
+           <article className="quick-action-card">
+             <strong>{formatNumber(monthlyPerPerson)} EUR por persona</strong>
+             <span>
+               {monthlyPerPerson <= budgetTargetPerPerson
+                 ? "La compra sigue dentro del objetivo de 250 EUR por persona."
+                 : "Conviene ajustar recetas o lista de compras para no superar el objetivo."}
+             </span>
+           </article>
+           <Link className="quick-action-card" to="/recetas">
+             <strong>Explorar recetas</strong>
+             <span>Busca y consulta opciones alternativas</span>
+           </Link>
+         </div>
+       </section>
 
       <section className="panel charts-panel">
         <div className="panel-header">

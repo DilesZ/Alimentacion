@@ -3,7 +3,6 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 
 const navItems = [
   { to: "/", label: "Inicio" },
-  { to: "/dashboard", label: "Dashboard" },
   { to: "/recetas", label: "Recetas" },
   { to: "/calendario", label: "Calendario" },
   { to: "/compras", label: "Compras" }
@@ -11,7 +10,6 @@ const navItems = [
 
 const breadcrumbMap: Record<string, string> = {
   "": "Inicio",
-  dashboard: "Dashboard",
   recetas: "Recetas",
   calendario: "Calendario",
   compras: "Compras"

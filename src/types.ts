@@ -7,7 +7,6 @@ export type MealType =
 
 export type DietPreference = "vegetariano" | "vegano" | "sin_gluten";
 export type RecipeDifficulty = "facil" | "media";
-export type UnitSystem = "metric" | "imperial";
 
 export type NutrientKey =
   | "calories"
@@ -76,12 +75,6 @@ export interface RecipeVideoMetadata {
   thumbnailUrl: string;
 }
 
-export interface RecipeVideoWatchState {
-  lastViewedAt: string;
-  playCount: number;
-  lastAction: "embed" | "youtube" | "search";
-}
-
 export interface RecipeBudgetInsight {
   estimatedCost: number;
   costPerServing: number;
@@ -146,11 +139,6 @@ export interface ShoppingListItem {
   estimatedCost: number;
   availability: "alta" | "media";
   alternatives: string[];
-}
-
-export interface RecipeHistoryEntry {
-  recipeId: string;
-  viewedAt: string;
 }
 
 export interface ShoppingSectionGroup {
