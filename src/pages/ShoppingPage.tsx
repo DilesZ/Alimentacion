@@ -132,32 +132,45 @@ export default function ShoppingPage() {
               </div>
               
               <div className="section-items">
-                {group.items.map((item) => (
-                  <div key={item.foodId} className="shopping-item">
-                    <div className="item-info">
-                      <span className="item-name">{item.productName}</span>
-                      <span className="item-details">
-                        {formatNumber(item.gramsNeeded)}g · {item.packsNeeded} {item.packsNeeded === 1 ? "envase" : "envases"} · {formatNumber(item.estimatedCost)}€
-                      </span>
+                {group.items.map((item) => {
+                  const productUrl = item.chain === "Mercadona" 
+                    ? `https://www.mercadona.es/catalog/search?term=${encodeURIComponent(item.productName)}`
+                    : `https://www.consum.es/catalog/search?q=${encodeURIComponent(item.productName)}`;
+                  
+                  return (
+                    <div key={item.foodId} className="shopping-item">
+                      <div className="item-info">
+                        <a 
+                          href={productUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="item-name item-link"
+                        >
+                          {item.productName} ↗
+                        </a>
+                        <span className="item-details">
+                          {formatNumber(item.gramsNeeded)}g · {item.packsNeeded} {item.packsNeeded === 1 ? "envase" : "envases"} · {formatNumber(item.estimatedCost)}€
+                        </span>
+                      </div>
+                      <div className="item-controls">
+                        <button 
+                          className="qty-btn" 
+                          onClick={() => updateCart(item, -1)}
+                          disabled={(cart[item.foodId] ?? 0) === 0}
+                        >
+                          −
+                        </button>
+                        <span className="qty-value">{cart[item.foodId] ?? 0}</span>
+                        <button 
+                          className="qty-btn" 
+                          onClick={() => updateCart(item, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                    <div className="item-controls">
-                      <button 
-                        className="qty-btn" 
-                        onClick={() => updateCart(item, -1)}
-                        disabled={(cart[item.foodId] ?? 0) === 0}
-                      >
-                        −
-                      </button>
-                      <span className="qty-value">{cart[item.foodId] ?? 0}</span>
-                      <button 
-                        className="qty-btn" 
-                        onClick={() => updateCart(item, 1)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}

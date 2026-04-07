@@ -2031,6 +2031,16 @@ th {
 }
 
 .item-name { font-weight: 500; }
+.item-link {
+  color: #0f766e;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.item-link:hover {
+  color: #14b8a6;
+  text-decoration: underline;
+}
 .item-details { font-size: 0.8rem; color: #64748b; }
 
 .item-controls {

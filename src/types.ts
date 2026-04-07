@@ -35,6 +35,7 @@ export interface SupermarketProduct {
   price: number;
   packSizeGrams: number;
   availability: "alta" | "media";
+  url?: string;
 }
 
 export interface FoodItem {
