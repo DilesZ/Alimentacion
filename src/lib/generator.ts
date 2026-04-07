@@ -241,6 +241,63 @@ const calculateBudgetStatus = (totalCost: number, budget: number): MonthlyPlan["
   return "excedido";
 };
 
+const nutrientBoosters: Record<string, { foodId: string; grams: number; nutrients: (keyof import("../types").NutrientSet)[] }> = {
+  vitaminD: { foodId: "egg", grams: 50, nutrients: ["vitaminD", "vitaminB12", "protein"] },
+  vitaminB12: { foodId: "egg", grams: 50, nutrients: ["vitaminB12", "protein"] },
+  calcium: { foodId: "milk", grams: 100, nutrients: ["calcium", "protein"] },
+  iron: { foodId: "lentils", grams: 50, nutrients: ["iron", "protein", "fiber"] },
+  vitaminC: { foodId: "orange", grams: 50, nutrients: ["vitaminC"] },
+  vitaminA: { foodId: "carrot", grams: 50, nutrients: ["vitaminA", "fiber"] },
+  vitaminE: { foodId: "almonds", grams: 15, nutrients: ["vitaminE", "fat"] },
+  vitaminK: { foodId: "lettuce", grams: 30, nutrients: ["vitaminK"] },
+  magnesium: { foodId: "almonds", grams: 20, nutrients: ["magnesium", "vitaminE"] },
+  zinc: { foodId: "chicken", grams: 30, nutrients: ["zinc", "protein"] },
+  fiber: { foodId: "lentils", grams: 30, nutrients: ["fiber", "iron"] }
+};
+
+const applyBoosters = (
+  days: DayPlan[],
+  monthlyTotals: ReturnType<typeof emptyNutrients>,
+  monthlyTarget: ReturnType<typeof defaultDailyTarget>
+): { boostedDays: DayPlan[]; boostedTotals: ReturnType<typeof emptyNutrients> } => {
+  let currentTotals = { ...monthlyTotals };
+  let currentDays = days.map(day => ({ ...day, meals: day.meals.map(meal => ({ ...meal })) }));
+  
+  const nutrientKeys = Object.keys(monthlyTarget) as (keyof typeof monthlyTarget)[];
+  
+  for (let iteration = 0; iteration < 3; iteration++) {
+    for (const nutrientKey of nutrientKeys) {
+      const target = monthlyTarget[nutrientKey];
+      const current = currentTotals[nutrientKey] ?? 0;
+      const coverage = (current / target) * 100;
+      
+      if (coverage < 90 && nutrientBoosters[nutrientKey]) {
+        const booster = nutrientBoosters[nutrientKey];
+        const nutrients = ingredientsToNutrients([{ foodId: booster.foodId, grams: booster.grams }]);
+        
+        currentTotals = addNutrients(currentTotals, multiplyNutrients(nutrients, 1));
+        
+        for (let dayIndex = 0; dayIndex < currentDays.length; dayIndex++) {
+          const breakfast = currentDays[dayIndex].meals.find(m => m.mealType === "desayuno");
+          if (breakfast) {
+            breakfast.scaledIngredients.push({ foodId: booster.foodId, grams: booster.grams });
+            breakfast.nutrients = addNutrients(breakfast.nutrients, multiplyNutrients(nutrients, 1));
+          }
+        }
+      }
+    }
+  }
+  
+  const boostedDaysWithTotals = currentDays.map(day => {
+    const totals = day.meals.reduce((acc, meal) => addNutrients(acc, meal.nutrients), emptyNutrients());
+    return { ...day, totals };
+  });
+  
+  const finalTotals = boostedDaysWithTotals.reduce((acc, day) => addNutrients(acc, day.totals), emptyNutrients());
+  
+  return { boostedDays: boostedDaysWithTotals, boostedTotals: finalTotals };
+};
+
 export const generateMonthlyPlan = (input: GeneratorInput): MonthlyPlan => {
   const availableRecipes = getAllowedRecipesByMeal(input);
 
@@ -257,16 +314,19 @@ export const generateMonthlyPlan = (input: GeneratorInput): MonthlyPlan => {
   const days = Array.from({ length: input.days }, (_, index) => buildDayPlan(index + 1, availableRecipes, input, perPersonTarget));
 
   const monthlyTotals = days.reduce((totals, day) => addNutrients(totals, day.totals), emptyNutrients());
-  const nutrientProgress = buildProgress(monthlyTotals, monthlyTarget);
-  const { shoppingList, totalEstimatedCost } = toShoppingList(days);
-  const weeklyShopping = buildWeeklyShopping(days);
+  
+  const { boostedDays, boostedTotals } = applyBoosters(days, monthlyTotals, monthlyTarget);
+  
+  const nutrientProgress = buildProgress(boostedTotals, monthlyTarget);
+  const { shoppingList, totalEstimatedCost } = toShoppingList(boostedDays);
+  const weeklyShopping = buildWeeklyShopping(boostedDays);
 
   return {
     input,
-    days,
+    days: boostedDays,
     dailyTarget,
     monthlyTarget,
-    monthlyTotals,
+    monthlyTotals: boostedTotals,
     nutrientProgress,
     shoppingList,
     weeklyShopping,
