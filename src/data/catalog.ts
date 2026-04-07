@@ -586,6 +586,26 @@ export const foods: FoodItem[] = [
     nutrientsPer100g: n({ calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, iron: 0.2 }),
     supermarkets: [product("Mercadona", "Arroces", 1.25, 1000), product("Consum", "Arroces", 1.35, 1000)],
     alternativeIds: ["brown_rice", "whole_pasta"]
+  },
+  {
+    id: "bacon",
+    name: "Bacon",
+    category: "carnes",
+    tags: [],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 541, protein: 37, carbs: 1.4, fat: 42, vitaminB12: 1.1, iron: 1.4 }),
+    supermarkets: [product("Mercadona", "Charcuteria", 3.45, 200), product("Consum", "Bacon", 3.65, 200)],
+    alternativeIds: ["ham"]
+  },
+  {
+    id: "pasta",
+    name: "Fideos",
+    category: "pastas",
+    tags: ["vegetariano"],
+    allergens: ["gluten"],
+    nutrientsPer100g: n({ calories: 370, protein: 13, carbs: 75, fat: 1.5, fiber: 3, iron: 4 }),
+    supermarkets: [product("Mercadona", "Pastas", 0.95, 500), product("Consum", "Pastas", 1.05, 500)],
+    alternativeIds: ["rice"]
   }
 ];
 
@@ -725,412 +745,449 @@ const recipe = (
 };
 
 export const recipes: Recipe[] = [
-  // DESAYUNOS - mas sencillos y algunos dulces
+  // DESAYUNOS - abundantes
   recipe(
     "breakfast-milk",
-    "Leche con cacao y galletas",
+    "Leche con cacao, galletas y platano",
     "desayuno",
     3,
     ["vegetariano"],
-    [["milk", 250], ["cocoa_powder", 10], ["cookies", 30]],
+    [["milk", 400], ["cocoa_powder", 15], ["cookies", 60], ["banana", 150]],
     [
       "Calienta la leche un poco (no hace falta hervir).",
       "Anade el cacao en polvo y mezcla bien.",
-      "Sirve con galletas para dunkar."
+      "Sirve con galletas y rodajas de platano."
     ]
   ),
   recipe(
-    "breakfast-yogurt-fruit",
-    "Yogur con miel y frutas",
+    "breakfast-yogurt",
+    "Yogur griego con miel, platano y galletas",
     "desayuno",
     3,
     ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 200], ["honey", 20], ["banana", 100]],
+    [["greek_yogurt", 350], ["honey", 30], ["banana", 150], ["cookies", 40]],
     [
-      "Sirve el yogur en un bol.",
+      "Sirve el yogur griego en un bol grande.",
       "Anade miel al gusto.",
-      "Acaba con rodajas de platano."
+      "Añade rodajas de platano y galletas."
     ]
   ),
   recipe(
     "breakfast-pan-mermelada",
-    "Pan con mermelada y mantequilla",
+    "Pan con mermelada, mantequilla y chocolate",
     "desayuno",
     5,
     ["vegetariano"],
-    [["whole_bread", 60], ["mermelada", 30], ["butter", 10]],
+    [["whole_bread", 120], ["mermelada", 50], ["butter", 20], ["chocolate", 30]],
     [
-      "Tuesta el pan si quieres.",
+      "Tuesta el pan.",
       "Unta la mantequilla.",
-      "Anade mermelada por encima."
+      "Añade mermelada y chocolate por encima."
     ]
   ),
   recipe(
     "breakfast-cereales",
-    "Cereales con leche y fruta",
+    "Cereales con leche, platano y galletas",
     "desayuno",
     3,
     ["vegetariano"],
-    [["cereals", 60], ["milk", 200], ["banana", 80]],
+    [["cereals", 100], ["milk", 300], ["banana", 150], ["cookies", 40]],
     [
-      "Vierte los cereales en un bol.",
+      "Vierte los cereales en un bol grande.",
       "Anade la leche fria.",
-      "Incluye rodajas de platano."
+      "Añade rodajas de platano y galletas."
     ]
   ),
   recipe(
     "breakfast-tostada-huevo",
-    "Tostada con huevo frito",
+    "Tostadas con huevo frito y bacon",
     "desayuno",
-    8,
+    10,
     ["vegetariano"],
-    [["whole_bread", 60], ["egg", 100], ["olive_oil", 5]],
+    [["whole_bread", 120], ["egg", 200], ["bacon", 80], ["cheese", 40], ["olive_oil", 10]],
     [
-      "Tuesta el pan.",
-      "Frie el huevo en un poco de aceite.",
-      "Coloca el huevo sobre la tostada."
+      "Tuesta las rebanadas de pan.",
+      "Frie los huevos con el bacon en un poco de aceite.",
+      "Coloca el huevo y el bacon sobre las tostadas y añade queso."
     ]
   ),
   recipe(
     "breakfast-panqueques",
-    "Panqueques con miel",
+    "Panqueques con miel y mantequilla",
     "desayuno",
-    10,
+    15,
     ["vegetariano"],
-    [["flour", 80], ["egg", 100], ["milk", 150], ["honey", 25], ["butter", 15]],
+    [["flour", 150], ["egg", 200], ["milk", 300], ["honey", 40], ["butter", 30]],
     [
       "Mezcla harina, huevo y leche hasta obtener una masa fluida.",
-      "Cocina pequenas tortillas en una sarten con un poco de mantequilla.",
-      "Sirve con miel por encima."
+      "Cocina pequeñas tortillas en una sarten con mantequilla.",
+      "Sirve con miel y mantequilla por encima."
     ]
   ),
   recipe(
     "breakfast-fruta",
-    "Fruta variada con frutos secos",
+    "Fruta variada con frutos secos y miel",
     "desayuno",
     2,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["apple", 150], ["orange", 120], ["almonds", 20]],
+    [["apple", 200], ["banana", 150], ["orange", 200], ["almonds", 40], ["honey", 30]],
     [
       "Lava y pela la fruta.",
       "Cortala en trozos.",
-      "Anade almendras por encima."
+      "Añade almendras y miel."
     ]
   ),
   recipe(
-    "breakfast-avena-miel",
-    "Avena cocida con miel y frutas",
+    "breakfast-avena",
+    "Avena cocida con leche, miel y frutas",
     "desayuno",
-    8,
+    10,
     ["vegetariano", "vegano"],
-    [["oats", 80], ["milk", 200], ["honey", 20], ["banana", 100]],
+    [["oats", 120], ["milk", 400], ["honey", 30], ["banana", 150], ["apple", 100]],
     [
-      "Hierve la avena con la leche a fuego lento 5 minutos.",
+      "Hierve la avena con la leche a fuego lento 8 minutos.",
       "Retira del fuego y deja reposar 2 minutos.",
-      "Sirve con miel y rodajas de platano."
+      "Sirve con miel, rodajas de platano y manzana."
+    ]
+  ),
+  recipe(
+    "breakfast-tortilla",
+    "Tortilla con pan y queso",
+    "desayuno",
+    10,
+    ["vegetariano"],
+    [["egg", 250], ["whole_bread", 100], ["cheese", 60], ["butter", 15]],
+    [
+      "Bate los huevos y cocina la tortilla.",
+      "Tuesta el pan con mantequilla.",
+      "Sirve la tortilla con el pan y el queso."
     ]
   ),
 
-  // SNACKS / MEDIA MAÑANA
+  // SNACKS / MEDIA MAÑANA - mas abundantes
   recipe(
     "snack-yogurt",
-    "Yogur con frutas",
+    "Yogur con frutas y galletas",
     "media_manana",
     2,
     ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 150], ["kiwi", 80]],
+    [["greek_yogurt", 250], ["banana", 150], ["cookies", 50]],
     [
-      "Sirve el yogur.",
-      "Anade kiwi troceado.",
-      "Listo."
+      "Sirve el yogur en un bol.",
+      "Añade plátano troceado y galletas."
     ]
   ),
   recipe(
     "snack-fruta",
-    "Fruta fresca",
+    "Fruta fresca con frutos secos",
     "media_manana",
     1,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["apple", 180]],
+    [["apple", 200], ["banana", 150], ["almonds", 40]],
     [
-      "Lava la manzana.",
-      "Come directamente."
+      "Lava la manzana y el plátano.",
+      "Come con las almendras."
     ]
   ),
   recipe(
     "snack-galletas",
-    "Galletas con frutos secos",
+    "Galletas con leche",
     "media_manana",
     2,
     ["vegetariano"],
-    [["cookies", 40], ["almonds", 15]],
+    [["cookies", 80], ["milk", 300]],
     [
       "Come las galletas.",
-      "Acompanadas de algunas almendras."
+      "Bebe la leche."
     ]
   ),
   recipe(
     "snack-barrita",
-    "Barrita de cereales",
+    "Barrita de cereales con fruta",
     "media_manana",
     1,
     ["vegetariano"],
-    [["cereals_bar", 35]],
+    [["cereals_bar", 60], ["banana", 120]],
     [
-      "Abre el paquete.",
-      "Come la barrita."
+      "Come la barrita.",
+      "Añade una fruta."
     ]
   ),
 
-  // COMIDAS - sencilla y completa
+  // COMIDAS - abundantes y completas
   recipe(
     "lunch-pasta-tomate",
-    "Pasta con salsa de tomate",
+    "Pasta grande con salsa de tomate y queso",
     "comida",
-    15,
+    20,
     ["vegetariano"],
-    [["whole_pasta", 100], ["tomato_sauce", 150], ["olive_oil", 8]],
+    [["whole_pasta", 200], ["tomato_sauce", 300], ["cheese", 80], ["olive_oil", 15]],
     [
-      "Cuece la pasta segun instrucciones.",
+      "Cuece la pasta según instrucciones.",
       "Calienta la salsa de tomate.",
-      "Mezcla la pasta con la salsa y un chorrito de aceite."
+      "Mezcla la pasta con la salsa, añade queso y aceite."
     ]
   ),
   recipe(
     "lunch-arroz-pollo",
-    "Arroz con pollo",
+    "Arroz con pollo, huevo y verduras",
     "comida",
-    20,
+    25,
     [],
-    [["rice", 120], ["chicken", 180], ["carrot", 80], ["olive_oil", 10]],
+    [["rice", 200], ["chicken", 250], ["egg", 100], ["carrot", 120], ["olive_oil", 15]],
     [
       "Cuece el arroz.",
       "Saltea el pollo con la zanahoria.",
-      "Mezcla todo y sirve."
+      "Añade el huevo frito y mezcla todo."
     ]
   ),
   recipe(
     "lunch-lentejas",
-    "Lentejas con arroz",
+    "Lentejas abundantes con arroz y huevo",
     "comida",
-    25,
+    30,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["lentils", 200], ["rice", 120], ["carrot", 80], ["olive_oil", 10]],
+    [["lentils", 300], ["rice", 180], ["egg", 100], ["carrot", 100], ["olive_oil", 15]],
     [
-      "Cocina las lentejas hasta que esten tiernas.",
+      "Cocina las lentejas hasta que estén tiernas.",
       "Cuece el arroz por separado.",
-      "Sirve las lentejas sobre el arroz."
+      "Sirve las lentejas sobre el arroz con huevo."
     ]
   ),
   recipe(
     "lunch-ensalada",
-    "Ensalada mixta con pollo",
+    "Ensalada completa con pollo y queso",
     "comida",
-    10,
+    15,
     [],
-    [["lettuce", 100], ["tomato", 100], ["chicken", 150], ["olive_oil", 10]],
+    [["lettuce", 150], ["tomato", 150], ["chicken", 200], ["cheese", 60], ["egg", 100], ["olive_oil", 15]],
     [
       "Lava y corta las verduras.",
-      "Anade el pollo cocido en trozos.",
-      "Alina con aceite y vinagre."
+      "Añade el pollo en trozos, el queso y el huevo.",
+      "Aliña con aceite y vinagre."
     ]
   ),
   recipe(
     "lunch-pasta-pollo",
-    "Pasta con pollo y tomate",
+    "Pasta con pollo abundante y salsa",
     "comida",
-    18,
+    20,
     [],
-    [["whole_pasta", 100], ["chicken", 160], ["tomato_sauce", 120], ["olive_oil", 8]],
+    [["whole_pasta", 200], ["chicken", 250], ["tomato_sauce", 250], ["cheese", 60], ["olive_oil", 12]],
     [
       "Cuece la pasta.",
-      "Saltea el pollo y anade la salsa.",
-      "Mezcla todo junto."
+      "Saltea el pollo y añade la salsa.",
+      "Mezcla todo junto con queso."
     ]
   ),
   recipe(
     "lunch-huevos-patatas",
-    "Huevos con patatas fritas",
+    "Huevos abundantes con patatas fritas",
     "comida",
-    20,
+    25,
     ["vegetariano"],
-    [["egg", 150], ["potato", 200], ["olive_oil", 15]],
+    [["egg", 250], ["potato", 350], ["olive_oil", 25]],
     [
-      "Frie las patatas en rodajas.",
-      "Frie los huevos.",
+      "Fríe las patatas en rodajas.",
+      "Fríe los huevos.",
       "Sirve juntos."
     ]
   ),
   recipe(
     "lunch-sandwich",
-    "Sandwich de jamon y queso",
+    "Sandwich triple de jamón, queso y huevo",
     "comida",
-    8,
+    10,
     [],
-    [["whole_bread", 100], ["ham", 60], ["cheese", 40], ["tomato", 50]],
+    [["whole_bread", 180], ["ham", 100], ["cheese", 80], ["egg", 100], ["tomato", 80], ["butter", 15]],
     [
-      "Tosta el pan si quieres.",
-      "Coloca el jamon y el queso.",
-      "Anade tomate y cierra el sandwich."
+      "Tosta el pan con mantequilla.",
+      "Coloca el jamón, el queso y el huevo.",
+      "Añade tomate y cierra el sandwich."
+    ]
+  ),
+  recipe(
+    "lunch-pizza",
+    "Pizza casera rápida",
+    "comida",
+    20,
+    ["vegetariano"],
+    [["flour", 150], ["tomato_sauce", 200], ["cheese", 120], ["ham", 100], ["olive_oil", 10]],
+    [
+      "Estira la masa de harina con agua y aceite.",
+      "Añade salsa de tomate, queso y jamón.",
+      "Hornea a 200C durante 15 minutos."
     ]
   ),
 
-  // MERIENDAS - alguna dulce
+  // MERIENDAS - algo dulce y abundante
   recipe(
     "snack-merienda-yogurt",
-    "Yogur con miel",
+    "Yogur con miel y galletas",
     "merienda",
     2,
     ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 150], ["honey", 15]],
+    [["greek_yogurt", 250], ["honey", 30], ["cookies", 50]],
     [
       "Sirve el yogur.",
-      "Anade un poco de miel.",
-      "Listo."
+      "Añade un poco de miel.",
+      "Come con galletas."
     ]
   ),
   recipe(
     "snack-arroz-leche",
-    "Bol de arroz con leche condensada",
+    "Arroz con leche condensada",
     "merienda",
     5,
     ["vegetariano"],
-    [["rice", 100], ["condensed_milk", 40]],
+    [["rice", 150], ["condensed_milk", 80], ["milk", 200]],
     [
-      "Cuece el arroz y dejalo enfriar.",
-      "Sirve con leche condensada.",
-      "Delicioso y dulce."
+      "Cuece el arroz y déjalo enfriar.",
+      "Sirve con leche condensada y un poco de leche."
     ]
   ),
   recipe(
     "snack-fruta-chocolate",
-    "Fruta con chocolate",
+    "Fruta con chocolate y galletas",
     "merienda",
     5,
     ["vegetariano", "sin_gluten"],
-    [["banana", 120], ["chocolate", 30]],
+    [["banana", 200], ["chocolate", 50], ["cookies", 40]],
     [
-      "Pela el platano.",
-      "Derrites un poco de chocolate y bana el platano.",
-      "Deja enfriar y disfruta."
+      "Pela el plátano.",
+      "Derrites el chocolate y baña el plátano.",
+      "Come con galletas."
     ]
   ),
   recipe(
     "snack-galletas-leche",
-    "Galletas con leche",
+    "Galletas abundantes con leche",
     "merienda",
     3,
     ["vegetariano"],
-    [["cookies", 50], ["milk", 200]],
+    [["cookies", 100], ["milk", 400]],
     [
-      "Vierte la leche en un vaso.",
+      "Vierte la leche en un vaso grande.",
       "Come las galletas mojando en la leche."
     ]
   ),
 
-  // CENAS - sencilla
+  // CENAS - abundantes
   recipe(
     "dinner-omelette",
-    "Tortilla francesa",
+    "Tortilla francesa doble con pan",
     "cena",
-    10,
+    15,
     ["vegetariano"],
-    [["egg", 150], ["butter", 10]],
+    [["egg", 300], ["butter", 20], ["whole_bread", 100]],
     [
       "Bate los huevos.",
       "Cocina en una sarten con mantequilla.",
-      "Voltea cuando un lado este dorado."
+      "Sirve con pan tostado."
     ]
   ),
   recipe(
     "dinner-tortilla-patata",
-    "Tortilla de patatas",
+    "Tortilla de patatas grande",
     "cena",
-    20,
+    25,
     ["vegetariano"],
-    [["egg", 200], ["potato", 200], ["olive_oil", 15]],
+    [["egg", 350], ["potato", 400], ["olive_oil", 25]],
     [
-      "Frie las patatas cortadas en rodajas.",
-      "Bate los huevos y mezclalos con las patatas.",
+      "Fríe las patatas cortadas en rodajas.",
+      "Bate los huevos y mézclalos con las patatas.",
       "Cocina la mezcla en la sarten hasta que cuaje."
     ]
   ),
   recipe(
     "dinner-sopa",
-    "Sopa de verduras",
+    "Sopa de verduras abundante",
     "cena",
-    20,
+    25,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["carrot", 80], ["potato", 100], ["onion", 50], ["olive_oil", 5]],
+    [["carrot", 150], ["potato", 200], ["onion", 100], ["pasta", 100], ["olive_oil", 10]],
     [
-      "Pica las verduras en trozos pequenos.",
-      "Hierve en agua con sal.",
+      "Pica las verduras en trozos pequeños.",
+      "Hierve con la pasta en agua con sal.",
       "Sirve caliente."
     ]
   ),
   recipe(
     "dinner-pescado",
-    "Pescado al horno con patata",
+    "Pescado al horno con patatas",
     "cena",
-    25,
+    30,
     ["sin_gluten"],
-    [["fish", 180], ["potato", 200], ["olive_oil", 10]],
+    [["fish", 300], ["potato", 350], ["olive_oil", 20]],
     [
       "Coloca el pescado y las rodajas de patata en una fuente.",
       "Rocía con aceite y hornea a 200C.",
-      "Sirve cuando el pescado este hecho."
+      "Sirve cuando el pescado esté hecho."
     ]
   ),
   recipe(
     "dinner-pollo-asado",
-    "Pollo asado con verduras",
+    "Pollo asado con verduras abundantes",
     "cena",
-    30,
+    35,
     ["sin_gluten"],
-    [["chicken", 200], ["carrot", 100], ["potato", 150], ["olive_oil", 10]],
+    [["chicken", 400], ["carrot", 200], ["potato", 300], ["olive_oil", 20]],
     [
       "Coloca el pollo en una fuente con las verduras.",
       "Rocía con aceite y hornea a 200C.",
-      "Sirve cuando este dorado."
+      "Sirve cuando esté dorado."
     ]
   ),
   recipe(
     "dinner-crema",
-    "Crema de verduras",
+    "Crema de verduras con pan",
     "cena",
-    25,
+    30,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["pumpkin", 200], ["carrot", 100], ["potato", 100]],
+    [["pumpkin", 350], ["carrot", 200], ["potato", 200], ["whole_bread", 80]],
     [
       "Hierve todas las verduras.",
       "Tritura con la batidora.",
-      "Sirve caliente."
+      "Sirve caliente con pan."
     ]
   ),
   recipe(
     "dinner-huevos-cocidos",
-    "Huevos cocidos con pan",
+    "Huevos cocidos con pan y queso",
     "cena",
-    12,
+    15,
     ["vegetariano"],
-    [["egg", 150], ["whole_bread", 60], ["butter", 5]],
+    [["egg", 250], ["whole_bread", 120], ["cheese", 60], ["butter", 15]],
     [
       "Cocina los huevos 10 minutos.",
-      "Tosta el pan con mantequilla.",
+      "Tosta el pan con mantequilla y queso.",
       "Come juntos."
     ]
   ),
   recipe(
     "dinner-arroz-blanco",
-    "Arroz blanco con huevo",
+    "Arroz con huevo y pollo",
     "cena",
-    15,
+    20,
     ["vegetariano"],
-    [["rice", 120], ["egg", 100], ["olive_oil", 8]],
+    [["rice", 200], ["egg", 150], ["chicken", 150], ["olive_oil", 12]],
     [
       "Cuece el arroz.",
-      "Frie un huevo y sirvelo sobre el arroz.",
-      "Simple y rapido."
+      "Fríe el pollo y el huevo.",
+      "Mezcla todo y sirve."
+    ]
+  ),
+  recipe(
+    "dinner-pasta-carbonara",
+    "Pasta carbonara cremosa",
+    "cena",
+    20,
+    ["vegetariano"],
+    [["whole_pasta", 200], ["egg", 200], ["bacon", 100], ["cheese", 60], ["butter", 15]],
+    [
+      "Cuece la pasta.",
+      "Saltea el bacon y añade los huevos revueltos.",
+      "Mezcla con la pasta y el queso."
     ]
   )
 ];
