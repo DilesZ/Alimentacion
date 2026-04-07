@@ -14,6 +14,47 @@ Historial secuencial del proyecto para reanudar el trabajo sin depender del cont
 
 Cada entrada se numera de forma secuencial, incluye timestamp, contexto previo, cambios realizados, razon tecnica, impacto y estado resultante. Cuando el detalle completo es demasiado extenso, este archivo resume y delega el desglose exhaustivo a `docs/registro-continuidad.md`.
 
+## [0004] 2026-04-07 21:39:35 +02:00 - feat: reestructurar la SPA en paginas especializadas
+
+### Contexto previo
+
+La aplicacion concentraba toda la experiencia en `src/App.tsx`, sin rutas independientes ni separacion clara entre planificacion, recetas, calendario y compras.
+
+### Cambios realizados
+
+- `package.json` y `package-lock.json`: se anade `react-router-dom` para routing cliente.
+- `src/App.tsx`: se sustituye la vista monolitica por un router con lazy loading de paginas.
+- `src/app/PlannerProvider.tsx`: se crea estado compartido para parametros, errores y plan mensual.
+- `src/components/MainLayout.tsx`: se crea layout global con menu responsive, hamburguesa y breadcrumbs.
+- `src/pages/HomePage.tsx`: nueva portada con dashboard y generacion del plan.
+- `src/pages/RecipesPage.tsx`: nueva pagina de recetas con busqueda y filtros.
+- `src/pages/CalendarPage.tsx`: nueva pagina de calendario semanal con drag and drop nativo.
+- `src/pages/ShoppingPage.tsx`: nueva pagina de compras con carrito y checkout.
+- `src/app/usePageMeta.ts`, `src/lib/media.ts`, `index.html` y `src/styles.css`: se anaden meta tags dinamicos, ilustraciones SVG locales, base SEO y responsive completo por breakpoints.
+
+### Razones del cambio
+
+- Mejorar la usabilidad separando tareas complejas en vistas especializadas.
+- Dar a cada area funcional su propia URL y contexto de navegacion.
+- Preparar una base mas escalable para evolucionar la app y mejorar rendimiento.
+
+### Problemas resueltos
+
+- Saturacion funcional de una sola pantalla.
+- Ausencia de navegacion responsive y de ubicacion contextual del usuario.
+- Falta de vistas dedicadas para compra, recetas y calendario.
+
+### Dependencias y configuracion
+
+- Dependencias anadidas: `react-router-dom`.
+- Configuraciones alteradas: `index.html`, `package.json`, `package-lock.json`, `src/styles.css`.
+
+### Estado del proyecto
+
+- La aplicacion queda organizada en rutas `/`, `/recetas`, `/calendario` y `/compras`.
+- El build queda validado correctamente con `powershell -NoProfile -Command "npm.cmd run build"`.
+- Queda lista para commit y publicacion remota.
+
 ## [0003] 2026-04-07 21:18:29 +02:00 - docs: implantar sistema de continuidad documental
 
 ### Contexto previo

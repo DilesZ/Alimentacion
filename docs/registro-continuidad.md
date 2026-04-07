@@ -54,6 +54,130 @@ Describir el estado exacto antes del cambio.
 
 ---
 
+## [0004] 2026-04-07 21:39:35 +02:00 - feat: reestructurar la SPA en paginas especializadas
+
+### Contexto previo
+
+La aplicacion funcionaba como una SPA monolitica centrada en `src/App.tsx`. Todo el flujo de configuracion del plan, graficos, lista de la compra, detalle de recetas y calendario convivian en una sola vista. Esto hacia la interfaz mas pesada de mantener, dificultaba la navegacion por contexto y no permitia ofrecer URLs especificas por area funcional.
+
+### Cambios realizados
+
+- Archivo: `package.json`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: edicion
+- Detalle tecnico: se anade la dependencia runtime `react-router-dom` para introducir routing cliente y navegacion por URLs.
+
+- Archivo: `package-lock.json`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: edicion
+- Detalle tecnico: se actualiza el arbol de dependencias tras instalar `react-router-dom`.
+
+- Archivo: `src/App.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: reestructuracion
+- Detalle tecnico: se reemplaza la vista unica por `BrowserRouter`, `Routes`, `Route`, `Suspense` y lazy loading de `HomePage`, `RecipesPage`, `CalendarPage` y `ShoppingPage`.
+
+- Archivo: `src/app/PlannerProvider.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se crea un proveedor de estado compartido para `formState`, alergias, plan mensual, errores y accion de regeneracion del plan.
+
+- Archivo: `src/app/usePageMeta.ts`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se implementa un hook para actualizar `title`, `description`, `keywords`, `og:title`, `og:description`, `canonical` y una precarga de imagen critica por ruta.
+
+- Archivo: `src/components/MainLayout.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se crea el layout global con marca, menu principal, hamburguesa responsive, breadcrumbs y contenedor de transicion por cambio de ruta.
+
+- Archivo: `src/pages/HomePage.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se mueve aqui el dashboard principal, formulario de generacion, resumen de metricas, graficos, validacion nutricional, detalle diario y disponibilidad local.
+
+- Archivo: `src/pages/RecipesPage.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se crea una biblioteca de recetas con busqueda textual, filtros por franja, dificultad, tiempo y etiqueta alimentaria; cada tarjeta muestra ilustracion, ingredientes y pasos.
+
+- Archivo: `src/pages/CalendarPage.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se crea una planificacion semanal con navegacion por semanas y drag and drop nativo para intercambiar comidas entre dias en la misma franja horaria.
+
+- Archivo: `src/pages/ShoppingPage.tsx`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se crea una pagina de compras con catalogo agrupado, controles de carrito por producto, resumen economico y checkout basico con formulario.
+
+- Archivo: `src/lib/media.ts`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: alta
+- Detalle tecnico: se generan ilustraciones SVG locales en data URI para paginas y recetas, permitiendo `loading="lazy"` sin depender de archivos externos.
+
+- Archivo: `src/styles.css`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: edicion integral
+- Detalle tecnico: se rehace la hoja de estilos para soportar el layout global, las nuevas paginas, transiciones, tarjetas, tablero semanal, carrito y breakpoints explicitos para movil, tablet y desktop usando Grid y Flexbox.
+
+- Archivo: `index.html`
+- Lineas afectadas: `1-fin`
+- Tipo de cambio: edicion
+- Detalle tecnico: se anaden metadatos base de SEO, `theme-color` y configuracion de cabecera mas alineada con la nueva estructura multi-ruta.
+
+### Razones del cambio
+
+- Necesidad funcional de separar compras, recetas y calendario en pantallas especializadas.
+- Requisito explicito de disponer de URLs independientes, navegacion responsive y meta tags por pagina.
+- Conveniencia tecnica de desacoplar la logica de estado de la presentacion para facilitar mantenimiento y futuras ampliaciones.
+
+### Problemas resueltos
+
+- Interfaz principal excesivamente cargada y poco modular.
+- Falta de navegacion contextual y de URLs significativas.
+- Inexistencia de carrito/checkout, vista de recetas dedicada y calendario semanal reorganizable.
+- Falta de una base tecnica para lazy loading y transiciones de pagina.
+
+### Decisiones tecnicas tomadas
+
+- Utilizar `react-router-dom` en lugar de routing casero para asegurar URLs limpias y breadcrumbs coherentes.
+- Mantener el plan mensual en un proveedor global para no recalcular ni duplicar estado entre paginas.
+- Implementar drag and drop nativo HTML5 en la pagina de calendario para evitar dependencias adicionales.
+- Generar ilustraciones SVG locales en data URI como imagenes livianas, lazy y sin coste de red.
+- Aplicar carga diferida de paginas con `React.lazy` y `Suspense` para reducir peso inicial del bundle.
+
+### Dependencias anadidas o eliminadas
+
+- Anadidas runtime:
+  - `react-router-dom`
+- Eliminadas: ninguna.
+
+### Configuraciones alteradas
+
+- `package.json`
+- `package-lock.json`
+- `index.html`
+- `src/App.tsx`
+- `src/styles.css`
+
+### Proximos pasos pendientes
+
+- Persistir en almacenamiento local los cambios manuales del calendario semanal.
+- Persistir el carrito y el checkout entre recargas si se considera parte del flujo real.
+- Refinar medicion real de rendimiento en entorno de produccion con Lighthouse o WebPageTest.
+- Evaluar una pagina 404 y manejo de rutas invalidas si el despliegue final lo requiere.
+
+### Estado del proyecto
+
+- La SPA queda dividida en paginas funcionales independientes.
+- Las rutas `/`, `/recetas`, `/calendario` y `/compras` ya funcionan sobre un layout comun.
+- El build queda validado correctamente con `powershell -NoProfile -Command "npm.cmd run build"`.
+- La base de UI es responsive y preparada para evolucion posterior.
+
+---
+
 ## [0003] 2026-04-07 21:18:29 +02:00 - docs: implantar sistema de continuidad documental
 
 ### Contexto previo
