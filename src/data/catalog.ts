@@ -385,6 +385,207 @@ export const foods: FoodItem[] = [
     nutrientsPer100g: n({ calories: 356, protein: 6.5, carbs: 78, fat: 1.5, fiber: 2.5, iron: 1.2, magnesium: 20 }),
     supermarkets: [product("Mercadona", "Especialidades sin gluten", 2.25, 400), product("Consum", "Especialidades sin gluten", 2.45, 400)],
     alternativeIds: ["whole_pasta", "brown_rice"]
+  },
+  // NUEVOS ALIMENTOS PARA RECETAS SIMPLES
+  {
+    id: "milk",
+    name: "Leche",
+    category: "lacteos",
+    tags: ["vegetariano"],
+    allergens: ["lactosa"],
+    nutrientsPer100g: n({ calories: 42, protein: 3.4, carbs: 5, fat: 1, calcium: 125, vitaminB12: 0.5 }),
+    supermarkets: [product("Mercadona", "Refrigerados", 1.15, 1000), product("Consum", "Leche y derivados", 1.25, 1000)],
+    alternativeIds: ["soy_milk"]
+  },
+  {
+    id: "cocoa_powder",
+    name: "Cacao en polvo",
+    category: "desayunos",
+    tags: ["vegetariano", "vegano"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 228, protein: 20, carbs: 58, fat: 14, iron: 13.9, magnesium: 228 }),
+    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.45, 200), product("Consum", "Cacao y chocolates", 2.65, 200)],
+    alternativeIds: []
+  },
+  {
+    id: "cookies",
+    name: "Galletas",
+    category: "desayunos",
+    tags: ["vegetariano"],
+    allergens: ["gluten", "huevo"],
+    nutrientsPer100g: n({ calories: 484, protein: 7, carbs: 64, fat: 23, fiber: 2, iron: 3 }),
+    supermarkets: [product("Mercadona", "Galletas", 1.55, 400), product("Consum", "Galletas", 1.7, 400)],
+    alternativeIds: ["cereals"]
+  },
+  {
+    id: "mermelada",
+    name: "Mermelada",
+    category: "desayunos",
+    tags: ["vegetariano", "vegano"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 278, protein: 0.4, carbs: 69, fat: 0.1, fiber: 1, iron: 1.6 }),
+    supermarkets: [product("Mercadona", "Mermeladas y confituras", 1.85, 350), product("Consum", "Mermeladas", 2.05, 350)],
+    alternativeIds: ["honey"]
+  },
+  {
+    id: "butter",
+    name: "Mantequilla",
+    category: "lacteos",
+    tags: ["vegetariano"],
+    allergens: ["lactosa"],
+    nutrientsPer100g: n({ calories: 717, protein: 0.9, carbs: 0.1, fat: 81, vitaminA: 684 }),
+    supermarkets: [product("Mercadona", "Refrigerados", 2.25, 250), product("Consum", "Mantequilla y margarina", 2.45, 250)],
+    alternativeIds: ["olive_oil"]
+  },
+  {
+    id: "cereals",
+    name: "Cereales de desayuno",
+    category: "cereales",
+    tags: ["vegetariano"],
+    allergens: ["gluten"],
+    nutrientsPer100g: n({ calories: 379, protein: 7, carbs: 84, fat: 1.8, fiber: 7, iron: 14 }),
+    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.15, 375), product("Consum", "Cereales", 2.35, 375)],
+    alternativeIds: ["oats"]
+  },
+  {
+    id: "apple",
+    name: "Manzana",
+    category: "frutas",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 52, protein: 0.3, carbs: 14, fat: 0.2, fiber: 2.4, vitaminC: 4.6 }),
+    supermarkets: [product("Mercadona", "Frutas y verduras", 2.25, 1000), product("Consum", "Frutas", 2.45, 1000)],
+    alternativeIds: ["banana", "orange"]
+  },
+  {
+    id: "flour",
+    name: "Harina",
+    category: "cereales",
+    tags: ["vegetariano", "vegano"],
+    allergens: ["gluten"],
+    nutrientsPer100g: n({ calories: 364, protein: 10, carbs: 76, fat: 1, fiber: 2.7, iron: 4.6 }),
+    supermarkets: [product("Mercadona", "Harinas", 0.85, 1000), product("Consum", "Harinas", 0.95, 1000)],
+    alternativeIds: ["oats"]
+  },
+  {
+    id: "honey",
+    name: "Miel",
+    category: "dulces",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 304, protein: 0.3, carbs: 82, fat: 0, iron: 0.4 }),
+    supermarkets: [product("Mercadona", "Miel y derivados", 3.45, 500), product("Consum", "Miel", 3.65, 500)],
+    alternativeIds: ["mermelada"]
+  },
+  {
+    id: "tomato_sauce",
+    name: "Salsa de tomate",
+    category: "salsas",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 32, protein: 1.3, carbs: 6.5, fat: 0.3, fiber: 1.5, vitaminC: 7 }),
+    supermarkets: [product("Mercadona", "Salsas", 1.15, 390), product("Consum", "Salsas", 1.25, 390)],
+    alternativeIds: ["tomato"]
+  },
+  {
+    id: "potato",
+    name: "Patata",
+    category: "verduras",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 77, protein: 2, carbs: 17, fat: 0.1, fiber: 2.2, vitaminC: 19.7 }),
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.35, 1500), product("Consum", "Patatas", 1.45, 1500)],
+    alternativeIds: ["carrot"]
+  },
+  {
+    id: "ham",
+    name: "Jamon cocido",
+    category: "carnes",
+    tags: [],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 96, protein: 17, carbs: 1.5, fat: 2.5, vitaminB12: 1, iron: 1.2 }),
+    supermarkets: [product("Mercadona", "Charcuteria", 3.85, 200), product("Consum", "Jamon cocido", 4.15, 200)],
+    alternativeIds: ["chicken"]
+  },
+  {
+    id: "cheese",
+    name: "Queso fundido",
+    category: "lacteos",
+    tags: ["vegetariano"],
+    allergens: ["lactosa", "leche"],
+    nutrientsPer100g: n({ calories: 300, protein: 17, carbs: 3, fat: 24, calcium: 500, vitaminB12: 1.5 }),
+    supermarkets: [product("Mercadona", "Quesos", 2.65, 200), product("Consum", "Quesos", 2.85, 200)],
+    alternativeIds: []
+  },
+  {
+    id: "lettuce",
+    name: "Lechuga",
+    category: "verduras",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 15, protein: 1.4, carbs: 2.9, fat: 0.2, fiber: 1.3, vitaminA: 370, vitaminC: 18 }),
+    supermarkets: [product("Mercadona", "Verduras refrigeradas", 1.45, 300), product("Consum", "Lechugas", 1.55, 300)],
+    alternativeIds: ["spinach"]
+  },
+  {
+    id: "chocolate",
+    name: "Chocolate con leche",
+    category: "dulces",
+    tags: ["vegetariano"],
+    allergens: ["leche", "gluten"],
+    nutrientsPer100g: n({ calories: 535, protein: 8, carbs: 59, fat: 30, iron: 2 }),
+    supermarkets: [product("Mercadona", "Chocolate", 1.85, 200), product("Consum", "Chocolates", 2.05, 200)],
+    alternativeIds: []
+  },
+  {
+    id: "condensed_milk",
+    name: "Leche condensada",
+    category: "dulces",
+    tags: ["vegetariano"],
+    allergens: ["leche"],
+    nutrientsPer100g: n({ calories: 321, protein: 8, carbs: 54, fat: 8, calcium: 284 }),
+    supermarkets: [product("Mercadona", "Leche condensada", 1.65, 250), product("Consum", "Leche condensada", 1.85, 250)],
+    alternativeIds: ["honey"]
+  },
+  {
+    id: "cereals_bar",
+    name: "Barrita de cereales",
+    category: "snacks",
+    tags: ["vegetariano"],
+    allergens: ["gluten", "frutos secos"],
+    nutrientsPer100g: n({ calories: 400, protein: 6, carbs: 70, fat: 10, fiber: 4, iron: 5 }),
+    supermarkets: [product("Mercadona", "Barritas", 1.45, 120), product("Consum", "Barritas", 1.65, 120)],
+    alternativeIds: ["cookies"]
+  },
+  {
+    id: "onion",
+    name: "Cebolla",
+    category: "verduras",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 40, protein: 1.1, carbs: 9.3, fat: 0.1, fiber: 1.7, vitaminC: 7.4 }),
+    supermarkets: [product("Mercadona", "Frutas y verduras", 0.95, 1000), product("Consum", "Verduras", 1.05, 1000)],
+    alternativeIds: ["carrot"]
+  },
+  {
+    id: "fish",
+    name: "Pescado blanco",
+    category: "pescado",
+    tags: ["sin_gluten"],
+    allergens: ["pescado"],
+    nutrientsPer100g: n({ calories: 86, protein: 18.5, carbs: 0, fat: 1, vitaminB12: 2, vitaminD: 1 }),
+    supermarkets: [product("Mercadona", "Pescaderia", 5.45, 400), product("Consum", "Pescado fresco", 5.85, 400)],
+    alternativeIds: ["chicken", "egg"]
+  },
+  {
+    id: "rice",
+    name: "Arroz blanco",
+    category: "cereales",
+    tags: ["vegetariano", "vegano", "sin_gluten"],
+    allergens: [],
+    nutrientsPer100g: n({ calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, iron: 0.2 }),
+    supermarkets: [product("Mercadona", "Arroces", 1.25, 1000), product("Consum", "Arroces", 1.35, 1000)],
+    alternativeIds: ["brown_rice", "whole_pasta"]
   }
 ];
 
@@ -524,246 +725,412 @@ const recipe = (
 };
 
 export const recipes: Recipe[] = [
+  // DESAYUNOS - mas sencillos y algunos dulces
   recipe(
-    "breakfast-oats",
-    "Porridge de avena con yogur, platano y naranja",
+    "breakfast-milk",
+    "Leche con cacao y galletas",
     "desayuno",
-    10,
+    3,
     ["vegetariano"],
-    [["oats", 60], ["greek_yogurt", 180], ["banana", 120], ["orange", 100], ["almonds", 20]],
+    [["milk", 250], ["cocoa_powder", 10], ["cookies", 30]],
     [
-      "Calienta ligeramente la avena con un poco de agua hasta que espese.",
-      "Sirve con yogur griego, rodajas de platano y gajos de naranja.",
-      "Anade almendras picadas por encima para ganar saciedad y vitamina E."
+      "Calienta la leche un poco (no hace falta hervir).",
+      "Anade el cacao en polvo y mezcla bien.",
+      "Sirve con galletas para dunkar."
     ]
   ),
   recipe(
-    "breakfast-toast",
-    "Tostada integral con tomate, espinacas y huevo",
+    "breakfast-yogurt-fruit",
+    "Yogur con miel y frutas",
     "desayuno",
-    12,
-    ["vegetariano"],
-    [["whole_bread", 80], ["tomato", 80], ["spinach", 50], ["egg", 110], ["olive_oil", 5]],
-    [
-      "Tuesta el pan integral.",
-      "Cocina el huevo a la plancha o cocido durante 6 a 8 minutos.",
-      "Monta la tostada con tomate, espinacas frescas y un hilo de aceite."
-    ]
-  ),
-  recipe(
-    "breakfast-smoothie",
-    "Bol de yogur con kiwi, naranja y almendras",
-    "desayuno",
-    8,
+    3,
     ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 200], ["kiwi", 120], ["orange", 100], ["banana", 100], ["almonds", 15]],
-    [
-      "Sirve el yogur en un bol amplio.",
-      "Anade kiwi troceado, naranja en gajos y rodajas de platano.",
-      "Termina con almendras picadas para sumar textura y grasa saludable."
-    ]
-  ),
-  recipe(
-    "breakfast-chia",
-    "Avena rapida con platano, naranja y almendras",
-    "desayuno",
-    10,
-    ["vegetariano", "vegano"],
-    [["oats", 55], ["banana", 120], ["orange", 120], ["almonds", 15]],
-    [
-      "Humedece la avena con un poco de agua caliente para ablandarla rapidamente.",
-      "Sirve con platano en rodajas, naranja y almendras laminadas.",
-      "Queda lista en pocos minutos y funciona muy bien para repetir varias mañanas."
-    ]
-  ),
-  recipe(
-    "snack-fruit-nuts",
-    "Fruta fresca con almendras",
-    "media_manana",
-    5,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["orange", 180], ["almonds", 25]],
-    [
-      "Lava y pela la fruta si es necesario.",
-      "Combina con las almendras para sumar vitamina C y grasas saludables."
-    ]
-  ),
-  recipe(
-    "snack-hummus",
-    "Hummus con bastones de zanahoria",
-    "media_manana",
-    5,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["hummus", 80], ["carrot", 120]],
-    [
-      "Corta la zanahoria en bastones.",
-      "Sirve junto al hummus como tentempie rico en fibra y hierro."
-    ]
-  ),
-  recipe(
-    "snack-yogurt",
-    "Yogur con kiwi y chia",
-    "media_manana",
-    5,
-    ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 170], ["kiwi", 120], ["chia", 12]],
+    [["greek_yogurt", 200], ["honey", 20], ["banana", 100]],
     [
       "Sirve el yogur en un bol.",
-      "Anade kiwi y chia justo antes de consumir."
+      "Anade miel al gusto.",
+      "Acaba con rodajas de platano."
     ]
   ),
   recipe(
-    "lunch-lentils",
-    "Lentejas templadas con arroz, zanahoria y espinacas",
-    "comida",
-    15,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["lentils", 220], ["brown_rice", 160], ["spinach", 120], ["carrot", 100], ["olive_oil", 10]],
-    [
-      "Saltea zanahoria y espinaca con aceite en una sarten amplia.",
-      "Anade lentejas cocidas y arroz integral ya cocido.",
-      "Mezcla 4 o 5 minutos y sirve caliente."
-    ]
-  ),
-  recipe(
-    "lunch-salmon",
-    "Arroz con pollo, brocoli y zanahoria",
-    "comida",
-    15,
-    ["sin_gluten"],
-    [["chicken", 180], ["brown_rice", 180], ["broccoli", 160], ["carrot", 90], ["olive_oil", 10]],
-    [
-      "Cocina el pollo a tiras en una sarten con aceite.",
-      "Anade brocoli y zanahoria cortada fina para que se hagan rapido.",
-      "Sirve con arroz integral cocido y mezcla un minuto antes de emplatar."
-    ]
-  ),
-  recipe(
-    "lunch-quinoa",
-    "Garbanzos salteados con arroz, tomate y espinacas",
-    "comida",
-    12,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["chickpeas", 180], ["brown_rice", 160], ["tomato", 140], ["spinach", 90], ["olive_oil", 8]],
-    [
-      "Saltea tomate y espinacas un par de minutos con aceite.",
-      "Anade garbanzos cocidos y arroz integral ya preparado.",
-      "Remueve hasta templar todo y sirve en bol."
-    ]
-  ),
-  recipe(
-    "lunch-chicken",
-    "Pasta integral con pollo, tomate y espinacas",
-    "comida",
-    15,
-    [],
-    [["whole_pasta", 90], ["chicken", 160], ["tomato", 140], ["spinach", 80], ["olive_oil", 10]],
-    [
-      "Cuece la pasta mientras se hace el resto.",
-      "Cocina el pollo a tiras con tomate y espinacas en una sarten.",
-      "Mezcla con la pasta y sirve al momento."
-    ]
-  ),
-  recipe(
-    "lunch-pasta",
-    "Ensalada tibia de garbanzos con brocoli y zanahoria",
-    "comida",
-    15,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["chickpeas", 190], ["broccoli", 150], ["carrot", 90], ["tomato", 120], ["olive_oil", 8]],
-    [
-      "Cuece o saltea brevemente el brocoli y la zanahoria para dejarlos tiernos.",
-      "Mezcla con garbanzos cocidos y tomate troceado.",
-      "Aliña con aceite y sirve templada."
-    ],
-    "mediterranea"
-  ),
-  recipe(
-    "snack-toast",
-    "Tostada de hummus y tomate",
-    "merienda",
-    6,
+    "breakfast-pan-mermelada",
+    "Pan con mermelada y mantequilla",
+    "desayuno",
+    5,
     ["vegetariano"],
-    [["whole_bread", 70], ["hummus", 70], ["tomato", 80]],
+    [["whole_bread", 60], ["mermelada", 30], ["butter", 10]],
+    [
+      "Tuesta el pan si quieres.",
+      "Unta la mantequilla.",
+      "Anade mermelada por encima."
+    ]
+  ),
+  recipe(
+    "breakfast-cereales",
+    "Cereales con leche y fruta",
+    "desayuno",
+    3,
+    ["vegetariano"],
+    [["cereals", 60], ["milk", 200], ["banana", 80]],
+    [
+      "Vierte los cereales en un bol.",
+      "Anade la leche fria.",
+      "Incluye rodajas de platano."
+    ]
+  ),
+  recipe(
+    "breakfast-tostada-huevo",
+    "Tostada con huevo frito",
+    "desayuno",
+    8,
+    ["vegetariano"],
+    [["whole_bread", 60], ["egg", 100], ["olive_oil", 5]],
     [
       "Tuesta el pan.",
-      "Unta hummus y termina con tomate en rodajas."
+      "Frie el huevo en un poco de aceite.",
+      "Coloca el huevo sobre la tostada."
     ]
   ),
   recipe(
-    "snack-smoothie",
-    "Batido citrico con soja, kiwi y levadura nutricional",
-    "merienda",
-    6,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["soy_milk", 250], ["kiwi", 100], ["orange", 140], ["nutritional_yeast", 8]],
+    "breakfast-panqueques",
+    "Panqueques con miel",
+    "desayuno",
+    10,
+    ["vegetariano"],
+    [["flour", 80], ["egg", 100], ["milk", 150], ["honey", 25], ["butter", 15]],
     [
-      "Tritura todos los ingredientes hasta homogeneizar.",
-      "Sirve recien hecho para aprovechar micronutrientes y calcio."
+      "Mezcla harina, huevo y leche hasta obtener una masa fluida.",
+      "Cocina pequenas tortillas en una sarten con un poco de mantequilla.",
+      "Sirve con miel por encima."
     ]
   ),
   recipe(
-    "snack-yogurt-afternoon",
-    "Yogur con naranja y almendras",
+    "breakfast-fruta",
+    "Fruta variada con frutos secos",
+    "desayuno",
+    2,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["apple", 150], ["orange", 120], ["almonds", 20]],
+    [
+      "Lava y pela la fruta.",
+      "Cortala en trozos.",
+      "Anade almendras por encima."
+    ]
+  ),
+  recipe(
+    "breakfast-avena-miel",
+    "Avena cocida con miel y frutas",
+    "desayuno",
+    8,
+    ["vegetariano", "vegano"],
+    [["oats", 80], ["milk", 200], ["honey", 20], ["banana", 100]],
+    [
+      "Hierve la avena con la leche a fuego lento 5 minutos.",
+      "Retira del fuego y deja reposar 2 minutos.",
+      "Sirve con miel y rodajas de platano."
+    ]
+  ),
+
+  // SNACKS / MEDIA MAÑANA
+  recipe(
+    "snack-yogurt",
+    "Yogur con frutas",
+    "media_manana",
+    2,
+    ["vegetariano", "sin_gluten"],
+    [["greek_yogurt", 150], ["kiwi", 80]],
+    [
+      "Sirve el yogur.",
+      "Anade kiwi troceado.",
+      "Listo."
+    ]
+  ),
+  recipe(
+    "snack-fruta",
+    "Fruta fresca",
+    "media_manana",
+    1,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["apple", 180]],
+    [
+      "Lava la manzana.",
+      "Come directamente."
+    ]
+  ),
+  recipe(
+    "snack-galletas",
+    "Galletas con frutos secos",
+    "media_manana",
+    2,
+    ["vegetariano"],
+    [["cookies", 40], ["almonds", 15]],
+    [
+      "Come las galletas.",
+      "Acompanadas de algunas almendras."
+    ]
+  ),
+  recipe(
+    "snack-barrita",
+    "Barrita de cereales",
+    "media_manana",
+    1,
+    ["vegetariano"],
+    [["cereals_bar", 35]],
+    [
+      "Abre el paquete.",
+      "Come la barrita."
+    ]
+  ),
+
+  // COMIDAS - sencilla y completa
+  recipe(
+    "lunch-pasta-tomate",
+    "Pasta con salsa de tomate",
+    "comida",
+    15,
+    ["vegetariano"],
+    [["whole_pasta", 100], ["tomato_sauce", 150], ["olive_oil", 8]],
+    [
+      "Cuece la pasta segun instrucciones.",
+      "Calienta la salsa de tomate.",
+      "Mezcla la pasta con la salsa y un chorrito de aceite."
+    ]
+  ),
+  recipe(
+    "lunch-arroz-pollo",
+    "Arroz con pollo",
+    "comida",
+    20,
+    [],
+    [["rice", 120], ["chicken", 180], ["carrot", 80], ["olive_oil", 10]],
+    [
+      "Cuece el arroz.",
+      "Saltea el pollo con la zanahoria.",
+      "Mezcla todo y sirve."
+    ]
+  ),
+  recipe(
+    "lunch-lentejas",
+    "Lentejas con arroz",
+    "comida",
+    25,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["lentils", 200], ["rice", 120], ["carrot", 80], ["olive_oil", 10]],
+    [
+      "Cocina las lentejas hasta que esten tiernas.",
+      "Cuece el arroz por separado.",
+      "Sirve las lentejas sobre el arroz."
+    ]
+  ),
+  recipe(
+    "lunch-ensalada",
+    "Ensalada mixta con pollo",
+    "comida",
+    10,
+    [],
+    [["lettuce", 100], ["tomato", 100], ["chicken", 150], ["olive_oil", 10]],
+    [
+      "Lava y corta las verduras.",
+      "Anade el pollo cocido en trozos.",
+      "Alina con aceite y vinagre."
+    ]
+  ),
+  recipe(
+    "lunch-pasta-pollo",
+    "Pasta con pollo y tomate",
+    "comida",
+    18,
+    [],
+    [["whole_pasta", 100], ["chicken", 160], ["tomato_sauce", 120], ["olive_oil", 8]],
+    [
+      "Cuece la pasta.",
+      "Saltea el pollo y anade la salsa.",
+      "Mezcla todo junto."
+    ]
+  ),
+  recipe(
+    "lunch-huevos-patatas",
+    "Huevos con patatas fritas",
+    "comida",
+    20,
+    ["vegetariano"],
+    [["egg", 150], ["potato", 200], ["olive_oil", 15]],
+    [
+      "Frie las patatas en rodajas.",
+      "Frie los huevos.",
+      "Sirve juntos."
+    ]
+  ),
+  recipe(
+    "lunch-sandwich",
+    "Sandwich de jamon y queso",
+    "comida",
+    8,
+    [],
+    [["whole_bread", 100], ["ham", 60], ["cheese", 40], ["tomato", 50]],
+    [
+      "Tosta el pan si quieres.",
+      "Coloca el jamon y el queso.",
+      "Anade tomate y cierra el sandwich."
+    ]
+  ),
+
+  // MERIENDAS - alguna dulce
+  recipe(
+    "snack-merienda-yogurt",
+    "Yogur con miel",
+    "merienda",
+    2,
+    ["vegetariano", "sin_gluten"],
+    [["greek_yogurt", 150], ["honey", 15]],
+    [
+      "Sirve el yogur.",
+      "Anade un poco de miel.",
+      "Listo."
+    ]
+  ),
+  recipe(
+    "snack-arroz-leche",
+    "Bol de arroz con leche condensada",
+    "merienda",
+    5,
+    ["vegetariano"],
+    [["rice", 100], ["condensed_milk", 40]],
+    [
+      "Cuece el arroz y dejalo enfriar.",
+      "Sirve con leche condensada.",
+      "Delicioso y dulce."
+    ]
+  ),
+  recipe(
+    "snack-fruta-chocolate",
+    "Fruta con chocolate",
     "merienda",
     5,
     ["vegetariano", "sin_gluten"],
-    [["greek_yogurt", 170], ["orange", 150], ["almonds", 18]],
+    [["banana", 120], ["chocolate", 30]],
     [
-      "Sirve el yogur con gajos de naranja.",
-      "Anade almendras para mejorar saciedad y vitamina E."
+      "Pela el platano.",
+      "Derrites un poco de chocolate y bana el platano.",
+      "Deja enfriar y disfruta."
     ]
   ),
   recipe(
-    "dinner-tortilla",
-    "Tortilla de espinacas con tomate",
-    "cena",
-    15,
+    "snack-galletas-leche",
+    "Galletas con leche",
+    "merienda",
+    3,
     ["vegetariano"],
-    [["egg", 120], ["spinach", 120], ["tomato", 100], ["olive_oil", 6], ["whole_bread", 50]],
+    [["cookies", 50], ["milk", 200]],
     [
-      "Bate el huevo y cocina con la espinaca hasta cuajar.",
-      "Acompana con tomate fresco y una rebanada de pan.",
-      "Si necesitas version sin gluten, cambia el pan por pan sin gluten."
+      "Vierte la leche en un vaso.",
+      "Come las galletas mojando en la leche."
+    ]
+  ),
+
+  // CENAS - sencilla
+  recipe(
+    "dinner-omelette",
+    "Tortilla francesa",
+    "cena",
+    10,
+    ["vegetariano"],
+    [["egg", 150], ["butter", 10]],
+    [
+      "Bate los huevos.",
+      "Cocina en una sarten con mantequilla.",
+      "Voltea cuando un lado este dorado."
     ]
   ),
   recipe(
-    "dinner-tofu",
-    "Revuelto rapido de huevo con brocoli y zanahoria",
+    "dinner-tortilla-patata",
+    "Tortilla de patatas",
+    "cena",
+    20,
+    ["vegetariano"],
+    [["egg", 200], ["potato", 200], ["olive_oil", 15]],
+    [
+      "Frie las patatas cortadas en rodajas.",
+      "Bate los huevos y mezclalos con las patatas.",
+      "Cocina la mezcla en la sarten hasta que cuaje."
+    ]
+  ),
+  recipe(
+    "dinner-sopa",
+    "Sopa de verduras",
+    "cena",
+    20,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["carrot", 80], ["potato", 100], ["onion", 50], ["olive_oil", 5]],
+    [
+      "Pica las verduras en trozos pequenos.",
+      "Hierve en agua con sal.",
+      "Sirve caliente."
+    ]
+  ),
+  recipe(
+    "dinner-pescado",
+    "Pescado al horno con patata",
+    "cena",
+    25,
+    ["sin_gluten"],
+    [["fish", 180], ["potato", 200], ["olive_oil", 10]],
+    [
+      "Coloca el pescado y las rodajas de patata en una fuente.",
+      "Rocía con aceite y hornea a 200C.",
+      "Sirve cuando el pescado este hecho."
+    ]
+  ),
+  recipe(
+    "dinner-pollo-asado",
+    "Pollo asado con verduras",
+    "cena",
+    30,
+    ["sin_gluten"],
+    [["chicken", 200], ["carrot", 100], ["potato", 150], ["olive_oil", 10]],
+    [
+      "Coloca el pollo en una fuente con las verduras.",
+      "Rocía con aceite y hornea a 200C.",
+      "Sirve cuando este dorado."
+    ]
+  ),
+  recipe(
+    "dinner-crema",
+    "Crema de verduras",
+    "cena",
+    25,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["pumpkin", 200], ["carrot", 100], ["potato", 100]],
+    [
+      "Hierve todas las verduras.",
+      "Tritura con la batidora.",
+      "Sirve caliente."
+    ]
+  ),
+  recipe(
+    "dinner-huevos-cocidos",
+    "Huevos cocidos con pan",
     "cena",
     12,
     ["vegetariano"],
-    [["egg", 130], ["broccoli", 130], ["carrot", 90], ["whole_bread", 60], ["olive_oil", 8]],
+    [["egg", 150], ["whole_bread", 60], ["butter", 5]],
     [
-      "Saltea brocoli y zanahoria cortados finos con aceite.",
-      "Anade el huevo batido y remueve hasta que quede jugoso.",
-      "Sirve con pan integral para cerrar una cena rapida."
+      "Cocina los huevos 10 minutos.",
+      "Tosta el pan con mantequilla.",
+      "Come juntos."
     ]
   ),
   recipe(
-    "dinner-sardines",
-    "Sardinas con arroz y ensalada de tomate",
-    "cena",
-    10,
-    ["sin_gluten"],
-    [["sardines", 120], ["brown_rice", 170], ["tomato", 150], ["spinach", 60], ["olive_oil", 8]],
-    [
-      "Escurre las sardinas y prepara el arroz integral cocido.",
-      "Combina tomate y espinaca como ensalada fresca.",
-      "Aliña con aceite y sirve."
-    ]
-  ),
-  recipe(
-    "dinner-cream",
-    "Crema rapida de calabaza con garbanzos",
+    "dinner-arroz-blanco",
+    "Arroz blanco con huevo",
     "cena",
     15,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["pumpkin", 250], ["carrot", 80], ["chickpeas", 160], ["olive_oil", 8]],
+    ["vegetariano"],
+    [["rice", 120], ["egg", 100], ["olive_oil", 8]],
     [
-      "Cuece calabaza y zanahoria en trozos pequenos para acelerar el tiempo.",
-      "Tritura hasta conseguir una crema fina y ajusta con un poco del agua de coccion.",
-      "Sirve con garbanzos templados por encima."
+      "Cuece el arroz.",
+      "Frie un huevo y sirvelo sobre el arroz.",
+      "Simple y rapido."
     ]
   )
 ];
