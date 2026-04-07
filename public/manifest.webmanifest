@@ -1,0 +1,10 @@
+{
+  "name": "Planificador Nutricional Saludable",
+  "short_name": "Planificador",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#0f766e",
+  "lang": "es",
+  "description": "Planificador de recetas, compras y calendario con soporte offline basico."
+}

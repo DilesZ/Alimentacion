@@ -1,4 +1,12 @@
-import { FoodItem, MealType, NutrientSet, Recipe } from "../types";
+import {
+  FoodItem,
+  MealType,
+  NutrientSet,
+  Recipe,
+  RecipeBudgetInsight,
+  RecipeStepMedia,
+  RecipeVideoConfig
+} from "../types";
 
 const zeroNutrients: NutrientSet = {
   calories: 0,
@@ -382,6 +390,108 @@ export const foods: FoodItem[] = [
 
 export const foodMap = Object.fromEntries(foods.map((food) => [food.id, food])) as Record<string, FoodItem>;
 
+const round = (value: number) => Math.round(value * 100) / 100;
+
+const encodeSvg = (svg: string) => `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+
+const shorten = (value: string, maxLength: number) =>
+  value.length <= maxLength ? value : `${value.slice(0, maxLength - 1).trimEnd()}...`;
+
+const recipeVideoIds: Partial<Record<string, string>> = {
+  "breakfast-oats": "iplL0Zw2BcU",
+  "breakfast-toast": "qxqJNRNrOvo",
+  "breakfast-smoothie": "S1dqNEi38UU",
+  "breakfast-chia": "muee5181ljs",
+  "snack-fruit-nuts": "Gm7HVLr93e4",
+  "snack-hummus": "UUXq_zjm_c4",
+  "snack-yogurt": "o3SxDMZTuKs",
+  "lunch-lentils": "qqTPr6Hsrd8",
+  "lunch-salmon": "bfQ14YiZolY",
+  "lunch-quinoa": "oCQUGFbyJ-k",
+  "lunch-chicken": "XVE2Agj0WG8",
+  "lunch-pasta": "77K7PO2QU2k",
+  "snack-toast": "StGLwtRSn9E",
+  "snack-smoothie": "0GqoDZStyS0",
+  "snack-yogurt-afternoon": "kp9k9Ty1gQw",
+  "dinner-tortilla": "GtKa_-X-eoo",
+  "dinner-tofu": "FRTqQ2zJRUU",
+  "dinner-sardines": "QXa4Twl_xWw",
+  "dinner-cream": "W3Gk_o9Tc-A"
+};
+
+const buildRecipeCardSvg = (title: string, subtitle: string, accentKey: MealType) => {
+  const palette: Record<MealType, [string, string]> = {
+    desayuno: ["#0f766e", "#2dd4bf"],
+    media_manana: ["#2563eb", "#60a5fa"],
+    comida: ["#ea580c", "#fb923c"],
+    merienda: ["#7c3aed", "#a78bfa"],
+    cena: ["#1d4ed8", "#38bdf8"]
+  };
+  const [primary, secondary] = palette[accentKey];
+
+  return encodeSvg(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${primary}" />
+          <stop offset="100%" stop-color="${secondary}" />
+        </linearGradient>
+      </defs>
+      <rect width="1280" height="720" rx="36" fill="url(#g)" />
+      <circle cx="1140" cy="140" r="88" fill="rgba(255,255,255,0.16)" />
+      <circle cx="180" cy="620" r="132" fill="rgba(255,255,255,0.12)" />
+      <rect x="84" y="96" width="1112" height="528" rx="32" fill="rgba(255,255,255,0.12)" />
+      <text x="126" y="250" font-size="60" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">${shorten(title, 32)}</text>
+      <text x="126" y="332" font-size="30" font-family="Arial, sans-serif" fill="rgba(255,255,255,0.92)">${shorten(
+        subtitle,
+        56
+      )}</text>
+      <text x="126" y="564" font-size="25" font-family="Arial, sans-serif" fill="rgba(255,255,255,0.82)">Planificador Saludable · Paso visual</text>
+    </svg>
+  `);
+};
+
+const getIngredientFractionalCost = (foodId: string, grams: number) => {
+  const food = foodMap[foodId];
+  const cheapestProduct = [...food.supermarkets].sort(
+    (left, right) => left.price / left.packSizeGrams - right.price / right.packSizeGrams
+  )[0];
+
+  return round((cheapestProduct.price / cheapestProduct.packSizeGrams) * grams);
+};
+
+const buildBudgetInsight = (ingredients: Array<[string, number]>, servings: number): RecipeBudgetInsight => {
+  const estimatedCost = round(ingredients.reduce((sum, [foodId, grams]) => sum + getIngredientFractionalCost(foodId, grams), 0));
+  const costPerServing = round(estimatedCost / servings);
+  const expensiveAlternatives = ingredients
+    .filter(([foodId, grams]) => getIngredientFractionalCost(foodId, grams) >= 1.6)
+    .flatMap(([foodId]) => foodMap[foodId].alternativeIds.map((id) => foodMap[id]?.name).filter(Boolean))
+    .slice(0, 4);
+
+  return {
+    estimatedCost,
+    costPerServing,
+    recommendedForBudget: costPerServing <= 3.5,
+    monthlyFriendly: costPerServing * 30 <= 250,
+    expensiveAlternatives
+  };
+};
+
+const buildGallery = (id: string, title: string, mealType: MealType, steps: string[]): RecipeStepMedia[] =>
+  steps.slice(0, 6).map((step, index) => ({
+    id: `${id}-step-${index + 1}`,
+    title: `Paso ${index + 1}`,
+    image: buildRecipeCardSvg(title, `Paso ${index + 1}: ${step}`, mealType),
+    alt: `Ilustracion del paso ${index + 1} para ${title}`
+  }));
+
+const buildVideoConfig = (id: string, title: string, mealType: MealType, steps: string[]): RecipeVideoConfig => ({
+  searchQuery: `${title} receta saludable facil`,
+  youtubeVideoId: recipeVideoIds[id],
+  fallbackImage: buildRecipeCardSvg(title, "Video no disponible ahora. Sigue la version paso a paso.", mealType),
+  transcript: steps.map((step, index) => `Paso ${index + 1}. ${step}`)
+});
+
 const recipe = (
   id: string,
   title: string,
@@ -391,18 +501,29 @@ const recipe = (
   ingredients: Array<[string, number]>,
   steps: string[],
   cuisine = "mediterranea"
-): Recipe => ({
-  id,
-  title,
-  mealType,
-  servings: 1,
-  difficulty: preparationMinutes <= 15 ? "facil" : "media",
-  preparationMinutes,
-  tags,
-  cuisine,
-  steps,
-  ingredients: ingredients.map(([foodId, grams]) => ({ foodId, grams }))
-});
+): Recipe => {
+  const budget = buildBudgetInsight(ingredients, 1);
+  const gallery = buildGallery(id, title, mealType, steps);
+
+  return {
+    id,
+    title,
+    mealType,
+    servings: 1,
+    difficulty: preparationMinutes <= 15 ? "facil" : "media",
+    preparationMinutes,
+    tags: [...tags, ...(budget.recommendedForBudget ? ["economica"] : [])],
+    cuisine,
+    summary: `${title} lista en ${preparationMinutes} minutos, con ${ingredients.length} ingredientes principales y enfoque economico.`,
+    steps,
+    ingredients: ingredients.map(([foodId, grams]) => ({ foodId, grams })),
+    gallery,
+    video: buildVideoConfig(id, title, mealType, steps),
+    averageRating: budget.recommendedForBudget ? 4.7 : 4.4,
+    ratingsCount: 18 + ingredients.length * 3,
+    budget
+  };
+};
 
 export const recipes: Recipe[] = [
   recipe(

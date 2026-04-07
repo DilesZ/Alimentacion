@@ -8,3 +8,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App />
   </React.StrictMode>
 );
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      // El registro offline es progresivo; la app sigue funcionando sin bloquear la carga principal.
+    });
+  });
+}

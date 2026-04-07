@@ -22,14 +22,14 @@ Regla de continuidad para futuros cambios:
 
 - Tipo de aplicacion: SPA con Vite, React 18, TypeScript y `react-router-dom`.
 - Arquitectura actual: aplicacion dividida en paginas independientes con routing cliente.
-- Rutas principales: `/`, `/recetas`, `/calendario` y `/compras`.
+- Rutas principales: `/`, `/dashboard`, `/recetas`, `/calendario` y `/compras`.
 - Estado funcional: genera planes de 30 o 31 dias con 5 comidas por dia y los distribuye en vistas especializadas.
 - Cobertura actual: calorias, macronutrientes y micronutrientes principales.
 - Fuente de datos: catalogo local en `src/data/catalog.ts`.
-- Integraciones externas: ninguna en tiempo real.
+- Integraciones externas: validacion cliente de disponibilidad de video YouTube cuando existe ID configurado.
 - Despliegue previsto: hosting estatico compatible con Vite.
-- UX actual: menu responsive con hamburguesa, breadcrumbs, transiciones suaves y layouts adaptativos por breakpoint.
-- Rendimiento actual: lazy loading de paginas e imagenes SVG generadas localmente, metadatos dinamicos por ruta y build validado.
+- UX actual: menu responsive con hamburguesa, breadcrumbs, dashboard demo, transiciones suaves, hover states y layouts adaptativos por breakpoint.
+- Rendimiento actual: lazy loading de paginas, galerias e iframes, imagenes SVG generadas localmente, metadatos dinamicos por ruta, `service worker` basico y build validado.
 - Validacion actual: build verificado correctamente con `powershell -NoProfile -Command "npm.cmd run build"`.
 
 ## Contexto previo
@@ -42,6 +42,9 @@ El proyecto nacio como una SPA monolitica concentrada en `src/App.tsx`, con una 
 - Se incorpora navegacion responsive con menu principal, hamburguesa para movil y breadcrumbs.
 - Se anade estado compartido del plan mensual para reutilizar la misma generacion en todas las vistas.
 - Se implementan metadatos por ruta, lazy loading de paginas e imagenes y una base de optimizacion para carga rapida.
+- Se anade un dashboard local de usuario con favoritos, historial y recetas descargadas.
+- Se amplian las recetas con porciones, conversion metrica/imperial, rating por estrellas, comentarios, temporizador, galeria por pasos y lista inteligente de compra.
+- Se activa soporte offline basico con `service worker` y manifiesto web.
 - Se mantiene la capa documental de continuidad con enlaces cruzados entre `README.md`, `CHANGELOG.md` y `docs/registro-continuidad.md`.
 
 ## Arranque local
@@ -75,6 +78,7 @@ npm run build
 
 - `src/App.tsx`: router principal con carga diferida de paginas.
 - `src/app/PlannerProvider.tsx`: estado compartido del plan mensual y parametros del generador.
+- `src/app/UserPreferencesProvider.tsx`: persistencia local de usuario demo, favoritos, historial, descargas, ratings, comentarios y lista inteligente.
 - `src/app/usePageMeta.ts`: metadatos por ruta y precarga de recursos criticos.
 - `src/components/MainLayout.tsx`: layout global con menu principal, hamburguesa y breadcrumbs.
 - `src/data/catalog.ts`: catalogo local de alimentos, precios, disponibilidad y recetas.
@@ -82,9 +86,10 @@ npm run build
 - `src/lib/media.ts`: ilustraciones SVG locales para paginas y recetas.
 - `src/lib/nutrition.ts`: objetivos diarios, agregacion y utilidades nutricionales.
 - `src/pages/HomePage.tsx`: dashboard principal y generacion del plan.
-- `src/pages/RecipesPage.tsx`: buscador y filtrado de recetas.
+- `src/pages/DashboardPage.tsx`: panel personalizado con favoritos, historial y descargadas.
+- `src/pages/RecipesPage.tsx`: buscador avanzado, detalle interactivo, comentarios, rating, video, galeria y temporizador.
 - `src/pages/CalendarPage.tsx`: planificacion semanal con drag and drop.
-- `src/pages/ShoppingPage.tsx`: carrito y checkout de compra mensual.
+- `src/pages/ShoppingPage.tsx`: carrito, checkout y combinacion con lista inteligente desde recetas.
 - `src/types.ts`: tipos compartidos del dominio.
 - `docs/tecnica.md`: detalle tecnico de arquitectura y algoritmo.
 - `docs/manual-usuario.md`: guia funcional para uso diario.

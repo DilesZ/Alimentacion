@@ -9,7 +9,8 @@ const colors: Record<string, [string, string]> = {
   compras: ["#0f766e", "#14b8a6"],
   recetas: ["#9333ea", "#c084fc"],
   calendario: ["#ea580c", "#fdba74"],
-  inicio: ["#0f766e", "#38bdf8"]
+    inicio: ["#0f766e", "#38bdf8"],
+    dashboard: ["#4f46e5", "#22c55e"]
 };
 
 const encodeSvg = (svg: string) => `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
@@ -36,12 +37,13 @@ const buildIllustration = (title: string, subtitle: string, accentKey: string) =
   `);
 };
 
-export const getPageIllustration = (page: "inicio" | "recetas" | "calendario" | "compras") =>
+export const getPageIllustration = (page: "inicio" | "recetas" | "calendario" | "compras" | "dashboard") =>
   ({
     inicio: buildIllustration("Planifica tu mes", "Resumen nutricional, recetas y compras en un solo flujo.", "inicio"),
     recetas: buildIllustration("Biblioteca de recetas", "Busqueda rapida, filtros y detalle nutricional.", "recetas"),
     calendario: buildIllustration("Calendario semanal", "Reorganiza tus comidas con arrastrar y soltar.", "calendario"),
-    compras: buildIllustration("Compra inteligente", "Carrito, secciones y checkout del plan mensual.", "compras")
+    compras: buildIllustration("Compra inteligente", "Carrito, secciones y checkout del plan mensual.", "compras"),
+    dashboard: buildIllustration("Tu dashboard", "Favoritos, descargas e historial personal en local.", "dashboard")
   })[page];
 
 export const getRecipeIllustration = (recipe: Recipe) =>

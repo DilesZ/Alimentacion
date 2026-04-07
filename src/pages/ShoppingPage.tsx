@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
+import { foodMap } from "../data/catalog";
 import { usePageMeta } from "../app/usePageMeta";
 import { usePlanner } from "../app/PlannerProvider";
+import { useUserPreferences } from "../app/UserPreferencesProvider";
 import { getPageIllustration } from "../lib/media";
 import { formatNumber } from "../lib/nutrition";
 import { ShoppingListItem } from "../types";
@@ -9,6 +11,12 @@ type CartState = Record<string, number>;
 
 export default function ShoppingPage() {
   const { plan } = usePlanner();
+  const {
+    clearManualShoppingList,
+    manualShoppingList,
+    profile,
+    removeManualShoppingItem
+  } = useUserPreferences();
   const [cart, setCart] = useState<CartState>({});
   const [checkoutComplete, setCheckoutComplete] = useState(false);
   const [checkoutData, setCheckoutData] = useState({
@@ -37,6 +45,29 @@ export default function ShoppingPage() {
     [plan.shoppingList]
   );
 
+  const manualItems = useMemo(() => {
+    return Object.entries(manualShoppingList).map(([foodId, gramsNeeded]) => {
+      const food = foodMap[foodId];
+      const chosenProduct = [...food.supermarkets].sort(
+        (left, right) => left.price / left.packSizeGrams - right.price / right.packSizeGrams
+      )[0];
+      const packsNeeded = Math.max(1, Math.ceil(gramsNeeded / chosenProduct.packSizeGrams));
+      const estimatedCost = Math.round(packsNeeded * chosenProduct.price * 100) / 100;
+
+      return {
+        foodId,
+        productName: food.name,
+        chain: chosenProduct.chain,
+        section: chosenProduct.section,
+        gramsNeeded,
+        packsNeeded,
+        estimatedCost,
+        availability: chosenProduct.availability,
+        alternatives: food.alternativeIds.map((id) => foodMap[id]?.name).filter(Boolean)
+      } satisfies ShoppingListItem;
+    });
+  }, [manualShoppingList]);
+
   const cartItems = useMemo(
     () =>
       flatItems
@@ -49,6 +80,11 @@ export default function ShoppingPage() {
   );
 
   const cartTotal = cartItems.reduce((sum, item) => sum + item.selectedPacks * (item.estimatedCost / item.packsNeeded), 0);
+  const manualShoppingTotal = manualItems.reduce((sum, item) => sum + item.estimatedCost, 0);
+  const combinedEstimatedTotal = plan.totalEstimatedCost + manualShoppingTotal;
+  const perPersonTotal = plan.input.people > 0 ? combinedEstimatedTotal / plan.input.people : combinedEstimatedTotal;
+  const budgetTargetPerPerson = profile.monthlyBudgetTargetPerPerson;
+  const budgetOk = perPersonTotal <= budgetTargetPerPerson;
 
   const updateCart = (item: ShoppingListItem, delta: number) => {
     setCart((current) => {
@@ -70,15 +106,15 @@ export default function ShoppingPage() {
       <section className="page-hero panel">
         <div>
           <p className="eyebrow">Gestion de compras</p>
-          <h1>Carrito, preparacion de pedido y checkout del plan mensual</h1>
+          <h1>Compra mensual y lista inteligente desde recetas</h1>
           <p className="hero-copy">
-            Convierte la lista agrupada por secciones en un carrito flexible, ajusta envases y prepara la compra final
-            sin salir de la app.
+            Combina la compra del plan con ingredientes añadidos desde recetas, controla el presupuesto por persona y
+            prepara el checkout final sin salir de la app.
           </p>
           <div className="info-inline">
             <span>{flatItems.length} referencias</span>
-            <span>{plan.shoppingList.length} grupos</span>
-            <span>{formatNumber(plan.totalEstimatedCost)} EUR estimados</span>
+            <span>{manualItems.length} extras desde recetas</span>
+            <span>{formatNumber(combinedEstimatedTotal)} EUR estimados</span>
           </div>
         </div>
         <img
@@ -91,8 +127,69 @@ export default function ShoppingPage() {
         />
       </section>
 
+      <section className="summary-grid">
+        <article className="stat-card">
+          <span>Total plan mensual</span>
+          <strong>{formatNumber(plan.totalEstimatedCost)} EUR</strong>
+          <small>{plan.shoppingList.length} grupos organizados</small>
+        </article>
+        <article className="stat-card">
+          <span>Lista inteligente</span>
+          <strong>{formatNumber(manualShoppingTotal)} EUR</strong>
+          <small>Ingredientes enviados desde recetas</small>
+        </article>
+        <article className="stat-card">
+          <span>Coste por persona</span>
+          <strong>{formatNumber(perPersonTotal)} EUR</strong>
+          <small>{budgetOk ? "Dentro del objetivo de 250 EUR" : "Requiere ajuste"}</small>
+        </article>
+        <article className="stat-card">
+          <span>Objetivo demo</span>
+          <strong>{formatNumber(budgetTargetPerPerson)} EUR</strong>
+          <small>Presupuesto maximo mensual por persona</small>
+        </article>
+      </section>
+
       <section className="shopping-two-column">
         <div className="shopping-column">
+          <section className="panel">
+            <div className="panel-header">
+              <h2>Lista inteligente desde recetas</h2>
+              {manualItems.length > 0 ? (
+                <button className="secondary-button" onClick={clearManualShoppingList}>
+                  Vaciar lista
+                </button>
+              ) : null}
+            </div>
+
+            {manualItems.length === 0 ? (
+              <p className="helper-text">
+                Añade ingredientes desde la vista de recetas para generar una compra rapida centrada en platos
+                favoritos o descargados.
+              </p>
+            ) : (
+              <div className="stack-list">
+                {manualItems.map((item) => (
+                  <article key={`manual-${item.foodId}`} className="stack-card">
+                    <div className="shopping-product-item">
+                      <div>
+                        <strong>{item.productName}</strong>
+                        <span>{formatNumber(item.gramsNeeded)} g recomendados</span>
+                        <span>
+                          {item.chain} · {item.section} · {formatNumber(item.estimatedCost)} EUR
+                        </span>
+                        <span>Alternativas: {item.alternatives.join(", ") || "Sin alternativa"}</span>
+                      </div>
+                      <button className="secondary-button" onClick={() => removeManualShoppingItem(item.foodId)}>
+                        Quitar
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+
           <section className="panel">
             <div className="panel-header">
               <h2>Catalogo de compra</h2>
@@ -134,7 +231,7 @@ export default function ShoppingPage() {
         <div className="shopping-column sticky-column">
           <section className="panel">
             <div className="panel-header">
-              <h2>Carrito</h2>
+              <h2>Carrito y presupuesto</h2>
             </div>
 
             {cartItems.length === 0 ? (
@@ -157,6 +254,15 @@ export default function ShoppingPage() {
             <div className="checkout-total">
               <span>Total carrito</span>
               <strong>{formatNumber(cartTotal)} EUR</strong>
+            </div>
+
+            <div className={budgetOk ? "checkout-success" : "budget-warning"}>
+              <strong>{budgetOk ? "Presupuesto controlado" : "Presupuesto ajustado"}</strong>
+              <p>
+                {budgetOk
+                  ? `La compra combinada queda en ${formatNumber(perPersonTotal)} EUR por persona.`
+                  : `La compra combinada sube a ${formatNumber(perPersonTotal)} EUR por persona; conviene sustituir productos o reducir extras.`}
+              </p>
             </div>
           </section>
 

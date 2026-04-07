@@ -6,6 +6,8 @@ export type MealType =
   | "cena";
 
 export type DietPreference = "vegetariano" | "vegano" | "sin_gluten";
+export type RecipeDifficulty = "facil" | "media";
+export type UnitSystem = "metric" | "imperial";
 
 export type NutrientKey =
   | "calories"
@@ -53,17 +55,58 @@ export interface RecipeIngredient {
   optional?: boolean;
 }
 
+export interface RecipeStepMedia {
+  id: string;
+  title: string;
+  image: string;
+  alt: string;
+}
+
+export interface RecipeVideoConfig {
+  searchQuery: string;
+  youtubeVideoId?: string;
+  fallbackImage: string;
+  transcript: string[];
+}
+
+export interface RecipeVideoMetadata {
+  title: string;
+  authorName: string;
+  providerName: string;
+  thumbnailUrl: string;
+}
+
+export interface RecipeVideoWatchState {
+  lastViewedAt: string;
+  playCount: number;
+  lastAction: "embed" | "youtube" | "search";
+}
+
+export interface RecipeBudgetInsight {
+  estimatedCost: number;
+  costPerServing: number;
+  recommendedForBudget: boolean;
+  monthlyFriendly: boolean;
+  expensiveAlternatives: string[];
+}
+
 export interface Recipe {
   id: string;
   title: string;
   mealType: MealType;
   servings: number;
-  difficulty: "facil" | "media";
+  difficulty: RecipeDifficulty;
   preparationMinutes: number;
   tags: string[];
   cuisine: string;
+  summary: string;
   steps: string[];
   ingredients: RecipeIngredient[];
+  gallery: RecipeStepMedia[];
+  video: RecipeVideoConfig;
+  averageRating: number;
+  ratingsCount: number;
+  budget: RecipeBudgetInsight;
 }
 
 export interface Restrictions {
@@ -105,6 +148,27 @@ export interface ShoppingListItem {
   estimatedCost: number;
   availability: "alta" | "media";
   alternatives: string[];
+}
+
+export interface RecipeComment {
+  id: string;
+  recipeId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+export interface RecipeHistoryEntry {
+  recipeId: string;
+  viewedAt: string;
+}
+
+export interface DemoUserProfile {
+  id: string;
+  name: string;
+  location: string;
+  monthlyBudgetTargetPerPerson: number;
 }
 
 export interface ShoppingSectionGroup {

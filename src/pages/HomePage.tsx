@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Bar,
   BarChart,
@@ -14,6 +15,7 @@ import {
   YAxis
 } from "recharts";
 import { budgetStatusLabel, preferenceOptions, usePlanner } from "../app/PlannerProvider";
+import { useUserPreferences } from "../app/UserPreferencesProvider";
 import { usePageMeta } from "../app/usePageMeta";
 import { foodMap, mealLabels } from "../data/catalog";
 import { summarizeChainSpend, summarizeDailyCoverage } from "../lib/generator";
@@ -22,6 +24,7 @@ import { formatNumber, nutrientLabels, nutrientUnits, percentage } from "../lib/
 
 export default function HomePage() {
   const { allergyInput, error, formState, generatePlan, plan, setAllergyInput, setFormState } = usePlanner();
+  const { downloadedCount, favoriteCount, history, profile } = useUserPreferences();
   const [selectedDay, setSelectedDay] = useState(1);
 
   usePageMeta({
@@ -35,6 +38,7 @@ export default function HomePage() {
   const currentDay = useMemo(() => plan.days.find((day) => day.day === selectedDay) ?? plan.days[0], [plan, selectedDay]);
   const coverageChart = useMemo(() => summarizeDailyCoverage(plan.days, plan.dailyTarget), [plan]);
   const chainSpend = useMemo(() => summarizeChainSpend(plan.shoppingList), [plan]);
+  const monthlyPerPerson = plan.input.people > 0 ? plan.totalEstimatedCost / plan.input.people : plan.totalEstimatedCost;
 
   const dayIngredientAvailability = Array.from(
     new Map(
@@ -229,6 +233,33 @@ export default function HomePage() {
           <strong>{plan.shoppingList.reduce((sum, group) => sum + group.items.length, 0)} referencias</strong>
           <small>Organizadas por supermercado y seccion</small>
         </article>
+      </section>
+
+      <section className="panel">
+        <div className="panel-header">
+          <h2>Dashboard rapido</h2>
+          <Link className="primary-button" to="/dashboard">
+            Abrir dashboard
+          </Link>
+        </div>
+        <div className="quick-actions-grid">
+          <article className="quick-action-card">
+            <strong>{profile.name}</strong>
+            <span>{favoriteCount} favoritas · {downloadedCount} descargadas · {history.length} vistas recientes.</span>
+          </article>
+          <article className="quick-action-card">
+            <strong>{formatNumber(monthlyPerPerson)} EUR por persona</strong>
+            <span>
+              {monthlyPerPerson <= profile.monthlyBudgetTargetPerPerson
+                ? "La compra sigue dentro del objetivo de 250 EUR por persona."
+                : "Conviene ajustar recetas o lista de compras para no superar el objetivo."}
+            </span>
+          </article>
+          <Link className="quick-action-card" to="/recetas">
+            <strong>Recetas interactivas</strong>
+            <span>Valora, comenta, descarga y anade ingredientes a compra desde una sola vista.</span>
+          </Link>
+        </div>
       </section>
 
       <section className="panel charts-panel">
