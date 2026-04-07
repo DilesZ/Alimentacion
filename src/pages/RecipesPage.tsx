@@ -3,11 +3,11 @@ import { usePageMeta } from "../app/usePageMeta";
 import { useUserPreferences } from "../app/UserPreferencesProvider";
 import { foodMap, mealLabels, recipes } from "../data/catalog";
 import { getPageIllustration, getRecipeIllustration } from "../lib/media";
-import { formatNumber } from "../lib/nutrition";
+import { formatNumber, ingredientsToNutrients } from "../lib/nutrition";
 import { RecipeVideoMetadata, UnitSystem } from "../types";
 
 const allDifficulties = ["todas", "facil", "media"] as const;
-const allMealTypes = ["todas", "desayuno", "media_manana", "comida", "merienda", "cena"] as const;
+const allMealTypes = ["todas", "desayuno", "comida", "cena"] as const;
 
 const formatDuration = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -56,7 +56,7 @@ export default function RecipesPage() {
   const [ingredientFilter, setIngredientFilter] = useState("");
   const [mealTypeFilter, setMealTypeFilter] = useState<(typeof allMealTypes)[number]>("todas");
   const [difficultyFilter, setDifficultyFilter] = useState<(typeof allDifficulties)[number]>("todas");
-  const [maxMinutes, setMaxMinutes] = useState(30);
+  const [maxMinutes, setMaxMinutes] = useState(15);
   const [dietFilter, setDietFilter] = useState("todas");
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [onlyDownloaded, setOnlyDownloaded] = useState(false);
@@ -157,6 +157,21 @@ export default function RecipesPage() {
     : undefined;
   const youtubeSearchUrl = getYoutubeSearchUrl(selectedRecipe.video.searchQuery);
   const videoWatchEntry = videoWatchHistory[selectedRecipe.id];
+  const recipeNutrition = useMemo(() => ingredientsToNutrients(selectedRecipe.ingredients), [selectedRecipe]);
+  const substitutionSuggestions = useMemo(
+    () =>
+      selectedRecipe.ingredients
+        .flatMap((ingredient) =>
+          foodMap[ingredient.foodId].alternativeIds.slice(0, 1).map((alternativeId) => {
+            const original = foodMap[ingredient.foodId].name;
+            const alternative = foodMap[alternativeId]?.name;
+            return alternative ? `${original}: puedes cambiarlo por ${alternative}.` : null;
+          })
+        )
+        .filter((value): value is string => Boolean(value))
+        .slice(0, 4),
+    [selectedRecipe]
+  );
 
   useEffect(() => {
     if (!filteredRecipes.some((recipe) => recipe.id === selectedRecipeId) && filteredRecipes[0]) {
@@ -260,8 +275,8 @@ export default function RecipesPage() {
           <p className="eyebrow">Biblioteca de recetas</p>
           <h1>Busca, personaliza y cocina recetas simples con apoyo visual</h1>
           <p className="hero-copy">
-            Filtra por ingredientes, tiempo y dificultad; ajusta porciones, cambia unidades, guarda favoritas y usa
-            temporizador con notificaciones.
+            Filtra recetas de temporada con maximo 5 ingredientes y 15 minutos; ajusta porciones, cambia unidades y usa
+            temporizador con apoyo visual.
           </p>
           <div className="info-inline">
             <span>{recipes.length} recetas cargadas</span>
@@ -304,7 +319,7 @@ export default function RecipesPage() {
             <input
               type="search"
               value={search}
-              placeholder="Avena, quinoa, rapido, economica..."
+              placeholder="Avena, tomate, rapido, economica..."
               onChange={(event) => setSearch(event.target.value)}
             />
           </label>
@@ -356,7 +371,7 @@ export default function RecipesPage() {
             <input
               type="range"
               min={5}
-              max={30}
+              max={15}
               step={5}
               value={maxMinutes}
               onChange={(event) => setMaxMinutes(Number(event.target.value))}
@@ -444,7 +459,7 @@ export default function RecipesPage() {
               </article>
               <article className="budget-pill">
                 <strong>{selectedRecipe.ingredients.length} ingredientes</strong>
-                <span>Maximo permitido: 8</span>
+                <span>Maximo permitido: 5</span>
               </article>
               <article className="budget-pill">
                 <strong>{selectedRecipe.steps.length} pasos</strong>
@@ -502,6 +517,32 @@ export default function RecipesPage() {
           </section>
 
           <section className="tool-card">
+            <h3>Nutricion base</h3>
+            <ul className="plain-list">
+              <li>
+                <span>Energia</span>
+                <strong>{formatNumber(recipeNutrition.calories)} kcal</strong>
+              </li>
+              <li>
+                <span>Proteinas</span>
+                <strong>{formatNumber(recipeNutrition.protein)} g</strong>
+              </li>
+              <li>
+                <span>Hidratos</span>
+                <strong>{formatNumber(recipeNutrition.carbs)} g</strong>
+              </li>
+              <li>
+                <span>Grasas</span>
+                <strong>{formatNumber(recipeNutrition.fat)} g</strong>
+              </li>
+              <li>
+                <span>Fibra</span>
+                <strong>{formatNumber(recipeNutrition.fiber)} g</strong>
+              </li>
+            </ul>
+          </section>
+
+          <section className="tool-card">
             <h3>Alternativas economicas</h3>
             {selectedRecipe.budget.expensiveAlternatives.length === 0 ? (
               <p className="helper-text">Esta receta ya usa ingredientes comunes y ajustados a presupuesto.</p>
@@ -512,6 +553,22 @@ export default function RecipesPage() {
                 ))}
               </ul>
             )}
+          </section>
+
+          <section className="tool-card">
+            <h3>Sustituciones utiles</h3>
+            {substitutionSuggestions.length === 0 ? (
+              <p className="helper-text">La receta ya usa ingredientes simples y muy comunes.</p>
+            ) : (
+              <ul className="plain-list">
+                {substitutionSuggestions.map((suggestion) => (
+                  <li key={`${selectedRecipe.id}-${suggestion}`}>{suggestion}</li>
+                ))}
+              </ul>
+            )}
+            <small className="helper-text">
+              Prioriza cambios como pan sin gluten, legumbres en lugar de carne o yogur natural por lacteos equivalentes.
+            </small>
           </section>
         </div>
       </section>

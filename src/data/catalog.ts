@@ -526,54 +526,54 @@ const recipe = (
 export const recipes: Recipe[] = [
   recipe(
     "breakfast-oats",
-    "Porridge de avena con yogur, platano y chia",
+    "Porridge de avena con yogur, platano y naranja",
     "desayuno",
     10,
     ["vegetariano"],
-    [["oats", 60], ["greek_yogurt", 180], ["banana", 120], ["chia", 15], ["almonds", 20]],
+    [["oats", 60], ["greek_yogurt", 180], ["banana", 120], ["orange", 100], ["almonds", 20]],
     [
       "Calienta ligeramente la avena con un poco de agua hasta que espese.",
-      "Sirve con yogur griego, rodajas de platano y semillas de chia.",
-      "Anade almendras picadas por encima para mejorar saciedad y vitamina E."
+      "Sirve con yogur griego, rodajas de platano y gajos de naranja.",
+      "Anade almendras picadas por encima para ganar saciedad y vitamina E."
     ]
   ),
   recipe(
     "breakfast-toast",
-    "Tostada integral con aguacate, tomate y huevo",
+    "Tostada integral con tomate, espinacas y huevo",
     "desayuno",
     12,
     ["vegetariano"],
-    [["whole_bread", 80], ["avocado", 70], ["tomato", 80], ["egg", 110], ["olive_oil", 5]],
+    [["whole_bread", 80], ["tomato", 80], ["spinach", 50], ["egg", 110], ["olive_oil", 5]],
     [
       "Tuesta el pan integral.",
       "Cocina el huevo a la plancha o cocido durante 6 a 8 minutos.",
-      "Monta la tostada con aguacate, tomate y un hilo de aceite."
+      "Monta la tostada con tomate, espinacas frescas y un hilo de aceite."
     ]
   ),
   recipe(
     "breakfast-smoothie",
-    "Batido verde fortificado con soja y levadura nutricional",
+    "Bol de yogur con kiwi, naranja y almendras",
     "desayuno",
     8,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["soy_milk", 300], ["spinach", 60], ["banana", 120], ["chia", 18], ["uv_mushrooms", 70], ["nutritional_yeast", 10]],
+    ["vegetariano", "sin_gluten"],
+    [["greek_yogurt", 200], ["kiwi", 120], ["orange", 100], ["banana", 100], ["almonds", 15]],
     [
-      "Introduce todos los ingredientes en la batidora.",
-      "Tritura hasta obtener una textura fina y homogena.",
-      "Sirve frio para preservar vitamina C y una parte de la vitamina D fortificada."
+      "Sirve el yogur en un bol amplio.",
+      "Anade kiwi troceado, naranja en gajos y rodajas de platano.",
+      "Termina con almendras picadas para sumar textura y grasa saludable."
     ]
   ),
   recipe(
     "breakfast-chia",
-    "Pudin de chia con kiwi y bebida de soja",
+    "Avena rapida con platano, naranja y almendras",
     "desayuno",
     10,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["soy_milk", 280], ["chia", 30], ["kiwi", 140], ["almonds", 15]],
+    ["vegetariano", "vegano"],
+    [["oats", 55], ["banana", 120], ["orange", 120], ["almonds", 15]],
     [
-      "Mezcla la bebida de soja con la chia y deja reposar al menos 20 minutos.",
-      "Sirve con kiwi troceado y almendras laminadas.",
-      "Aporta fibra, calcio y omega vegetal para empezar el dia."
+      "Humedece la avena con un poco de agua caliente para ablandarla rapidamente.",
+      "Sirve con platano en rodajas, naranja y almendras laminadas.",
+      "Queda lista en pocos minutos y funciona muy bien para repetir varias mañanas."
     ]
   ),
   recipe(
@@ -614,69 +614,69 @@ export const recipes: Recipe[] = [
   ),
   recipe(
     "lunch-lentils",
-    "Lentejas con espinacas, quinoa y zanahoria",
+    "Lentejas templadas con arroz, zanahoria y espinacas",
     "comida",
-    25,
+    15,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["lentils", 220], ["spinach", 120], ["carrot", 100], ["quinoa", 150], ["olive_oil", 10]],
+    [["lentils", 220], ["brown_rice", 160], ["spinach", 120], ["carrot", 100], ["olive_oil", 10]],
     [
-      "Saltea zanahoria y espinaca con aceite.",
-      "Anade lentejas y quinoa cocida y cocina 5 minutos.",
-      "Rectifica de especias y sirve caliente."
+      "Saltea zanahoria y espinaca con aceite en una sarten amplia.",
+      "Anade lentejas cocidas y arroz integral ya cocido.",
+      "Mezcla 4 o 5 minutos y sirve caliente."
     ]
   ),
   recipe(
     "lunch-salmon",
-    "Salmon al horno con arroz integral y brocoli",
+    "Arroz con pollo, brocoli y zanahoria",
     "comida",
-    30,
+    15,
     ["sin_gluten"],
-    [["salmon", 180], ["brown_rice", 180], ["broccoli", 200], ["olive_oil", 10], ["orange", 100]],
+    [["chicken", 180], ["brown_rice", 180], ["broccoli", 160], ["carrot", 90], ["olive_oil", 10]],
     [
-      "Hornea el salmon a 190 grados durante 14 minutos.",
-      "Cuece el brocoli al vapor y acompana con arroz integral.",
-      "Sirve con gajos de naranja para reforzar absorcion del hierro."
+      "Cocina el pollo a tiras en una sarten con aceite.",
+      "Anade brocoli y zanahoria cortada fina para que se hagan rapido.",
+      "Sirve con arroz integral cocido y mezcla un minuto antes de emplatar."
     ]
   ),
   recipe(
     "lunch-quinoa",
-    "Bowl de quinoa con garbanzos, brocoli y aguacate",
+    "Garbanzos salteados con arroz, tomate y espinacas",
     "comida",
-    20,
+    12,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["quinoa", 180], ["chickpeas", 180], ["broccoli", 160], ["avocado", 80], ["olive_oil", 8]],
+    [["chickpeas", 180], ["brown_rice", 160], ["tomato", 140], ["spinach", 90], ["olive_oil", 8]],
     [
-      "Calienta quinoa y garbanzos por separado.",
-      "Cocina el brocoli al vapor o salteado.",
-      "Monta el bowl con aguacate laminado y aceite."
+      "Saltea tomate y espinacas un par de minutos con aceite.",
+      "Anade garbanzos cocidos y arroz integral ya preparado.",
+      "Remueve hasta templar todo y sirve en bol."
     ]
   ),
   recipe(
     "lunch-chicken",
-    "Pollo a la plancha con boniato y espinacas",
+    "Pasta integral con pollo, tomate y espinacas",
     "comida",
-    25,
-    ["sin_gluten"],
-    [["chicken", 180], ["sweet_potato", 220], ["spinach", 120], ["olive_oil", 10]],
+    15,
+    [],
+    [["whole_pasta", 90], ["chicken", 160], ["tomato", 140], ["spinach", 80], ["olive_oil", 10]],
     [
-      "Asa el boniato hasta que quede tierno.",
-      "Cocina el pollo a la plancha y saltea ligeramente la espinaca.",
-      "Sirve todo junto para una comida completa y saciante."
+      "Cuece la pasta mientras se hace el resto.",
+      "Cocina el pollo a tiras con tomate y espinacas en una sarten.",
+      "Mezcla con la pasta y sirve al momento."
     ]
   ),
   recipe(
     "lunch-pasta",
-    "Pasta integral con pavo y tomate",
+    "Ensalada tibia de garbanzos con brocoli y zanahoria",
     "comida",
-    20,
-    ["sin_gluten_opcional"],
-    [["whole_pasta", 90], ["turkey", 120], ["tomato", 140], ["spinach", 80], ["olive_oil", 8]],
+    15,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["chickpeas", 190], ["broccoli", 150], ["carrot", 90], ["tomato", 120], ["olive_oil", 8]],
     [
-      "Cuece la pasta al dente.",
-      "Saltea el pavo con tomate y espinaca.",
-      "Mezcla y ajusta con aceite de oliva."
+      "Cuece o saltea brevemente el brocoli y la zanahoria para dejarlos tiernos.",
+      "Mezcla con garbanzos cocidos y tomate troceado.",
+      "Aliña con aceite y sirve templada."
     ],
-    "fusion"
+    "mediterranea"
   ),
   recipe(
     "snack-toast",
@@ -719,50 +719,51 @@ export const recipes: Recipe[] = [
     "Tortilla de espinacas con tomate",
     "cena",
     15,
-    ["vegetariano", "sin_gluten"],
-    [["egg", 120], ["spinach", 120], ["tomato", 100], ["olive_oil", 6], ["gluten_free_bread", 50]],
+    ["vegetariano"],
+    [["egg", 120], ["spinach", 120], ["tomato", 100], ["olive_oil", 6], ["whole_bread", 50]],
     [
       "Bate el huevo y cocina con la espinaca hasta cuajar.",
-      "Acompana con tomate fresco y una rebanada de pan."
+      "Acompana con tomate fresco y una rebanada de pan.",
+      "Si necesitas version sin gluten, cambia el pan por pan sin gluten."
     ]
   ),
   recipe(
     "dinner-tofu",
-    "Tofu salteado con setas UV y arroz integral",
+    "Revuelto rapido de huevo con brocoli y zanahoria",
     "cena",
-    18,
-    ["vegetariano", "vegano", "sin_gluten"],
-    [["tofu", 180], ["uv_mushrooms", 140], ["brown_rice", 160], ["broccoli", 120], ["olive_oil", 8]],
+    12,
+    ["vegetariano"],
+    [["egg", 130], ["broccoli", 130], ["carrot", 90], ["whole_bread", 60], ["olive_oil", 8]],
     [
-      "Dora el tofu en una sarten amplia.",
-      "Saltea setas y brocoli a fuego vivo.",
-      "Sirve con arroz integral para completar aminoacidos y vitamina D."
+      "Saltea brocoli y zanahoria cortados finos con aceite.",
+      "Anade el huevo batido y remueve hasta que quede jugoso.",
+      "Sirve con pan integral para cerrar una cena rapida."
     ]
   ),
   recipe(
     "dinner-sardines",
-    "Sardinas con quinoa y ensalada de tomate",
+    "Sardinas con arroz y ensalada de tomate",
     "cena",
     10,
     ["sin_gluten"],
-    [["sardines", 120], ["quinoa", 170], ["tomato", 150], ["spinach", 60], ["olive_oil", 8]],
+    [["sardines", 120], ["brown_rice", 170], ["tomato", 150], ["spinach", 60], ["olive_oil", 8]],
     [
-      "Escurre las sardinas y prepara la quinoa.",
+      "Escurre las sardinas y prepara el arroz integral cocido.",
       "Combina tomate y espinaca como ensalada fresca.",
       "Aliña con aceite y sirve."
     ]
   ),
   recipe(
     "dinner-cream",
-    "Crema de calabaza con garbanzos y levadura nutricional",
+    "Crema rapida de calabaza con garbanzos",
     "cena",
-    20,
+    15,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["pumpkin", 250], ["carrot", 80], ["chickpeas", 160], ["soy_milk", 150], ["nutritional_yeast", 10], ["olive_oil", 8]],
+    [["pumpkin", 250], ["carrot", 80], ["chickpeas", 160], ["olive_oil", 8]],
     [
-      "Cuece calabaza y zanahoria hasta que esten tiernas.",
-      "Tritura con bebida de soja hasta conseguir una crema fina.",
-      "Sirve con garbanzos templados y levadura nutricional por encima."
+      "Cuece calabaza y zanahoria en trozos pequenos para acelerar el tiempo.",
+      "Tritura hasta conseguir una crema fina y ajusta con un poco del agua de coccion.",
+      "Sirve con garbanzos templados por encima."
     ]
   )
 ];

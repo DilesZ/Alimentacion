@@ -57,10 +57,9 @@ export default function HomePage() {
       <section className="page-hero panel page-hero-home">
         <div>
           <p className="eyebrow">Panel principal</p>
-          <h1>Plan mensual, nutricion y compra en vistas especializadas</h1>
+          <h1>Plan mensual de 30 desayunos, 30 comidas y 30 cenas</h1>
           <p className="hero-copy">
-            Configura tu plan, revisa el estado nutricional general y navega después a recetas, calendario o compras
-            desde el menú principal.
+            Genera un mes completo de recetas rapidas, economicas y repetibles por semanas, con control nutricional y compra organizada.
           </p>
         </div>
         <img
@@ -107,7 +106,7 @@ export default function HomePage() {
           </label>
 
           <label>
-            Presupuesto maximo mensual
+            Presupuesto maximo mensual por persona
             <input
               type="number"
               min={80}

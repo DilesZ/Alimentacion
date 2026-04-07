@@ -159,6 +159,16 @@ export interface ShoppingSectionGroup {
   items: ShoppingListItem[];
 }
 
+export interface WeeklyShoppingPlan {
+  week: number;
+  startDay: number;
+  endDay: number;
+  shoppingList: ShoppingSectionGroup[];
+  estimatedCost: number;
+  reuseHighlights: string[];
+  wasteTips: string[];
+}
+
 export interface NutrientProgress {
   nutrient: NutrientKey;
   target: number;
@@ -174,6 +184,7 @@ export interface MonthlyPlan {
   monthlyTotals: NutrientSet;
   nutrientProgress: NutrientProgress[];
   shoppingList: ShoppingSectionGroup[];
+  weeklyShopping: WeeklyShoppingPlan[];
   totalEstimatedCost: number;
   budgetStatus: "dentro" | "ajustado" | "excedido";
 }

@@ -11,13 +11,12 @@ type DragPayload = {
   mealType: MealType;
 };
 
-const mealOrder: MealType[] = ["desayuno", "media_manana", "comida", "merienda", "cena"];
-
 export default function CalendarPage() {
   const { plan } = usePlanner();
   const [calendarDays, setCalendarDays] = useState<DayPlan[]>(plan.days);
   const [weekIndex, setWeekIndex] = useState(0);
   const [dragPayload, setDragPayload] = useState<DragPayload | null>(null);
+  const mealOrder = useMemo<MealType[]>(() => plan.days[0]?.meals.map((meal) => meal.mealType) ?? [], [plan.days]);
 
   usePageMeta({
     title: "Calendario | Planificador Nutricional Saludable",
@@ -72,14 +71,14 @@ export default function CalendarPage() {
       <section className="page-hero panel">
         <div>
           <p className="eyebrow">Calendario de comidas</p>
-          <h1>Planificacion semanal con arrastrar y soltar</h1>
+          <h1>Planificacion semanal de desayunos, comidas y cenas</h1>
           <p className="hero-copy">
-            Reorganiza comidas entre días de la misma franja horaria para equilibrar semanas sin regenerar todo el mes.
+            Reorganiza el plan mensual por semanas para equilibrar repeticiones, aprovechar compras y mantener variedad sin regenerar todo el mes.
           </p>
           <div className="info-inline">
             <span>{weekCount} semanas visibles</span>
             <span>{plan.days.length} días planificados</span>
-            <span>Drag and drop nativo</span>
+            <span>{mealOrder.length} bloques diarios</span>
           </div>
         </div>
         <img

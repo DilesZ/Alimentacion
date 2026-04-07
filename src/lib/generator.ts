@@ -3,36 +3,37 @@ import {
   DayPlan,
   FoodItem,
   GeneratorInput,
-  MealPlanEntry,
   MealType,
   MonthlyPlan,
-  NutrientKey,
   Recipe,
   RecipeIngredient,
   ShoppingListItem,
-  ShoppingSectionGroup
+  ShoppingSectionGroup,
+  WeeklyShoppingPlan
 } from "../types";
-import {
-  addNutrients,
-  buildProgress,
-  defaultDailyTarget,
-  emptyNutrients,
-  ingredientsToNutrients,
-  multiplyNutrients,
-  nutrientKeys,
-  percentage,
-  round
-} from "./nutrition";
+import { addNutrients, buildProgress, defaultDailyTarget, emptyNutrients, ingredientsToNutrients, multiplyNutrients, percentage, round } from "./nutrition";
 
-const mealOrder: MealType[] = ["desayuno", "media_manana", "comida", "merienda", "cena"];
+const mealOrder: MealType[] = ["desayuno", "comida", "cena"];
 
 const mealWeights: Record<MealType, number> = {
-  desayuno: 0.22,
-  media_manana: 0.1,
-  comida: 0.33,
-  merienda: 0.1,
-  cena: 0.25
+  desayuno: 0.25,
+  media_manana: 0,
+  comida: 0.4,
+  merienda: 0,
+  cena: 0.35
 };
+
+const disallowedFoodIds = new Set([
+  "avocado",
+  "chia",
+  "hummus",
+  "nutritional_yeast",
+  "quinoa",
+  "salmon",
+  "soy_milk",
+  "tofu",
+  "uv_mushrooms"
+]);
 
 const preferredCuisineBonus = (recipe: Recipe, preferences: string[]) => {
   if (preferences.length === 0) {
@@ -45,6 +46,12 @@ const preferredCuisineBonus = (recipe: Recipe, preferences: string[]) => {
     ? 1
     : 0;
 };
+
+const isRecipePlanCompliant = (recipe: Recipe) =>
+  recipe.preparationMinutes <= 15 &&
+  recipe.ingredients.length <= 5 &&
+  recipe.budget.costPerServing <= 2.8 &&
+  recipe.ingredients.every((ingredient) => !disallowedFoodIds.has(ingredient.foodId));
 
 const isRecipeAllowed = (recipe: Recipe, input: GeneratorInput) => {
   const recipeFoods = recipe.ingredients.map((ingredient) => foodMap[ingredient.foodId]).filter(Boolean);
@@ -72,7 +79,7 @@ const isRecipeAllowed = (recipe: Recipe, input: GeneratorInput) => {
 };
 
 const getAllowedRecipesByMeal = (input: GeneratorInput): Record<MealType, Recipe[]> => {
-  const filtered = recipes.filter((recipe) => isRecipeAllowed(recipe, input));
+  const filtered = recipes.filter((recipe) => isRecipeAllowed(recipe, input) && isRecipePlanCompliant(recipe));
   const groups = mealOrder.reduce(
     (accumulator, mealType) => {
       accumulator[mealType] = filtered
@@ -99,105 +106,23 @@ const scaleRecipeIngredients = (recipe: Recipe, factor: number, glutenFree: bool
     return { ...ingredient, grams: round(ingredient.grams * factor) };
   });
 
-const cloneMeal = (meal: MealPlanEntry): MealPlanEntry => ({
-  ...meal,
-  scaledIngredients: meal.scaledIngredients.map((ingredient) => ({ ...ingredient })),
-  nutrients: { ...meal.nutrients },
-  notes: [...meal.notes]
-});
-
 const findFood = (foodId: string): FoodItem => foodMap[foodId];
-
-const addIngredientToMeal = (meal: MealPlanEntry, foodId: string, grams: number, note: string) => {
-  const existing = meal.scaledIngredients.find((ingredient) => ingredient.foodId === foodId);
-  if (existing) {
-    existing.grams = round(existing.grams + grams);
-  } else {
-    meal.scaledIngredients.push({ foodId, grams });
-  }
-
-  meal.nutrients = ingredientsToNutrients(meal.scaledIngredients);
-  meal.notes.push(note);
+const selectRecipeForDay = (recipesForMeal: Recipe[], dayNumber: number, offset: number) => {
+  const weekIndex = Math.floor((dayNumber - 1) / 7);
+  const weeklySpan = Math.min(3, recipesForMeal.length);
+  const weeklySlot = (dayNumber - 1) % weeklySpan;
+  return recipesForMeal[(weekIndex * weeklySpan + weeklySlot + offset) % recipesForMeal.length];
 };
 
-const getMealForBooster = (meals: MealPlanEntry[], mealType: MealType) =>
-  meals.find((meal) => meal.mealType === mealType) ?? meals[0];
-
-type BoosterTemplate = {
-  nutrient: NutrientKey;
-  foodId: string;
-  grams: number;
-  mealType: MealType;
-  note: string;
-};
-
-const applyBoosters = (day: DayPlan, dailyTarget: ReturnType<typeof defaultDailyTarget>, input: GeneratorInput): DayPlan => {
-  const boostedDay: DayPlan = {
-    day: day.day,
-    meals: day.meals.map(cloneMeal),
-    totals: { ...day.totals }
-  };
-
-  const boosterTemplates: BoosterTemplate[] = input.restrictions.vegan
-    ? [
-        { nutrient: "vitaminD", foodId: "uv_mushrooms", grams: 120, mealType: "cena", note: "Refuerzo de vitamina D y minerales." },
-        { nutrient: "vitaminB12", foodId: "nutritional_yeast", grams: 10, mealType: "desayuno", note: "Refuerzo fortificado de vitamina B12." },
-        { nutrient: "calcium", foodId: "soy_milk", grams: 200, mealType: "merienda", note: "Refuerzo de calcio con bebida fortificada." },
-        { nutrient: "iron", foodId: "lentils", grams: 120, mealType: "comida", note: "Refuerzo de hierro vegetal." },
-        { nutrient: "vitaminE", foodId: "almonds", grams: 15, mealType: "media_manana", note: "Refuerzo de vitamina E." },
-        { nutrient: "vitaminK", foodId: "spinach", grams: 80, mealType: "cena", note: "Refuerzo verde de vitamina K." },
-        { nutrient: "magnesium", foodId: "chia", grams: 15, mealType: "desayuno", note: "Refuerzo de magnesio y fibra." }
-      ]
-    : [
-        { nutrient: "vitaminD", foodId: "salmon", grams: 80, mealType: "cena", note: "Refuerzo de vitamina D con pescado azul." },
-        { nutrient: "vitaminB12", foodId: "sardines", grams: 40, mealType: "cena", note: "Refuerzo de vitamina B12." },
-        { nutrient: "calcium", foodId: "greek_yogurt", grams: 120, mealType: "merienda", note: "Refuerzo extra de calcio." },
-        { nutrient: "iron", foodId: "spinach", grams: 70, mealType: "comida", note: "Refuerzo vegetal de hierro y folatos." },
-        { nutrient: "vitaminE", foodId: "almonds", grams: 15, mealType: "media_manana", note: "Refuerzo de vitamina E." },
-        { nutrient: "vitaminK", foodId: "broccoli", grams: 90, mealType: "cena", note: "Refuerzo extra de vitamina K." },
-        { nutrient: "magnesium", foodId: "chia", grams: 12, mealType: "desayuno", note: "Refuerzo de magnesio y fibra." }
-      ];
-
-  for (let cycle = 0; cycle < 3; cycle += 1) {
-    boostedDay.totals = boostedDay.meals.reduce((totals, meal) => addNutrients(totals, meal.nutrients), emptyNutrients());
-
-    let changed = false;
-
-    for (const booster of boosterTemplates) {
-      const food = findFood(booster.foodId);
-      const contribution = food.nutrientsPer100g[booster.nutrient];
-      const actual = boostedDay.totals[booster.nutrient];
-      const target = dailyTarget[booster.nutrient];
-
-      if (actual >= target || contribution <= 0) {
-        continue;
-      }
-
-      const portionContribution = (contribution * booster.grams) / 100;
-      if (portionContribution <= 0) {
-        continue;
-      }
-
-      const deficit = target - actual;
-      const multiplier = Math.min(2, Math.max(1, Math.ceil(deficit / portionContribution)));
-      const meal = getMealForBooster(boostedDay.meals, booster.mealType);
-      addIngredientToMeal(meal, booster.foodId, booster.grams * multiplier, booster.note);
-      changed = true;
-    }
-
-    if (!changed) {
-      break;
-    }
-  }
-
-  boostedDay.totals = boostedDay.meals.reduce((totals, meal) => addNutrients(totals, meal.nutrients), emptyNutrients());
-  return boostedDay;
-};
-
-const buildDayPlan = (dayNumber: number, availableRecipes: Record<MealType, Recipe[]>, input: GeneratorInput, perPersonTarget: ReturnType<typeof defaultDailyTarget>): DayPlan => {
+const buildDayPlan = (
+  dayNumber: number,
+  availableRecipes: Record<MealType, Recipe[]>,
+  input: GeneratorInput,
+  perPersonTarget: ReturnType<typeof defaultDailyTarget>
+): DayPlan => {
   const meals = mealOrder.map((mealType, index) => {
     const recipesForMeal = availableRecipes[mealType];
-    const selectedRecipe = recipesForMeal[(dayNumber + index) % recipesForMeal.length];
+    const selectedRecipe = selectRecipeForDay(recipesForMeal, dayNumber, index);
     const scaledIngredients = scaleRecipeIngredients(selectedRecipe, input.people, input.restrictions.glutenFree);
 
     return {
@@ -264,6 +189,46 @@ const toShoppingList = (days: DayPlan[]): { shoppingList: ShoppingSectionGroup[]
   return { shoppingList, totalEstimatedCost };
 };
 
+const buildWeeklyShopping = (days: DayPlan[]): WeeklyShoppingPlan[] => {
+  const weeklyPlans: WeeklyShoppingPlan[] = [];
+
+  for (let index = 0; index < days.length; index += 7) {
+    const weekDays = days.slice(index, index + 7);
+    const ingredientUsage = new Map<string, number>();
+
+    for (const day of weekDays) {
+      for (const meal of day.meals) {
+        for (const ingredient of meal.scaledIngredients) {
+          ingredientUsage.set(ingredient.foodId, round((ingredientUsage.get(ingredient.foodId) ?? 0) + ingredient.grams));
+        }
+      }
+    }
+
+    const highlights = Array.from(ingredientUsage.entries())
+      .sort((left, right) => right[1] - left[1])
+      .slice(0, 4)
+      .map(([foodId]) => findFood(foodId).name);
+
+    const { shoppingList, totalEstimatedCost } = toShoppingList(weekDays);
+
+    weeklyPlans.push({
+      week: weeklyPlans.length + 1,
+      startDay: weekDays[0].day,
+      endDay: weekDays[weekDays.length - 1].day,
+      shoppingList,
+      estimatedCost: totalEstimatedCost,
+      reuseHighlights: highlights,
+      wasteTips: [
+        `Prioriza primero ${highlights.slice(0, 2).join(" y ").toLowerCase()} para reutilizarlos en varias recetas de la semana.`,
+        "Lava y corta verduras en una sola tanda para desayunos, comidas y cenas.",
+        "Reserva sobrantes cocinados de arroz, lentejas o pollo para la siguiente receta del mismo bloque semanal."
+      ]
+    });
+  }
+
+  return weeklyPlans;
+};
+
 const calculateBudgetStatus = (totalCost: number, budget: number): MonthlyPlan["budgetStatus"] => {
   if (totalCost <= budget * 0.9) {
     return "dentro";
@@ -289,14 +254,12 @@ export const generateMonthlyPlan = (input: GeneratorInput): MonthlyPlan => {
   const dailyTarget = multiplyNutrients(perPersonTarget, input.people);
   const monthlyTarget = multiplyNutrients(dailyTarget, input.days);
 
-  const days = Array.from({ length: input.days }, (_, index) => {
-    const baseDay = buildDayPlan(index + 1, availableRecipes, input, perPersonTarget);
-    return applyBoosters(baseDay, dailyTarget, input);
-  });
+  const days = Array.from({ length: input.days }, (_, index) => buildDayPlan(index + 1, availableRecipes, input, perPersonTarget));
 
   const monthlyTotals = days.reduce((totals, day) => addNutrients(totals, day.totals), emptyNutrients());
   const nutrientProgress = buildProgress(monthlyTotals, monthlyTarget);
   const { shoppingList, totalEstimatedCost } = toShoppingList(days);
+  const weeklyShopping = buildWeeklyShopping(days);
 
   return {
     input,
@@ -306,8 +269,9 @@ export const generateMonthlyPlan = (input: GeneratorInput): MonthlyPlan => {
     monthlyTotals,
     nutrientProgress,
     shoppingList,
+    weeklyShopping,
     totalEstimatedCost,
-    budgetStatus: calculateBudgetStatus(totalEstimatedCost, input.monthlyBudget)
+    budgetStatus: calculateBudgetStatus(totalEstimatedCost, input.monthlyBudget * input.people)
   };
 };
 
@@ -333,8 +297,12 @@ export const summarizeDailyCoverage = (days: DayPlan[], dailyTarget: MonthlyPlan
     energia: percentage(day.totals.calories, dailyTarget.calories),
     proteinas: percentage(day.totals.protein, dailyTarget.protein),
     micronutrientes: round(
-      nutrientKeys
-        .filter((key) => !["calories", "protein", "carbs", "fat"].includes(key))
-        .reduce((sum, key) => sum + percentage(day.totals[key], dailyTarget[key]), 0) / 11
+      (
+        percentage(day.totals.fiber, dailyTarget.fiber) +
+        percentage(day.totals.vitaminA, dailyTarget.vitaminA) +
+        percentage(day.totals.vitaminC, dailyTarget.vitaminC) +
+        percentage(day.totals.iron, dailyTarget.iron) +
+        percentage(day.totals.calcium, dailyTarget.calcium)
+      ) / 5
     )
   }));

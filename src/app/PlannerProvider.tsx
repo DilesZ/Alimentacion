@@ -5,7 +5,7 @@ import { GeneratorInput, MonthlyPlan } from "../types";
 export const initialInput: GeneratorInput = {
   people: 2,
   days: 30,
-  monthlyBudget: 420,
+  monthlyBudget: 250,
   restrictions: {
     vegetarian: false,
     vegan: false,

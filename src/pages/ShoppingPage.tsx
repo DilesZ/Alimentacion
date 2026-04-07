@@ -101,10 +101,10 @@ export default function ShoppingPage() {
       <section className="page-hero panel">
         <div>
           <p className="eyebrow">Gestion de compras</p>
-          <h1>Compra mensual y lista inteligente desde recetas</h1>
+          <h1>Compra mensual organizada por semanas</h1>
           <p className="hero-copy">
             Combina la compra del plan con ingredientes añadidos desde recetas, controla el presupuesto por persona y
-            prepara el checkout final sin salir de la app.
+            reutiliza ingredientes clave para reducir desperdicio durante todo el mes.
           </p>
           <div className="info-inline">
             <span>{flatItems.length} referencias</span>
@@ -149,6 +149,24 @@ export default function ShoppingPage() {
         <div className="shopping-column">
           <section className="panel">
             <div className="panel-header">
+              <h2>Compra semanal detallada</h2>
+            </div>
+            <div className="stack-list">
+              {plan.weeklyShopping.map((week) => (
+                <article key={`week-${week.week}`} className="stack-card">
+                  <strong>
+                    Semana {week.week} · Dias {week.startDay}-{week.endDay}
+                  </strong>
+                  <span>{formatNumber(week.estimatedCost)} EUR estimados</span>
+                  <span>Ingredientes clave: {week.reuseHighlights.join(", ")}</span>
+                  <span>{week.wasteTips[0]}</span>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="panel">
+            <div className="panel-header">
               <h2>Lista inteligente desde recetas</h2>
               {manualItems.length > 0 ? (
                 <button className="secondary-button" onClick={clearManualShoppingList}>
@@ -191,32 +209,41 @@ export default function ShoppingPage() {
             </div>
 
             <div className="shopping-catalog">
-              {plan.shoppingList.map((group) => (
-                <article key={`${group.chain}-${group.section}`} className="shopping-group">
+              {plan.weeklyShopping.map((week) => (
+                <article key={`catalog-week-${week.week}`} className="stack-card">
                   <h3>
-                    {group.chain} · {group.section}
+                    Semana {week.week} · {formatNumber(week.estimatedCost)} EUR
                   </h3>
-                  <ul className="shopping-product-list">
-                    {group.items.map((item) => (
-                      <li key={`${group.chain}-${item.foodId}`} className="shopping-product-item">
-                        <div>
-                          <strong>{item.productName}</strong>
-                          <span>{formatNumber(item.gramsNeeded)} g · {item.packsNeeded} envases base</span>
-                          <span>{formatNumber(item.estimatedCost)} EUR estimados · disponibilidad {item.availability}</span>
-                          <span>Alternativas: {item.alternatives.join(", ") || "Sin alternativa"}</span>
-                        </div>
-                        <div className="cart-controls">
-                          <button className="secondary-button" onClick={() => updateCart(item, -1)}>
-                            -
-                          </button>
-                          <strong>{cart[item.foodId] ?? 0}</strong>
-                          <button className="secondary-button" onClick={() => updateCart(item, 1)}>
-                            +
-                          </button>
-                        </div>
-                      </li>
+                  <div className="shopping-catalog">
+                    {week.shoppingList.map((group) => (
+                      <article key={`week-${week.week}-${group.chain}-${group.section}`} className="shopping-group">
+                        <h3>
+                          {group.chain} · {group.section}
+                        </h3>
+                        <ul className="shopping-product-list">
+                          {group.items.map((item) => (
+                            <li key={`week-${week.week}-${group.chain}-${item.foodId}`} className="shopping-product-item">
+                              <div>
+                                <strong>{item.productName}</strong>
+                                <span>{formatNumber(item.gramsNeeded)} g · {item.packsNeeded} envases base</span>
+                                <span>{formatNumber(item.estimatedCost)} EUR estimados · disponibilidad {item.availability}</span>
+                                <span>Alternativas: {item.alternatives.join(", ") || "Sin alternativa"}</span>
+                              </div>
+                              <div className="cart-controls">
+                                <button className="secondary-button" onClick={() => updateCart(item, -1)}>
+                                  -
+                                </button>
+                                <strong>{cart[item.foodId] ?? 0}</strong>
+                                <button className="secondary-button" onClick={() => updateCart(item, 1)}>
+                                  +
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </article>
                     ))}
-                  </ul>
+                  </div>
                 </article>
               ))}
             </div>
