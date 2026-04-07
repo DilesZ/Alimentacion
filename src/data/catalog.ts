@@ -396,7 +396,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["lactosa"],
     nutrientsPer100g: n({ calories: 42, protein: 3.4, carbs: 5, fat: 1, calcium: 125, vitaminB12: 0.5 }),
-    supermarkets: [product("Mercadona", "Refrigerados", 1.15, 1000), product("Consum", "Leche y derivados", 1.25, 1000)],
+    supermarkets: [product("Mercadona", "Refrigerados", 0.84, 1000, "alta", "https://tienda.mercadona.es/product/10382/leche-semidesnatada-hacendado-brick"), product("Consum", "Leche y derivados", 1.25, 1000)],
     alternativeIds: ["soy_milk"]
   },
   {
@@ -416,7 +416,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten", "huevo"],
     nutrientsPer100g: n({ calories: 484, protein: 7, carbs: 64, fat: 23, fiber: 2, iron: 3 }),
-    supermarkets: [product("Mercadona", "Galletas", 1.55, 400), product("Consum", "Galletas", 1.7, 400)],
+    supermarkets: [product("Mercadona", "Galletas", 1.35, 800, "alta", "https://tienda.mercadona.es/product/14132/galletas-maria-dorada-hacendado-paquete"), product("Consum", "Galletas", 1.7, 400)],
     alternativeIds: ["cereals"]
   },
   {
