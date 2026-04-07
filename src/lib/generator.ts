@@ -48,9 +48,9 @@ const preferredCuisineBonus = (recipe: Recipe, preferences: string[]) => {
 };
 
 const isRecipePlanCompliant = (recipe: Recipe) =>
-  recipe.preparationMinutes <= 35 &&
-  recipe.ingredients.length <= 8 &&
-  recipe.budget.costPerServing <= 5 &&
+  recipe.preparationMinutes <= 25 &&
+  recipe.ingredients.length <= 6 &&
+  recipe.budget.costPerServing <= 4 &&
   recipe.ingredients.every((ingredient) => !disallowedFoodIds.has(ingredient.foodId));
 
 const isRecipeAllowed = (recipe: Recipe, input: GeneratorInput) => {
