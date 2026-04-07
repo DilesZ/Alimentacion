@@ -1,86 +1,97 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
-} from "recharts";
-import { budgetStatusLabel, preferenceOptions, usePlanner } from "../app/PlannerProvider";
+import { budgetStatusLabel, usePlanner } from "../app/PlannerProvider";
 import { usePageMeta } from "../app/usePageMeta";
 import { foodMap, mealLabels } from "../data/catalog";
-import { summarizeChainSpend, summarizeDailyCoverage } from "../lib/generator";
 import { getPageIllustration } from "../lib/media";
-import { formatNumber, nutrientLabels, nutrientUnits, percentage } from "../lib/nutrition";
+import { formatNumber, nutrientLabels, nutrientUnits } from "../lib/nutrition";
+
+const COLORS = ["#10b981", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#14b8a6", "#6366f1"];
 
 export default function HomePage() {
   const { allergyInput, error, formState, generatePlan, plan, setAllergyInput, setFormState } = usePlanner();
   const [selectedDay, setSelectedDay] = useState(1);
-  const budgetTargetPerPerson = 250;
 
   usePageMeta({
     title: "Inicio | Planificador Nutricional Saludable",
-    description:
-      "Resumen nutricional, configuracion del plan mensual y panel principal de planificacion alimentaria saludable.",
+    description: "Resumen nutricional, configuracion del plan mensual y panel principal de planificacion alimentaria saludable.",
     keywords: "planificador nutricional, menu mensual, resumen nutricional, dieta saludable, paiporta",
     preloadImage: getPageIllustration("inicio")
   });
 
   const currentDay = useMemo(() => plan.days.find((day) => day.day === selectedDay) ?? plan.days[0], [plan, selectedDay]);
-  const coverageChart = useMemo(() => summarizeDailyCoverage(plan.days, plan.dailyTarget), [plan]);
-  const chainSpend = useMemo(() => summarizeChainSpend(plan.shoppingList), [plan]);
   const monthlyPerPerson = plan.input.people > 0 ? plan.totalEstimatedCost / plan.input.people : plan.totalEstimatedCost;
-
-  const dayIngredientAvailability = Array.from(
-    new Map(
-      currentDay.meals
-        .flatMap((meal) => meal.scaledIngredients)
-        .map((ingredient) => [ingredient.foodId, ingredient])
-    ).values()
-  ).map((ingredient) => ({
-    food: foodMap[ingredient.foodId],
-    grams: ingredient.grams
-  }));
+  const avgCoverage = Math.round(plan.nutrientProgress.reduce((sum, item) => sum + Math.min(item.percentage, 100), 0) / plan.nutrientProgress.length);
 
   return (
     <div className="page-grid">
-      <section className="page-hero panel page-hero-home">
-        <div>
-          <p className="eyebrow">Panel principal</p>
-          <h1>Plan mensual de 30 desayunos, 30 comidas y 30 cenas</h1>
-          <p className="hero-copy">
-            Genera un mes completo de recetas rapidas, economicas y repetibles por semanas, con control nutricional y compra organizada.
+      {/* HERO - Título principal limpio */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1>Tu Plan de Alimentación Mensual</h1>
+          <p className="hero-subtitle">
+            {plan.input.days} días · {plan.input.people} personas · {formatNumber(monthlyPerPerson)}€ por persona
           </p>
         </div>
-        <img
-          className="hero-image"
-          src={getPageIllustration("inicio")}
-          alt="Resumen visual del planificador nutricional"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-        />
+        <button className="hero-button" onClick={generatePlan}>
+          Generar nuevo plan
+        </button>
       </section>
 
-      <section className="panel form-panel">
-        <div className="panel-header">
-          <h2>Parametros del plan</h2>
-          <button className="primary-button" onClick={generatePlan}>
-            Generar plan
-          </button>
+      {/* RESUMEN RÁPIDO - Tarjetas grandes y visuales */}
+      <section className="quick-stats">
+        <div className="stat-card-large stat-cost">
+          <div className="stat-icon">💰</div>
+          <div className="stat-info">
+            <span className="stat-value">{formatNumber(plan.totalEstimatedCost)}€</span>
+            <span className="stat-label">Coste total</span>
+          </div>
+          <span className={`stat-badge ${plan.budgetStatus}`}>{budgetStatusLabel[plan.budgetStatus]}</span>
         </div>
 
-        <div className="form-grid">
-          <label>
-            Personas
+        <div className="stat-card-large stat-nutrients">
+          <div className="stat-icon">📊</div>
+          <div className="stat-info">
+            <span className="stat-value">{avgCoverage}%</span>
+            <span className="stat-label">Cobertura nutricional</span>
+          </div>
+          <div className="nutrient-bars">
+            {plan.nutrientProgress.slice(0, 6).map((item, _idx) => (
+              <div key={item.nutrient} className="mini-bar">
+                <div 
+                  className="mini-bar-fill" 
+                  style={{ 
+                    width: `${Math.min(item.percentage, 100)}%`,
+                    backgroundColor: COLORS[plan.nutrientProgress.indexOf(item) % COLORS.length]
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="stat-card-large stat-energy">
+          <div className="stat-icon">⚡</div>
+          <div className="stat-info">
+            <span className="stat-value">{formatNumber(plan.monthlyTotals.calories / plan.input.days)}</span>
+            <span className="stat-label">kcal/día persona</span>
+          </div>
+        </div>
+
+        <div className="stat-card-large stat-shopping">
+          <div className="stat-icon">🛒</div>
+          <div className="stat-info">
+            <span className="stat-value">{plan.shoppingList.reduce((sum, group) => sum + group.items.length, 0)}</span>
+            <span className="stat-label">productos</span>
+          </div>
+        </div>
+      </section>
+
+      {/* FORMULARIO COMPACTO */}
+      <section className="panel compact-form">
+        <div className="form-row">
+          <div className="form-group">
+            <label>Personas</label>
             <input
               type="number"
               min={1}
@@ -88,83 +99,71 @@ export default function HomePage() {
               value={formState.people}
               onChange={(event) => setFormState((current) => ({ ...current, people: Number(event.target.value) || 1 }))}
             />
-          </label>
+          </div>
 
-          <label>
-            Dias del mes
+          <div className="form-group">
+            <label>Días</label>
             <select
               value={formState.days}
-              onChange={(event) =>
-                setFormState((current) => ({ ...current, days: Number(event.target.value) as 30 | 31 }))
-              }
+              onChange={(event) => setFormState((current) => ({ ...current, days: Number(event.target.value) as 30 | 31 }))}
             >
-              <option value={30}>30</option>
-              <option value={31}>31</option>
+              <option value={30}>30 días</option>
+              <option value={31}>31 días</option>
             </select>
-          </label>
+          </div>
 
-          <label>
-            Presupuesto maximo mensual por persona
+          <div className="form-group">
+            <label>Presupuesto/persona</label>
             <input
               type="number"
               min={80}
               step={10}
               value={formState.monthlyBudget}
-              onChange={(event) =>
-                setFormState((current) => ({ ...current, monthlyBudget: Number(event.target.value) || 0 }))
-              }
+              onChange={(event) => setFormState((current) => ({ ...current, monthlyBudget: Number(event.target.value) || 0 }))}
             />
-          </label>
+          </div>
 
-          <label>
-            Alergias separadas por comas
+          <div className="form-group">
+            <label>Alergias</label>
             <input
               type="text"
-              placeholder="gluten, soja, pescado"
+              placeholder="gluten, soja..."
               value={allergyInput}
               onChange={(event) => setAllergyInput(event.target.value)}
             />
-          </label>
+          </div>
         </div>
 
-        <div className="toggle-grid">
-          <label className="check-row">
+        <div className="form-row tags-row">
+          <label className="checkbox-chip">
             <input
               type="checkbox"
               checked={formState.restrictions.vegetarian}
               onChange={(event) =>
                 setFormState((current) => ({
                   ...current,
-                  restrictions: {
-                    ...current.restrictions,
-                    vegetarian: event.target.checked,
-                    vegan: event.target.checked ? current.restrictions.vegan : false
-                  }
+                  restrictions: { ...current.restrictions, vegetarian: event.target.checked, vegan: event.target.checked ? current.restrictions.vegan : false }
                 }))
               }
             />
-            Vegetariano
+            🌱 Vegetariano
           </label>
 
-          <label className="check-row">
+          <label className="checkbox-chip">
             <input
               type="checkbox"
               checked={formState.restrictions.vegan}
               onChange={(event) =>
                 setFormState((current) => ({
                   ...current,
-                  restrictions: {
-                    ...current.restrictions,
-                    vegan: event.target.checked,
-                    vegetarian: event.target.checked ? true : current.restrictions.vegetarian
-                  }
+                  restrictions: { ...current.restrictions, vegan: event.target.checked, vegetarian: event.target.checked ? true : current.restrictions.vegetarian }
                 }))
               }
             />
-            Vegano
+            🌿 Vegano
           </label>
 
-          <label className="check-row">
+          <label className="checkbox-chip">
             <input
               type="checkbox"
               checked={formState.restrictions.glutenFree}
@@ -175,304 +174,153 @@ export default function HomePage() {
                 }))
               }
             />
-            Sin gluten
+            🚫 Sin gluten
           </label>
-        </div>
-
-        <div className="preference-list">
-          {preferenceOptions.map((option) => {
-            const selected = formState.preferences.includes(option);
-            return (
-              <button
-                key={option}
-                className={selected ? "chip chip-active" : "chip"}
-                onClick={() =>
-                  setFormState((current) => ({
-                    ...current,
-                    preferences: selected
-                      ? current.preferences.filter((value) => value !== option)
-                      : [...current.preferences, option]
-                  }))
-                }
-              >
-                {option}
-              </button>
-            );
-          })}
         </div>
 
         {error ? <p className="error-text">{error}</p> : null}
       </section>
 
-      <section className="summary-grid">
-        <article className="stat-card">
-          <span>Coste estimado</span>
-          <strong>{formatNumber(plan.totalEstimatedCost)} EUR</strong>
-          <small>{budgetStatusLabel[plan.budgetStatus]}</small>
-        </article>
-        <article className="stat-card">
-          <span>Validacion mensual</span>
-          <strong>
-            {Math.round(
-              plan.nutrientProgress.reduce((sum, item) => sum + Math.min(item.percentage, 100), 0) /
-                plan.nutrientProgress.length
-            )}
-            %
-          </strong>
-          <small>Cobertura media de objetivos</small>
-        </article>
-        <article className="stat-card">
-          <span>Energia diaria media</span>
-          <strong>{formatNumber(plan.monthlyTotals.calories / plan.input.days)} kcal</strong>
-          <small>{plan.input.people} personas</small>
-        </article>
-        <article className="stat-card">
-          <span>Compra mensual</span>
-          <strong>{plan.shoppingList.reduce((sum, group) => sum + group.items.length, 0)} referencias</strong>
-          <small>Organizadas por supermercado y seccion</small>
-        </article>
-      </section>
-
-       <section className="panel">
-         <div className="panel-header">
-           <h2>Informacion rapida</h2>
-         </div>
-         <div className="quick-actions-grid">
-           <article className="quick-action-card">
-             <strong>Plan generado</strong>
-             <span>{plan.input.people} personas, {plan.input.days} días</span>
-           </article>
-           <article className="quick-action-card">
-             <strong>{formatNumber(monthlyPerPerson)} EUR por persona</strong>
-             <span>
-               {monthlyPerPerson <= budgetTargetPerPerson
-                 ? "La compra sigue dentro del objetivo de 250 EUR por persona."
-                 : "Conviene ajustar recetas o lista de compras para no superar el objetivo."}
-             </span>
-           </article>
-           <Link className="quick-action-card" to="/recetas">
-             <strong>Explorar recetas</strong>
-             <span>Busca y consulta opciones alternativas</span>
-           </Link>
-         </div>
-       </section>
-
-      <section className="panel charts-panel">
-        <div className="panel-header">
-          <h2>Informe nutricional mensual</h2>
-        </div>
-        <div className="chart-grid">
-          <div className="chart-card">
-            <h3>Cobertura por dia</h3>
-            <ResponsiveContainer width="100%" height={260}>
-              <LineChart data={coverageChart}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" hide />
-                <YAxis domain={[60, 180]} />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="energia" stroke="#0f766e" strokeWidth={2} />
-                <Line type="monotone" dataKey="proteinas" stroke="#2563eb" strokeWidth={2} />
-                <Line type="monotone" dataKey="micronutrientes" stroke="#ea580c" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-card">
-            <h3>Distribucion de gasto</h3>
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie data={chainSpend} dataKey="cost" nameKey="chain" outerRadius={90} fill="#0f766e" label />
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-card full-width">
-            <h3>Objetivos mensuales por nutriente</h3>
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={plan.nutrientProgress}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="nutrient"
-                  tickFormatter={(value) => nutrientLabels[value as keyof typeof nutrientLabels]}
-                  interval={0}
-                  angle={-25}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis />
-                <Tooltip
-                  formatter={(value: number, name: string) => {
-                    if (name === "percentage") {
-                      return [`${formatNumber(value)} %`, "Cobertura"];
-                    }
-
-                    return [`${formatNumber(value)}`, name];
-                  }}
-                />
-                <Legend />
-                <Bar dataKey="percentage" name="Cobertura %" fill="#14b8a6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Validacion de nutrientes</h2>
-        </div>
-        <div className="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Nutriente</th>
-                <th>Objetivo mensual</th>
-                <th>Planificado</th>
-                <th>Cobertura</th>
-              </tr>
-            </thead>
-            <tbody>
-              {plan.nutrientProgress.map((item) => (
-                <tr key={item.nutrient}>
-                  <td>{nutrientLabels[item.nutrient]}</td>
-                  <td>
-                    {formatNumber(item.target)} {nutrientUnits[item.nutrient]}
-                  </td>
-                  <td>
-                    {formatNumber(item.actual)} {nutrientUnits[item.nutrient]}
-                  </td>
-                  <td className={item.percentage >= 100 ? "success-text" : "warning-text"}>
-                    {formatNumber(item.percentage)} %
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Resumen del dia</h2>
-          <select value={selectedDay} onChange={(event) => setSelectedDay(Number(event.target.value))}>
-            {plan.days.map((day) => (
-              <option key={day.day} value={day.day}>
-                Dia {day.day}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="calendar-grid compact-grid">
-          {plan.days.map((day) => {
-            const selected = day.day === selectedDay;
-            const energyCoverage = percentage(day.totals.calories, plan.dailyTarget.calories);
-
-            return (
+      {/* VISTA DIARIA PRINCIPAL */}
+      <section className="day-view">
+        <div className="day-header">
+          <h2>📅 Día {selectedDay}</h2>
+          <div className="day-nav">
+            {plan.days.slice(0, 7).map((day) => (
               <button
                 key={day.day}
-                className={selected ? "calendar-day active-day" : "calendar-day"}
+                className={`day-button ${day.day === selectedDay ? "active" : ""}`}
                 onClick={() => setSelectedDay(day.day)}
               >
-                <strong>Dia {day.day}</strong>
-                <span>{energyCoverage}% energia</span>
+                {day.day}
               </button>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        <div className="day-summary">
-          <article className="day-stat">
-            <span>Energia</span>
-            <strong>{formatNumber(currentDay.totals.calories)} kcal</strong>
-          </article>
-          <article className="day-stat">
-            <span>Proteinas</span>
-            <strong>{formatNumber(currentDay.totals.protein)} g</strong>
-          </article>
-          <article className="day-stat">
-            <span>Fibra</span>
-            <strong>{formatNumber(currentDay.totals.fiber)} g</strong>
-          </article>
-          <article className="day-stat">
-            <span>Micronutrientes</span>
-            <strong>
-              {Math.round(
-                plan.nutrientProgress
-                  .filter((item) => item.nutrient !== "calories")
-                  .reduce((sum, item) => sum + Math.min(item.percentage, 100), 0) / 14
-              )}
-              %
-            </strong>
-          </article>
-        </div>
-
-        <div className="meal-grid">
-          {currentDay.meals.map((meal) => (
-            <article key={`${currentDay.day}-${meal.mealType}`} className="meal-card">
-              <div className="meal-card-header">
-                <div>
-                  <span className="meal-type">{mealLabels[meal.mealType]}</span>
+        <div className="day-content">
+          <div className="meals-timeline">
+            {currentDay.meals.map((meal) => (
+              <div key={`${currentDay.day}-${meal.mealType}`} className="timeline-meal">
+                <div className="meal-time">
+                  <span className="meal-type-badge">{mealLabels[meal.mealType]}</span>
+                  <span className="meal-time-label">{meal.recipe.preparationMinutes} min</span>
+                </div>
+                
+                <div className="meal-details">
                   <h3>{meal.recipe.title}</h3>
-                </div>
-                <span>{meal.recipe.preparationMinutes} min</span>
-              </div>
-
-              <p className="meal-meta">
-                Cocina {meal.recipe.cuisine} · Dificultad {meal.recipe.difficulty}
-              </p>
-
-              <div className="meal-columns">
-                <div>
-                  <h4>Ingredientes</h4>
-                  <ul>
-                    {meal.scaledIngredients.map((ingredient) => (
-                      <li key={`${meal.recipe.id}-${ingredient.foodId}`}>
-                        {foodMap[ingredient.foodId].name}: {formatNumber(ingredient.grams)} g
-                      </li>
+                  <div className="meal-ingredients">
+                    {meal.scaledIngredients.slice(0, 4).map((ing) => (
+                      <span key={`${meal.recipe.id}-${ing.foodId}`} className="ingredient-tag">
+                        {foodMap[ing.foodId].name}
+                      </span>
                     ))}
-                  </ul>
+                    {meal.scaledIngredients.length > 4 && (
+                      <span className="ingredient-tag more">+{meal.scaledIngredients.length - 4}</span>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h4>Preparacion</h4>
-                  <ol>
-                    {meal.recipe.steps.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ol>
+
+                <div className="meal-nutrients">
+                  <div className="nutrient-pill">
+                    <span>{formatNumber(meal.nutrients.calories)}</span>
+                    <small>kcal</small>
+                  </div>
+                  <div className="nutrient-pill">
+                    <span>{formatNumber(meal.nutrients.protein)}</span>
+                    <small>g prot</small>
+                  </div>
                 </div>
               </div>
-            </article>
+            ))}
+          </div>
+
+          <div className="day-summary-compact">
+            <div className="summary-item">
+              <span className="summary-icon">🔥</span>
+              <span className="summary-value">{formatNumber(currentDay.totals.calories)}</span>
+              <span className="summary-label">kcal</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-icon">🥩</span>
+              <span className="summary-value">{formatNumber(currentDay.totals.protein)}</span>
+              <span className="summary-label">proteína</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-icon">🥗</span>
+              <span className="summary-value">{formatNumber(currentDay.totals.fiber)}</span>
+              <span className="summary-label">fibra</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-icon">💧</span>
+              <span className="summary-value">{formatNumber(currentDay.totals.carbs)}</span>
+              <span className="summary-label">carbs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GRÁFICO SIMPLE DE NUTRIENTES */}
+      <section className="panel">
+        <div className="panel-header">
+          <h2>📈 Cobertura de nutrientes</h2>
+          <span className="panel-subtitle">Objetivos mensuales</span>
+        </div>
+        
+        <div className="simple-nutrient-grid">
+          {plan.nutrientProgress.map((item) => (
+            <div key={item.nutrient} className="nutrient-card">
+              <div className="nutrient-header">
+                <span className="nutrient-name">{nutrientLabels[item.nutrient]}</span>
+                <span className={`nutrient-value ${item.percentage >= 90 ? "good" : item.percentage >= 70 ? "ok" : "low"}`}>
+                  {Math.round(item.percentage)}%
+                </span>
+              </div>
+              <div className="nutrient-bar">
+                <div 
+                  className="nutrient-bar-fill" 
+                  style={{ 
+                    width: `${Math.min(item.percentage, 100)}%`,
+                    backgroundColor: item.percentage >= 90 ? "#10b981" : item.percentage >= 70 ? "#f59e0b" : "#ef4444"
+                  }}
+                />
+              </div>
+              <div className="nutrient-detail">
+                <span>{formatNumber(item.actual)} / {formatNumber(item.target)} {nutrientUnits[item.nutrient]}</span>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Disponibilidad del dia {currentDay.day}</h2>
-        </div>
+      {/* COMPRA Y ENLACES RÁPIDOS */}
+      <section className="quick-links">
+        <Link to="/compras" className="quick-link-card">
+          <span className="link-icon">🛒</span>
+          <div className="link-content">
+            <strong>Lista de compra</strong>
+            <span>{plan.shoppingList.length} grupos · {formatNumber(plan.totalEstimatedCost)}€</span>
+          </div>
+          <span className="link-arrow">→</span>
+        </Link>
 
-        <div className="availability-grid">
-          {dayIngredientAvailability.map(({ food, grams }) => (
-            <article key={food.id} className="availability-card">
-              <h3>{food.name}</h3>
-              <p>{formatNumber(grams)} g previstos para el dia seleccionado.</p>
-              {food.supermarkets.map((store) => (
-                <div key={`${food.id}-${store.chain}`} className="store-box">
-                  <strong>{store.chain}</strong>
-                  <span>{store.storeLabel}</span>
-                  <span>Seccion: {store.section}</span>
-                  <span>
-                    Precio: {formatNumber(store.price)} EUR por {store.packSizeGrams} g
-                  </span>
-                  <span>Disponibilidad: {store.availability}</span>
-                </div>
-              ))}
-            </article>
-          ))}
-        </div>
+        <Link to="/recetas" className="quick-link-card">
+          <span className="link-icon">📖</span>
+          <div className="link-content">
+            <strong>Ver recetas</strong>
+            <span>Explora todas las opciones</span>
+          </div>
+          <span className="link-arrow">→</span>
+        </Link>
+
+        <Link to="/calendario" className="quick-link-card">
+          <span className="link-icon">📅</span>
+          <div className="link-content">
+            <strong>Calendario semanal</strong>
+            <span>Vista por semanas</span>
+          </div>
+          <span className="link-arrow">→</span>
+        </Link>
       </section>
     </div>
   );
