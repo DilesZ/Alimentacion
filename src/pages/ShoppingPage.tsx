@@ -3,14 +3,13 @@ import { usePageMeta } from "../app/usePageMeta";
 import { usePlanner } from "../app/PlannerProvider";
 import { getPageIllustration } from "../lib/media";
 import { formatNumber } from "../lib/nutrition";
-import { ShoppingListItem } from "../types";
 
 type CartState = Record<string, number>;
 
 export default function ShoppingPage() {
   const { plan } = usePlanner();
   const [cart, setCart] = useState<CartState>({});
-  const budgetTargetPerPerson = 250;
+  const [selectedWeek, setSelectedWeek] = useState(1);
 
   usePageMeta({
     title: "Compras | Planificador Nutricional Saludable",
@@ -43,168 +42,168 @@ export default function ShoppingPage() {
 
   const cartTotal = cartItems.reduce((sum, item) => sum + item.selectedPacks * (item.estimatedCost / item.packsNeeded), 0);
   const perPersonTotal = plan.input.people > 0 ? plan.totalEstimatedCost / plan.input.people : plan.totalEstimatedCost;
-  const budgetOk = perPersonTotal <= budgetTargetPerPerson;
+  const budgetOk = perPersonTotal <= 250;
 
-  const updateCart = (item: ShoppingListItem, delta: number) => {
+  const currentWeek = plan.weeklyShopping.find(w => w.week === selectedWeek) || plan.weeklyShopping[0];
+
+  const updateCart = (item: { foodId: string; estimatedCost: number; packsNeeded: number }, delta: number) => {
     setCart((current) => {
       const nextValue = Math.max(0, (current[item.foodId] ?? 0) + delta);
       return { ...current, [item.foodId]: nextValue };
     });
   };
 
+  const totalSelected = Object.values(cart).reduce((a, b) => a + b, 0);
+
   return (
-    <div className="page-grid shopping-layout">
-      <section className="page-hero panel">
-        <div>
-          <p className="eyebrow">Lista de compra</p>
-          <h1>Compra mensual organizada</h1>
-          <p className="hero-copy">
-            Lista de la compra basada en el plan generado. Organizada por supermercados y secciones para facilitar la compra en Mercadona o Consum de Paiporta.
+    <div className="page-grid">
+      {/* HERO */}
+      <section className="hero-section shopping-hero">
+        <div className="hero-content">
+          <h1>Lista de Compras</h1>
+          <p className="hero-subtitle">
+            {flatItems.length} productos · {formatNumber(plan.totalEstimatedCost)}€ total
           </p>
-          <div className="info-inline">
-            <span>{flatItems.length} referencias</span>
-            <span>{formatNumber(plan.totalEstimatedCost)} EUR</span>
-            <span>{plan.input.people} personas</span>
+        </div>
+      </section>
+
+      {/* RESUMEN RÁPIDO */}
+      <section className="quick-stats">
+        <div className="stat-card-large stat-cost">
+          <div className="stat-icon">💰</div>
+          <div className="stat-info">
+            <span className="stat-value">{formatNumber(plan.totalEstimatedCost)}€</span>
+            <span className="stat-label">Total mes</span>
           </div>
         </div>
-        <img
-          className="hero-image"
-          src={getPageIllustration("compras")}
-          alt="Ilustracion de la compra mensual"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-        />
-      </section>
-
-      <section className="summary-grid">
-        <article className="stat-card">
-          <span>Total mensual</span>
-          <strong>{formatNumber(plan.totalEstimatedCost)} EUR</strong>
-          <small>Coste estimado del plan</small>
-        </article>
-        <article className="stat-card">
-          <span>Por persona</span>
-          <strong>{formatNumber(perPersonTotal)} EUR</strong>
-          <small>{budgetOk ? "Dentro del objetivo" : "Por encima del objetivo"}</small>
-        </article>
-        <article className="stat-card">
-          <span>Grupos</span>
-          <strong>{plan.shoppingList.length}</strong>
-          <small>Por supermercado y seccion</small>
-        </article>
-        <article className="stat-card">
-          <span>Semanas</span>
-          <strong>{plan.weeklyShopping.length}</strong>
-          <small>Division semanal</small>
-        </article>
-      </section>
-
-      <section className="shopping-two-column">
-        <div className="shopping-column">
-          <section className="panel">
-            <div className="panel-header">
-              <h2>Compra por semanas</h2>
-            </div>
-            <div className="stack-list">
-              {plan.weeklyShopping.map((week) => (
-                <article key={`week-${week.week}`} className="stack-card">
-                  <strong>
-                    Semana {week.week} · Dias {week.startDay}-{week.endDay}
-                  </strong>
-                  <span>{formatNumber(week.estimatedCost)} EUR</span>
-                  <span>Ingredientes clave: {week.reuseHighlights.join(", ")}</span>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="panel-header">
-              <h2>Catalogo completo</h2>
-            </div>
-
-            <div className="shopping-catalog">
-              {plan.weeklyShopping.map((week) => (
-                <article key={`catalog-week-${week.week}`} className="stack-card">
-                  <h3>
-                    Semana {week.week} · {formatNumber(week.estimatedCost)} EUR
-                  </h3>
-                  <div className="shopping-catalog">
-                    {week.shoppingList.map((group) => (
-                      <article key={`week-${week.week}-${group.chain}-${group.section}`} className="shopping-group">
-                        <h3>
-                          {group.chain} · {group.section}
-                        </h3>
-                        <ul className="shopping-product-list">
-                          {group.items.map((item) => (
-                            <li key={`week-${week.week}-${group.chain}-${item.foodId}`} className="shopping-product-item">
-                              <div>
-                                <strong>{item.productName}</strong>
-                                <span>{formatNumber(item.gramsNeeded)} g · {item.packsNeeded} envases</span>
-                                <span>{formatNumber(item.estimatedCost)} EUR · {item.availability}</span>
-                                <span>Alternativas: {item.alternatives.join(", ") || "Sin alternativa"}</span>
-                              </div>
-                              <div className="cart-controls">
-                                <button className="secondary-button" onClick={() => updateCart(item, -1)}>
-                                  -
-                                </button>
-                                <strong>{cart[item.foodId] ?? 0}</strong>
-                                <button className="secondary-button" onClick={() => updateCart(item, 1)}>
-                                  +
-                                </button>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </article>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
+        <div className="stat-card-large stat-perperson">
+          <div className="stat-icon">👤</div>
+          <div className="stat-info">
+            <span className="stat-value">{formatNumber(perPersonTotal)}€</span>
+            <span className="stat-label">Por persona</span>
+          </div>
+          <span className={`stat-badge ${budgetOk ? "dentro" : "ajustado"}`}>
+            {budgetOk ? "✅ Dentro" : "⚠️ Ajustado"}
+          </span>
         </div>
+        <div className="stat-card-large stat-products">
+          <div className="stat-icon">📦</div>
+          <div className="stat-info">
+            <span className="stat-value">{plan.shoppingList.length}</span>
+            <span className="stat-label">grupos</span>
+          </div>
+        </div>
+        <div className="stat-card-large stat-weeks">
+          <div className="stat-icon">📅</div>
+          <div className="stat-info">
+            <span className="stat-value">{plan.weeklyShopping.length}</span>
+            <span className="stat-label">semanas</span>
+          </div>
+        </div>
+      </section>
 
-        <div className="shopping-column sticky-column">
-          <section className="panel">
-            <div className="panel-header">
-              <h2>Resumen</h2>
-            </div>
+      {/* SELECTOR DE SEMANA */}
+      <section className="week-selector panel">
+        <div className="week-tabs">
+          {plan.weeklyShopping.map((week) => (
+            <button
+              key={week.week}
+              className={`week-tab ${selectedWeek === week.week ? "active" : ""}`}
+              onClick={() => setSelectedWeek(week.week)}
+            >
+              <span className="week-num">Semana {week.week}</span>
+              <span className="week-cost">{formatNumber(week.estimatedCost)}€</span>
+            </button>
+          ))}
+        </div>
+      </section>
 
-            {cartItems.length === 0 ? (
-              <p className="helper-text">Usa los controles +/- para seleccionar productos.</p>
-            ) : (
-              <div className="cart-summary">
-                {cartItems.map((item) => (
-                  <article key={`cart-${item.foodId}`} className="cart-line">
-                    <div>
-                      <strong>{item.productName}</strong>
-                      <span>{item.groupLabel}</span>
-                      <span>{item.selectedPacks} envases</span>
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="shopping-content">
+        {/* LISTA DE COMPRA POR SECCIONES */}
+        <section className="shopping-list panel">
+          <h2>🛒 Lista de compra - Semana {selectedWeek}</h2>
+          
+          {currentWeek.shoppingList.map((group) => (
+            <div key={`${group.chain}-${group.section}`} className="shopping-section">
+              <div className="section-header">
+                <span className="section-chain">{group.chain === "Mercadona" ? "🏪" : "🏬"} {group.chain}</span>
+                <span className="section-name">{group.section}</span>
+              </div>
+              
+              <div className="section-items">
+                {group.items.map((item) => (
+                  <div key={item.foodId} className="shopping-item">
+                    <div className="item-info">
+                      <span className="item-name">{item.productName}</span>
+                      <span className="item-details">
+                        {formatNumber(item.gramsNeeded)}g · {item.packsNeeded} {item.packsNeeded === 1 ? "envase" : "envases"} · {formatNumber(item.estimatedCost)}€
+                      </span>
                     </div>
-                    <strong>{formatNumber(item.selectedPacks * (item.estimatedCost / item.packsNeeded))} EUR</strong>
-                  </article>
+                    <div className="item-controls">
+                      <button 
+                        className="qty-btn" 
+                        onClick={() => updateCart(item, -1)}
+                        disabled={(cart[item.foodId] ?? 0) === 0}
+                      >
+                        −
+                      </button>
+                      <span className="qty-value">{cart[item.foodId] ?? 0}</span>
+                      <button 
+                        className="qty-btn" 
+                        onClick={() => updateCart(item, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
-            )}
-
-            <div className="checkout-total">
-              <span>Total seleccionado</span>
-              <strong>{formatNumber(cartTotal)} EUR</strong>
             </div>
+          ))}
+        </section>
 
-            <div className={budgetOk ? "checkout-success" : "budget-warning"}>
-              <strong>{budgetOk ? "Dentro de presupuesto" : "Presupuesto ajustado"}</strong>
-              <p>
-                {budgetOk
-                  ? `El plan queda en ${formatNumber(perPersonTotal)} EUR por persona.`
-                  : `El plan sube a ${formatNumber(perPersonTotal)} EUR por persona.`}
-              </p>
+        {/* RESUMEN LATERAL */}
+        <aside className="shopping-summary panel">
+          <h3>📋 Resumen</h3>
+          
+          <div className="summary-stats">
+            <div className="summary-stat">
+              <span className="summary-label">Productos seleccionados</span>
+              <span className="summary-value">{totalSelected}</span>
             </div>
-          </section>
-        </div>
-      </section>
+            <div className="summary-stat highlight">
+              <span className="summary-label">Total seleccionado</span>
+              <span className="summary-value">{formatNumber(cartTotal)}€</span>
+            </div>
+          </div>
+
+          {cartItems.length > 0 && (
+            <div className="cart-items-list">
+              <h4>En tu carrito:</h4>
+              {cartItems.map((item) => (
+                <div key={item.foodId} className="cart-item-line">
+                  <span>{item.productName}</span>
+                  <span className="cart-qty">x{item.selectedPacks}</span>
+                  <span className="cart-price">{formatNumber(item.selectedPacks * (item.estimatedCost / item.packsNeeded))}€</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="budget-indicator">
+            <div className="budget-bar">
+              <div 
+                className="budget-fill" 
+                style={{ width: `${Math.min((perPersonTotal / 250) * 100, 100)}%` }}
+              />
+            </div>
+            <span className="budget-text">
+              {perPersonTotal}€ / 250€ objetivo por persona
+            </span>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

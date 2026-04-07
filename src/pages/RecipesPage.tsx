@@ -4,19 +4,16 @@ import { foodMap, mealLabels, recipes } from "../data/catalog";
 import { getPageIllustration, getRecipeIllustration } from "../lib/media";
 import { formatNumber, ingredientsToNutrients } from "../lib/nutrition";
 
-const allDifficulties = ["todas", "facil", "media"] as const;
 const allMealTypes = ["todas", "desayuno", "comida", "cena"] as const;
-
-const getYoutubeWatchUrl = (videoId: string) => `https://www.youtube.com/watch?v=${videoId}`;
-const getYoutubeSearchUrl = (query: string) =>
-  `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+const mealIcons: Record<string, string> = {
+  desayuno: "🌅",
+  comida: "☀️",
+  cena: "🌙"
+};
 
 export default function RecipesPage() {
   const [search, setSearch] = useState("");
-  const [ingredientFilter, setIngredientFilter] = useState("");
   const [mealTypeFilter, setMealTypeFilter] = useState<(typeof allMealTypes)[number]>("todas");
-  const [difficultyFilter, setDifficultyFilter] = useState<(typeof allDifficulties)[number]>("todas");
-  const [maxMinutes, setMaxMinutes] = useState(15);
   const [dietFilter, setDietFilter] = useState("todas");
   const [selectedRecipeId, setSelectedRecipeId] = useState<string>(recipes[0].id);
   const [servings, setServings] = useState(1);
@@ -28,20 +25,11 @@ export default function RecipesPage() {
     preloadImage: getPageIllustration("recetas")
   });
 
-  const cuisines = useMemo(() => Array.from(new Set(recipes.map((recipe) => recipe.cuisine))).sort(), []);
-
   const filteredRecipes = useMemo(() => {
     const searchValue = search.trim().toLowerCase();
-    const ingredientValue = ingredientFilter.trim().toLowerCase();
 
     return recipes.filter((recipe) => {
-      const ingredientNames = recipe.ingredients.map((ingredient) => foodMap[ingredient.foodId].name.toLowerCase());
-
       if (mealTypeFilter !== "todas" && recipe.mealType !== mealTypeFilter) {
-        return false;
-      }
-
-      if (difficultyFilter !== "todas" && recipe.difficulty !== difficultyFilter) {
         return false;
       }
 
@@ -49,32 +37,20 @@ export default function RecipesPage() {
         return false;
       }
 
-      if (recipe.preparationMinutes > maxMinutes) {
-        return false;
-      }
-
-      if (ingredientValue && !ingredientNames.some((name) => name.includes(ingredientValue))) {
-        return false;
-      }
-
       if (!searchValue) {
         return true;
       }
 
-      const haystack = `${recipe.title} ${recipe.cuisine} ${recipe.tags.join(" ")} ${ingredientNames.join(" ")} ${recipe.steps.join(" ")}`.toLowerCase();
+      const ingredientNames = recipe.ingredients.map((ingredient) => foodMap[ingredient.foodId].name.toLowerCase());
+      const haystack = `${recipe.title} ${recipe.cuisine} ${recipe.tags.join(" ")} ${ingredientNames.join(" ")}`.toLowerCase();
       return haystack.includes(searchValue);
     });
-  }, [dietFilter, difficultyFilter, ingredientFilter, maxMinutes, mealTypeFilter, search]);
+  }, [dietFilter, mealTypeFilter, search]);
 
   const selectedRecipe = useMemo(
     () => filteredRecipes.find((recipe) => recipe.id === selectedRecipeId) ?? filteredRecipes[0] ?? recipes[0],
     [filteredRecipes, selectedRecipeId]
   );
-
-  const youtubeWatchUrl = selectedRecipe.video.youtubeVideoId
-    ? getYoutubeWatchUrl(selectedRecipe.video.youtubeVideoId)
-    : undefined;
-  const youtubeSearchUrl = getYoutubeSearchUrl(selectedRecipe.video.searchQuery);
 
   const recipeNutrition = useMemo(() => ingredientsToNutrients(selectedRecipe.ingredients), [selectedRecipe]);
 
@@ -90,172 +66,104 @@ export default function RecipesPage() {
 
   return (
     <div className="page-grid">
-      <section className="page-hero panel">
-        <div>
-          <p className="eyebrow">Biblioteca de recetas</p>
-          <h1>Recetas rapidas, economicas y saludables</h1>
-          <p className="hero-copy">
-            Explora recetas con maximo 5 ingredientes y 15 minutos de preparacion. Ajusta porciones y consulta informacion nutricional.
-          </p>
-          <div className="info-inline">
-            <span>{recipes.length} recetas</span>
-            <span>{cuisines.length} estilos</span>
-            <span>{filteredRecipes.length} visibles</span>
-          </div>
+      {/* HERO */}
+      <section className="hero-section recipes-hero">
+        <div className="hero-content">
+          <h1>Recetas</h1>
+          <p className="hero-subtitle">{recipes.length} recetas disponibles</p>
         </div>
-        <img
-          className="hero-image"
-          src={getPageIllustration("recetas")}
-          alt="Vista de recetas saludables"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-        />
       </section>
 
-      <section className="panel filter-panel">
-        <div className="panel-header">
-          <h2>Buscar y filtrar</h2>
-        </div>
-
-        <div className="filter-grid filter-grid-wide">
-          <label>
-            Buscar receta
+      {/* FILTROS COMPACTOS */}
+      <section className="panel compact-form">
+        <div className="form-row">
+          <div className="form-group search-group">
+            <label>🔍 Buscar</label>
             <input
               type="search"
               value={search}
-              placeholder="Avena, tomate, rapido..."
+              placeholder="Buscar receta o ingrediente..."
               onChange={(event) => setSearch(event.target.value)}
             />
-          </label>
+          </div>
 
-          <label>
-            Ingrediente
-            <input
-              type="search"
-              value={ingredientFilter}
-              placeholder="Tomate, garbanzos..."
-              onChange={(event) => setIngredientFilter(event.target.value)}
-            />
-          </label>
-
-          <label>
-            Franja
+          <div className="form-group">
+            <label>🍽️ Tipo</label>
             <select value={mealTypeFilter} onChange={(event) => setMealTypeFilter(event.target.value as typeof mealTypeFilter)}>
               {allMealTypes.map((option) => (
                 <option key={option} value={option}>
-                  {option === "todas" ? "Todas" : mealLabels[option]}
+                  {option === "todas" ? "Todos" : mealLabels[option]}
                 </option>
               ))}
             </select>
-          </label>
+          </div>
 
-          <label>
-            Dificultad
-            <select value={difficultyFilter} onChange={(event) => setDifficultyFilter(event.target.value as typeof difficultyFilter)}>
-              {allDifficulties.map((option) => (
-                <option key={option} value={option}>
-                  {option === "todas" ? "Todas" : option}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            Dieta
+          <div className="form-group">
+            <label>🥗 Dieta</label>
             <select value={dietFilter} onChange={(event) => setDietFilter(event.target.value)}>
               <option value="todas">Todas</option>
               <option value="vegetariano">Vegetariano</option>
               <option value="vegano">Vegano</option>
               <option value="sin_gluten">Sin gluten</option>
             </select>
-          </label>
-
-          <label>
-            Tiempo maximo
-            <input
-              type="range"
-              min={5}
-              max={15}
-              step={5}
-              value={maxMinutes}
-              onChange={(event) => setMaxMinutes(Number(event.target.value))}
-            />
-            <small>{maxMinutes} minutos</small>
-          </label>
+          </div>
         </div>
       </section>
 
-      <section className="panel recipe-detail-panel">
-        <div className="recipe-detail-top">
+      {/* RECETA SELECCIONADA - GRANDE Y VISUAL */}
+      <section className="selected-recipe">
+        <div className="recipe-hero-card">
           <img
-            className="recipe-detail-image"
+            className="recipe-main-image"
             src={getRecipeIllustration(selectedRecipe)}
-            alt={`Vista principal de ${selectedRecipe.title}`}
-            loading="eager"
-            decoding="async"
+            alt={selectedRecipe.title}
           />
-
-          <div className="recipe-detail-content">
-            <div className="recipe-card-header">
-              <div>
-                <span className="meal-type">{mealLabels[selectedRecipe.mealType]}</span>
-                <h2>{selectedRecipe.title}</h2>
-              </div>
-              <span className="recipe-time">{selectedRecipe.preparationMinutes} min</span>
+          
+          <div className="recipe-hero-content">
+            <div className="recipe-badges">
+              <span className="meal-badge">{mealIcons[selectedRecipe.mealType]} {mealLabels[selectedRecipe.mealType]}</span>
+              <span className="time-badge">⏱️ {selectedRecipe.preparationMinutes} min</span>
+              <span className="cost-badge">💰 {formatNumber(selectedRecipe.budget.costPerServing)}€</span>
             </div>
-
-            <p className="hero-copy">{selectedRecipe.summary}</p>
-
-            <div className="tag-list">
+            
+            <h2>{selectedRecipe.title}</h2>
+            
+            <div className="recipe-tags">
               {selectedRecipe.tags.map((tag) => (
-                <span key={`${selectedRecipe.id}-${tag}`} className="chip chip-static">
-                  {tag}
-                </span>
+                <span key={tag} className="tag-pill">{tag}</span>
               ))}
             </div>
 
-            <div className="recipe-overview-grid">
-              <article className="recipe-overview-card">
-                <span>Dificultad</span>
-                <strong>{selectedRecipe.difficulty}</strong>
-              </article>
-              <article className="recipe-overview-card">
-                <span>Cocina</span>
-                <strong>{selectedRecipe.cuisine}</strong>
-              </article>
-              <article className="recipe-overview-card">
-                <span>Raciones</span>
-                <strong>{selectedRecipe.servings}</strong>
-              </article>
-              <article className="recipe-overview-card">
-                <span>Precio</span>
-                <strong>{selectedRecipe.budget.costPerServing} EUR</strong>
-              </article>
-            </div>
-
-            <div className="recipe-budget-grid">
-              <article className="budget-pill">
-                <strong>{formatNumber(selectedRecipe.budget.costPerServing)} EUR</strong>
-                <span>por racion</span>
-              </article>
-              <article className="budget-pill">
-                <strong>{selectedRecipe.ingredients.length}</strong>
-                <span>ingredientes</span>
-              </article>
-              <article className="budget-pill">
-                <strong>{selectedRecipe.steps.length}</strong>
-                <span>pasos</span>
-              </article>
+            <div className="recipe-stats-grid">
+              <div className="stat-item">
+                <span className="stat-icon">🔥</span>
+                <span className="stat-val">{formatNumber(recipeNutrition.calories)}</span>
+                <span className="stat-lbl">kcal</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-icon">🥩</span>
+                <span className="stat-val">{formatNumber(recipeNutrition.protein)}</span>
+                <span className="stat-lbl">proteína</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-icon">🥗</span>
+                <span className="stat-val">{formatNumber(recipeNutrition.fiber)}</span>
+                <span className="stat-lbl">fibra</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-icon">🍞</span>
+                <span className="stat-val">{formatNumber(recipeNutrition.carbs)}</span>
+                <span className="stat-lbl">carbs</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="recipe-tools-grid">
-          <section className="tool-card">
-            <h3>Ingredientes</h3>
-            <label>
-              Raciones
+        <div className="recipe-details-grid">
+          <div className="detail-card ingredients-card">
+            <h3>🥕 Ingredientes</h3>
+            <div className="servings-control">
+              <label>Porciones:</label>
               <input
                 type="number"
                 min={1}
@@ -263,142 +171,60 @@ export default function RecipesPage() {
                 value={servings}
                 onChange={(event) => setServings(Math.max(1, Number(event.target.value) || 1))}
               />
-            </label>
-
-            <ul className="ingredient-list">
+            </div>
+            <ul className="ingredients-list">
               {selectedRecipe.ingredients.map((ingredient) => (
                 <li key={`${selectedRecipe.id}-${ingredient.foodId}`}>
-                  <span>{foodMap[ingredient.foodId].name}</span>
-                  <strong>{Math.round(ingredient.grams * servings)} g</strong>
+                  <span className="ing-name">{foodMap[ingredient.foodId].name}</span>
+                  <span className="ing-amount">{Math.round(ingredient.grams * servings)} g</span>
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
 
-          <section className="tool-card">
-            <h3>Nutricion</h3>
-            <ul className="plain-list">
-              <li>
-                <span>Energia</span>
-                <strong>{formatNumber(recipeNutrition.calories * servings / selectedRecipe.servings)} kcal</strong>
-              </li>
-              <li>
-                <span>Proteinas</span>
-                <strong>{formatNumber(recipeNutrition.protein * servings / selectedRecipe.servings)} g</strong>
-              </li>
-              <li>
-                <span>Hidratos</span>
-                <strong>{formatNumber(recipeNutrition.carbs * servings / selectedRecipe.servings)} g</strong>
-              </li>
-              <li>
-                <span>Grasas</span>
-                <strong>{formatNumber(recipeNutrition.fat * servings / selectedRecipe.servings)} g</strong>
-              </li>
-              <li>
-                <span>Fibra</span>
-                <strong>{formatNumber(recipeNutrition.fiber * servings / selectedRecipe.servings)} g</strong>
-              </li>
-            </ul>
-          </section>
-
-          <section className="tool-card">
-            <h3>Preparacion</h3>
+          <div className="detail-card steps-card">
+            <h3>👩‍🍳 Preparacion</h3>
             <ol className="steps-list">
               {selectedRecipe.steps.map((step, index) => (
-                <li key={index}>{step}</li>
+                <li key={index}>
+                  <span className="step-num">{index + 1}</span>
+                  <span className="step-text">{step}</span>
+                </li>
               ))}
             </ol>
-          </section>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Galeria</h2>
-        </div>
-        <div className="step-gallery-grid">
-          {selectedRecipe.gallery.map((item, index) => (
-            <article key={item.id} className="step-card">
-              <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
-              <div className="recipe-card-body">
-                <strong>{item.title}</strong>
-                <p className="meal-meta">{selectedRecipe.steps[index]}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Video</h2>
-        </div>
-        {selectedRecipe.video.youtubeVideoId ? (
-          <div className="action-row">
-            <a
-              className="primary-button button-link"
-              href={youtubeWatchUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ver en YouTube
-            </a>
-            <a
-              className="secondary-button button-link"
-              href={youtubeSearchUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Buscar video
-            </a>
           </div>
-        ) : (
-          <p className="helper-text">Buscar: {selectedRecipe.video.searchQuery}</p>
-        )}
+        </div>
       </section>
 
-      <section className="recipes-grid">
-        {filteredRecipes.map((recipe) => {
-          const active = recipe.id === selectedRecipe.id;
+      {/* GALERIA DE RECETAS */}
+      <section className="recipes-gallery">
+        <h2>Todas las recetas ({filteredRecipes.length})</h2>
+        <div className="gallery-grid">
+          {filteredRecipes.map((recipe) => {
+            const active = recipe.id === selectedRecipe.id;
+            const nutrition = ingredientsToNutrients(recipe.ingredients);
 
-          return (
-            <article key={recipe.id} className={active ? "recipe-card recipe-card-active" : "recipe-card"}>
-              <img
-                className="recipe-image"
-                src={getRecipeIllustration(recipe)}
-                alt={`Ilustracion de ${recipe.title}`}
-                loading="lazy"
-                decoding="async"
-              />
-
-              <div className="recipe-card-body">
-                <div className="recipe-card-header">
-                  <div>
-                    <span className="meal-type">{mealLabels[recipe.mealType]}</span>
-                    <h2>{recipe.title}</h2>
+            return (
+              <button
+                key={recipe.id}
+                className={`gallery-card ${active ? "active" : ""}`}
+                onClick={() => setSelectedRecipeId(recipe.id)}
+              >
+                <img src={getRecipeIllustration(recipe)} alt={recipe.title} />
+                <div className="gallery-card-content">
+                  <span className="gallery-meal-type">
+                    {mealIcons[recipe.mealType]} {mealLabels[recipe.mealType]}
+                  </span>
+                  <h3>{recipe.title}</h3>
+                  <div className="gallery-meta">
+                    <span>⏱️ {recipe.preparationMinutes} min</span>
+                    <span>🔥 {formatNumber(nutrition.calories)} kcal</span>
                   </div>
-                  <span className="recipe-time">{recipe.preparationMinutes} min</span>
                 </div>
-
-                <p className="meal-meta">
-                  {recipe.cuisine} · {recipe.difficulty} · {formatNumber(recipe.budget.costPerServing)} EUR
-                </p>
-
-                <div className="tag-list">
-                  {recipe.tags.map((tag) => (
-                    <span key={`${recipe.id}-${tag}`} className="chip chip-static">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <button className="primary-button" onClick={() => setSelectedRecipeId(recipe.id)}>
-                  Ver detalle
-                </button>
-              </div>
-            </article>
-          );
-        })}
+              </button>
+            );
+          })}
+        </div>
       </section>
     </div>
   );
