@@ -205,7 +205,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 116, protein: 9, carbs: 20, fat: 0.4, fiber: 7.9, iron: 3.3, zinc: 1.3, magnesium: 36 }),
-    supermarkets: [product("Mercadona", "Legumbres cocidas", 0.95, 400), product("Consum", "Conservas vegetales", 1.05, 400)],
+    supermarkets: [product("Mercadona", "Legumbres cocidas", 0.9, 570, "alta", "https://tienda.mercadona.es/product/26030/lenteja-cocida-hacendado-tarro"), product("Consum", "Conservas vegetales", 1.05, 400)],
     alternativeIds: ["chickpeas", "tofu"]
   },
   {
@@ -215,7 +215,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 164, protein: 8.9, carbs: 27.4, fat: 2.6, fiber: 7.6, iron: 2.9, zinc: 1.5, magnesium: 48, calcium: 49 }),
-    supermarkets: [product("Mercadona", "Legumbres cocidas", 0.99, 400), product("Consum", "Conservas vegetales", 1.09, 400)],
+    supermarkets: [product("Mercadona", "Legumbres cocidas", 0.85, 570, "alta", "https://tienda.mercadona.es/product/26029/garbanzo-cocido-hacendado-tarro"), product("Consum", "Conservas vegetales", 1.09, 400)],
     alternativeIds: ["lentils", "tofu"]
   },
   {
@@ -225,7 +225,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 120, protein: 4.4, carbs: 21.3, fat: 1.9, fiber: 2.8, iron: 1.5, zinc: 1.1, magnesium: 64 }),
-    supermarkets: [product("Mercadona", "Arroces y quinoa", 2.65, 250), product("Consum", "Dieteticos", 2.85, 250)],
+    supermarkets: [product("Mercadona", "Arroces y quinoa", 1.4, 250, "alta", "https://tienda.mercadona.es/product/22278/quinoa-cocida-blanca-roja-sabroz-brillante-pack-2"), product("Consum", "Dieteticos", 2.85, 250)],
     alternativeIds: ["brown_rice"]
   },
   {
@@ -235,7 +235,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 123, protein: 2.7, carbs: 25.6, fat: 1, fiber: 1.8, iron: 0.6, magnesium: 44, zinc: 0.8 }),
-    supermarkets: [product("Mercadona", "Arroces", 1.55, 500), product("Consum", "Arroces", 1.7, 500)],
+    supermarkets: [product("Mercadona", "Arroces", 1.65, 1000, "alta", "https://tienda.mercadona.es/product/5184/arroz-integral-largo-hacendado-paquete"), product("Consum", "Arroces", 1.7, 500)],
     alternativeIds: ["quinoa", "oats"]
   },
   {
