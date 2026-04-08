@@ -115,7 +115,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "sin_gluten"],
     allergens: ["huevo"],
     nutrientsPer100g: n({ calories: 143, protein: 12.6, carbs: 0.7, fat: 9.5, vitaminA: 140, vitaminB12: 1.1, vitaminD: 2.2, vitaminE: 1.1, iron: 1.8, zinc: 1.1 }),
-    supermarkets: [product("Mercadona", "Huevos", 5.6, 24, "alta", "https://tienda.mercadona.es/product/30167/huevos-tamanos-diferentes-paquete"), product("Consum", "Huevos", 2.65, 700)],
+    supermarkets: [product("Mercadona", "Huevos", 3.55, 12, "alta", "https://tienda.mercadona.es/product/30167/huevos-tamanos-diferentes-paquete")],
     alternativeIds: ["tofu"]
   },
   {
@@ -379,13 +379,13 @@ export const foods: FoodItem[] = [
     alternativeIds: ["gluten_free_pasta"]
   },
   {
-    id: "gluten_free_pasta",
-    name: "Pasta sin gluten",
-    category: "pastas",
+    id: "gluten_free_bread",
+    name: "Pan sin gluten",
+    category: "pan",
     tags: ["vegetariano", "sin_gluten"],
     allergens: [],
-    nutrientsPer100g: n({ calories: 356, protein: 6.5, carbs: 78, fat: 1.5, fiber: 2.5, iron: 1.2, magnesium: 20 }),
-    supermarkets: [product("Mercadona", "Especialidades sin gluten", 2.25, 400), product("Consum", "Especialidades sin gluten", 2.45, 400)],
+    nutrientsPer100g: n({ calories: 265, protein: 8, carbs: 52, fat: 3, fiber: 3 }),
+    supermarkets: [product("Mercadona", "Especialidades sin gluten", 2.85, 300, "alta", "https://tienda.mercadona.es/product/82735/hogaza-sin-gluten-cortada-paquete"), product("Consum", "Especialidades sin gluten", 2.45, 400)],
     alternativeIds: ["whole_pasta", "brown_rice"]
   },
   // NUEVOS ALIMENTOS PARA RECETAS SIMPLES
@@ -495,9 +495,9 @@ export const foods: FoodItem[] = [
     category: "verduras",
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
-    nutrientsPer100g: n({ calories: 77, protein: 2, carbs: 17, fat: 0.1, fiber: 2.2, vitaminC: 19.7 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.35, 1500), product("Consum", "Patatas", 1.45, 1500)],
-    alternativeIds: ["carrot"]
+    nutrientsPer100g: n({ calories: 77, protein: 2, carbs: 17, fat: 0.1, fiber: 2, potassium: 421 }),
+    supermarkets: [product("Mercadona", "Patatas", 1.35, 1500, "alta", "https://tienda.mercadona.es/product/69555/patatas-bag-malla")],
+    alternativeIds: ["sweet_potato"]
   },
   {
     id: "ham",
