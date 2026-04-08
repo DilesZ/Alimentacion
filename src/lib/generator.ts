@@ -263,28 +263,25 @@ const applyBoosters = (
   monthlyTarget: ReturnType<typeof defaultDailyTarget>
 ): { boostedDays: DayPlan[]; boostedTotals: ReturnType<typeof emptyNutrients> } => {
   let currentTotals = { ...monthlyTotals };
-  let currentDays = days.map(day => ({ ...day, meals: day.meals.map(meal => ({ ...meal })) }));
+  let currentDays = days.map(day => ({ ...day, meals: day.meals.map(meal => ({ ...meal, scaledIngredients: [...meal.scaledIngredients] })) }));
   
   const nutrientKeys = Object.keys(monthlyTarget) as (keyof typeof monthlyTarget)[];
   
-  for (let iteration = 0; iteration < 3; iteration++) {
-    for (const nutrientKey of nutrientKeys) {
-      const target = monthlyTarget[nutrientKey];
-      const current = currentTotals[nutrientKey] ?? 0;
-      const coverage = (current / target) * 100;
+  for (const nutrientKey of nutrientKeys) {
+    const target = monthlyTarget[nutrientKey];
+    const current = currentTotals[nutrientKey] ?? 0;
+    const coverage = (current / target) * 100;
+    
+    if (coverage < 90 && nutrientBoosters[nutrientKey]) {
+      const booster = nutrientBoosters[nutrientKey];
+      const nutrients = ingredientsToNutrients([{ foodId: booster.foodId, grams: booster.grams }]);
       
-      if (coverage < 90 && nutrientBoosters[nutrientKey]) {
-        const booster = nutrientBoosters[nutrientKey];
-        const nutrients = ingredientsToNutrients([{ foodId: booster.foodId, grams: booster.grams }]);
-        
-        currentTotals = addNutrients(currentTotals, multiplyNutrients(nutrients, 1));
-        
-        for (let dayIndex = 0; dayIndex < currentDays.length; dayIndex++) {
-          const breakfast = currentDays[dayIndex].meals.find(m => m.mealType === "desayuno");
-          if (breakfast) {
-            breakfast.scaledIngredients.push({ foodId: booster.foodId, grams: booster.grams });
-            breakfast.nutrients = addNutrients(breakfast.nutrients, multiplyNutrients(nutrients, 1));
-          }
+      for (let dayIndex = 0; dayIndex < currentDays.length; dayIndex++) {
+        const breakfast = currentDays[dayIndex].meals.find(m => m.mealType === "desayuno");
+        if (breakfast) {
+          breakfast.scaledIngredients.push({ foodId: booster.foodId, grams: booster.grams });
+          breakfast.nutrients = addNutrients(breakfast.nutrients, nutrients);
+          currentTotals = addNutrients(currentTotals, nutrients);
         }
       }
     }
