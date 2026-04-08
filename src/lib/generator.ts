@@ -281,7 +281,6 @@ const applyBoosters = (
         if (breakfast) {
           breakfast.scaledIngredients.push({ foodId: booster.foodId, grams: booster.grams });
           breakfast.nutrients = addNutrients(breakfast.nutrients, nutrients);
-          currentTotals = addNutrients(currentTotals, nutrients);
         }
       }
     }
@@ -317,8 +316,8 @@ export const generateMonthlyPlan = (input: GeneratorInput): MonthlyPlan => {
   const { boostedDays, boostedTotals } = applyBoosters(days, monthlyTotals, monthlyTarget);
   
   const nutrientProgress = buildProgress(boostedTotals, monthlyTarget);
-  const { shoppingList, totalEstimatedCost } = toShoppingList(boostedDays);
-  const weeklyShopping = buildWeeklyShopping(boostedDays);
+  const { shoppingList, totalEstimatedCost } = toShoppingList(days);
+  const weeklyShopping = buildWeeklyShopping(days);
 
   return {
     input,
