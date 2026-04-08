@@ -109,7 +109,7 @@ const scaleRecipeIngredients = (recipe: Recipe, factor: number, glutenFree: bool
 const findFood = (foodId: string): FoodItem => foodMap[foodId];
 const selectRecipeForDay = (recipesForMeal: Recipe[], dayNumber: number, offset: number) => {
   const weekIndex = Math.floor((dayNumber - 1) / 7);
-  const weeklySpan = Math.min(3, recipesForMeal.length);
+  const weeklySpan = Math.min(5, recipesForMeal.length);
   const weeklySlot = (dayNumber - 1) % weeklySpan;
   return recipesForMeal[(weekIndex * weeklySpan + weeklySlot + offset) % recipesForMeal.length];
 };

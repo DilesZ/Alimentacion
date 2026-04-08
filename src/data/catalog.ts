@@ -1021,6 +1021,97 @@ export const recipes: Recipe[] = [
       "Hornea a 200C durante 15 minutos."
     ]
   ),
+  recipe(
+    "lunch-arroz-frito",
+    "Arroz frito con huevo y verduras",
+    "comida",
+    20,
+    ["vegetariano", "sin_gluten"],
+    [["rice", 250], ["egg", 150], ["carrot", 100], ["onion", 80], ["olive_oil", 20]],
+    [
+      "Cocina el arroz y déjalo enfriar.",
+      "Saltea las verduras con el arroz.",
+      "Añade el huevo frito y mezcla todo."
+    ]
+  ),
+  recipe(
+    "lunch-wrap",
+    "Wrap de pollo y queso",
+    "comida",
+    10,
+    [],
+    [["whole_bread", 150], ["chicken", 200], ["cheese", 80], ["lettuce", 80], ["tomato", 60]],
+    [
+      "Tuesta la tortilla o pan.",
+      "Añade el pollo, queso, lechuga y tomate.",
+      "Enrolla y sirve."
+    ]
+  ),
+  recipe(
+    "lunch-menestra",
+    "Menestra de verduras con arroz",
+    "comida",
+    25,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["rice", 200], ["broccoli", 150], ["carrot", 100], ["potato", 150], ["onion", 80], ["olive_oil", 15]],
+    [
+      "Cocina las verduras en trozos.",
+      "Añade la patata y cocina hasta que esté tierna.",
+      "Sirve con arroz."
+    ]
+  ),
+  recipe(
+    "lunch-guiso-lentejas",
+    "Guiso de lentejas con patatas",
+    "comida",
+    35,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["lentils", 300], ["potato", 200], ["onion", 100], ["carrot", 80], ["tomato", 100], ["olive_oil", 15]],
+    [
+      "Sofríe la cebolla y añade las lentejas.",
+      "Añade agua y cocina 25 minutos.",
+      "Añade las patatas y cocina hasta que estén tiernas."
+    ]
+  ),
+  recipe(
+    "lunch-quinoa-ensalada",
+    "Ensalada de quinoa con pollo",
+    "comida",
+    20,
+    ["sin_gluten"],
+    [["quinoa", 200], ["chicken", 250], ["lettuce", 120], ["tomato", 100], ["cheese", 60], ["olive_oil", 15]],
+    [
+      "Cocina la quinoa y déjala enfriar.",
+      "Añade el pollo en trozos, lechuga y tomate.",
+      "Añade queso y aliña con aceite."
+    ]
+  ),
+  recipe(
+    "lunch-sopa-fideos",
+    "Sopa de fideos con pollo y huevo",
+    "comida",
+    25,
+    [],
+    [["pasta", 120], ["chicken", 200], ["egg", 100], ["onion", 80], ["carrot", 80], ["olive_oil", 10]],
+    [
+      "Hierve el pollo y Reserva el caldo.",
+      "Cocina los fideos en el caldo.",
+      "Añade el huevobatido y sirve."
+    ]
+  ),
+  recipe(
+    "lunch-boniato-pollo",
+    "Batata asada con pollo y ensalada",
+    "comida",
+    30,
+    ["sin_gluten"],
+    [["sweet_potato", 300], ["chicken", 250], ["lettuce", 100], ["tomato", 80], ["olive_oil", 15]],
+    [
+      "Asa la batata en dados.",
+      "Cocina el pollo a la plancha.",
+      "Sirve con ensalada y aceite."
+    ]
+  ),
 
   // MERIENDAS - algo dulce y abundante
   recipe(
