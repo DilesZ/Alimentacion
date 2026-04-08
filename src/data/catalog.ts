@@ -1315,7 +1315,7 @@ export const recipes: Recipe[] = [
     "cena",
     15,
     ["sin_gluten"],
-    [["canned_fish", 200], ["whole_bread", 120], ["olive_oil", 15]],
+    [["sardines", 200], ["whole_bread", 120], ["olive_oil", 15]],
     [
       "Calienta las sardinas.",
       "Tosta el pan.",
