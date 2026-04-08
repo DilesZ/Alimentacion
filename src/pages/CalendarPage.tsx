@@ -9,6 +9,7 @@ import { DayPlan } from "../types";
 const mealIcons: Record<string, string> = {
   desayuno: "🌅",
   comida: "☀️",
+  merienda: "🟠",
   cena: "🌙"
 };
 
