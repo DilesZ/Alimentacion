@@ -85,7 +85,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: ["soja"],
     nutrientsPer100g: n({ calories: 45, protein: 3.2, carbs: 2.5, fat: 2, calcium: 120, vitaminB12: 0.38, vitaminD: 1.2, vitaminA: 60, vitaminE: 0.9 }),
-    supermarkets: [product("Mercadona", "Bebidas vegetales", 1.35, 1000), product("Consum", "Bebidas vegetales", 1.49, 1000)],
+    supermarkets: [product("Mercadona", "Bebidas vegetales", 1.35, 1000, "alta", "https://tienda.mercadona.es/product/29314/bebida-soja-0-azucares-hacendado-brick"), product("Consum", "Bebidas vegetales", 1.49, 1000)],
     alternativeIds: ["greek_yogurt"]
   },
   {
@@ -95,7 +95,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 247, protein: 8.8, carbs: 41, fat: 3.4, fiber: 7, iron: 2.7, magnesium: 82, zinc: 1.2 }),
-    supermarkets: [product("Mercadona", "Panaderia", 1.55, 400), product("Consum", "Panaderia", 1.75, 400)],
+    supermarkets: [product("Mercadona", "Panaderia", 1.5, 350, "alta", "https://tienda.mercadona.es/product/12049.1/pan-integral-trigo-100"), product("Consum", "Panaderia", 1.75, 400)],
     alternativeIds: ["gluten_free_bread"]
   },
   {
@@ -105,7 +105,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 265, protein: 5, carbs: 48, fat: 5, fiber: 6, iron: 1.5, magnesium: 28 }),
-    supermarkets: [product("Mercadona", "Dieteticos", 2.85, 300), product("Consum", "Especialidades sin gluten", 3.05, 300)],
+    supermarkets: [product("Mercadona", "Panaderia", 2.85, 300, "alta", "https://tienda.mercadona.es/product/82735/hogaza-sin-gluten-cortada-paquete"), product("Consum", "Especialidades sin gluten", 3.05, 300)],
     alternativeIds: ["whole_bread"]
   },
   {
@@ -125,7 +125,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 160, protein: 2, carbs: 8.5, fat: 14.7, fiber: 6.7, vitaminE: 2.1, vitaminK: 21, magnesium: 29 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 2.99, 500), product("Consum", "Frutas y verduras", 3.1, 500)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 2.99, 500, "alta", "https://tienda.mercadona.es/product/3830/aguacate-pieza"), product("Consum", "Frutas y verduras", 3.1, 500)],
     alternativeIds: ["olive_oil"]
   },
   {
@@ -155,7 +155,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 61, protein: 1.1, carbs: 14.7, fat: 0.5, fiber: 3, vitaminC: 92.7, vitaminE: 1.5, vitaminK: 40, magnesium: 17 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 2.85, 500), product("Consum", "Frutas y verduras", 2.95, 500)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 3.25, 500, "alta", "https://tienda.mercadona.es/product/3820/kiwi-verde-pieza"), product("Consum", "Frutas y verduras", 2.95, 500)],
     alternativeIds: ["orange"]
   },
   {
@@ -165,7 +165,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: ["frutos secos"],
     nutrientsPer100g: n({ calories: 579, protein: 21.2, carbs: 21.7, fat: 49.9, fiber: 12.5, vitaminE: 25.6, calcium: 269, iron: 3.7, zinc: 3.1, magnesium: 270 }),
-    supermarkets: [product("Mercadona", "Frutos secos", 2.55, 200), product("Consum", "Frutos secos", 2.7, 200)],
+    supermarkets: [product("Mercadona", "Frutos secos", 2.55, 200, "alta", "https://tienda.mercadona.es/product/23575/almendra-natural-hacendado-sin-piel-paquete"), product("Consum", "Frutos secos", 2.7, 200)],
     alternativeIds: ["chia"]
   },
   {
@@ -175,7 +175,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 486, protein: 16.5, carbs: 42.1, fat: 30.7, fiber: 34.4, calcium: 631, iron: 7.7, zinc: 4.6, magnesium: 335 }),
-    supermarkets: [product("Mercadona", "Semillas y superalimentos", 2.45, 250), product("Consum", "Dieteticos", 2.7, 250)],
+    supermarkets: [product("Mercadona", "Semillas y superalimentos", 2.45, 250, "alta", "https://tienda.mercadona.es/product/5464/semillas-chia-hacendado-paquete"), product("Consum", "Dieteticos", 2.7, 250)],
     alternativeIds: ["almonds"]
   },
   {
@@ -185,7 +185,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4, fiber: 2.2, vitaminA: 469, vitaminC: 28, vitaminE: 2, vitaminK: 483, iron: 2.7, calcium: 99, magnesium: 79 }),
-    supermarkets: [product("Mercadona", "Verduras refrigeradas", 1.55, 300), product("Consum", "Verduras refrigeradas", 1.65, 300)],
+    supermarkets: [product("Mercadona", "Verduras refrigeradas", 1.55, 300, "alta", "https://tienda.mercadona.es/product/69730/espinacas-cortadas-paquete"), product("Consum", "Verduras refrigeradas", 1.65, 300)],
     alternativeIds: ["broccoli"]
   },
   {
@@ -195,7 +195,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 34, protein: 2.8, carbs: 6.6, fat: 0.4, fiber: 2.6, vitaminA: 31, vitaminC: 89, vitaminK: 102, calcium: 47, iron: 0.7, magnesium: 21 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.9, 500), product("Consum", "Frutas y verduras", 2.05, 500)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.9, 500, "alta", "https://tienda.mercadona.es/product/69580/brocoli-pieza"), product("Consum", "Frutas y verduras", 2.05, 500)],
     alternativeIds: ["spinach"]
   },
   {
@@ -245,7 +245,7 @@ export const foods: FoodItem[] = [
     tags: ["sin_gluten"],
     allergens: ["pescado"],
     nutrientsPer100g: n({ calories: 208, protein: 20, carbs: 0, fat: 13, vitaminD: 10, vitaminB12: 3.2, vitaminE: 2, iron: 0.8, zinc: 0.6, magnesium: 27 }),
-    supermarkets: [product("Mercadona", "Pescaderia", 5.8, 300), product("Consum", "Pescaderia", 6.15, 300)],
+    supermarkets: [product("Mercadona", "Pescaderia", 5.8, 300, "alta", "https://tienda.mercadona.es/product/87204/filete-salmon-bandeja"), product("Consum", "Pescaderia", 6.15, 300)],
     alternativeIds: ["sardines", "chicken"]
   },
   {
@@ -255,7 +255,7 @@ export const foods: FoodItem[] = [
     tags: ["sin_gluten"],
     allergens: ["pescado"],
     nutrientsPer100g: n({ calories: 208, protein: 24.6, carbs: 0, fat: 11.5, vitaminD: 4.8, vitaminB12: 8.9, calcium: 382, iron: 2.9, zinc: 1.3, magnesium: 39 }),
-    supermarkets: [product("Mercadona", "Conservas de pescado", 2.3, 120), product("Consum", "Conservas de pescado", 2.45, 120)],
+    supermarkets: [product("Mercadona", "Conservas de pescado", 2.3, 120, "alta", "https://tienda.mercadona.es/product/18252/sardinas-aceite-oliva-hacendado-pack-2"), product("Consum", "Conservas de pescado", 2.45, 120)],
     alternativeIds: ["salmon", "chicken"]
   },
   {
@@ -265,7 +265,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: ["soja"],
     nutrientsPer100g: n({ calories: 144, protein: 17.3, carbs: 3.2, fat: 8.7, calcium: 350, iron: 2.7, zinc: 1.4, magnesium: 30 }),
-    supermarkets: [product("Mercadona", "Refrigerados veganos", 2.2, 250), product("Consum", "Vegetal refrigerado", 2.35, 250)],
+    supermarkets: [product("Mercadona", "Refrigerados veganos", 2.2, 250, "alta", "https://tienda.mercadona.es/product/51097/tofu-firme-frias-paquete"), product("Consum", "Vegetal refrigerado", 2.35, 250)],
     alternativeIds: ["chickpeas", "egg"]
   },
   {
@@ -275,7 +275,7 @@ export const foods: FoodItem[] = [
     tags: ["sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 165, protein: 31, carbs: 0, fat: 3.6, vitaminB12: 0.3, iron: 1, zinc: 1, magnesium: 29 }),
-    supermarkets: [product("Mercadona", "Carniceria", 4.25, 400), product("Consum", "Carniceria", 4.45, 400)],
+    supermarkets: [product("Mercadona", "Aves", 4.25, 400, "alta", "https://tienda.mercadona.es/product/8667/pechuga-pollo-92-hacendado-lonchas-paquete"), product("Consum", "Carniceria", 4.45, 400)],
     alternativeIds: ["turkey", "tofu"]
   },
   {
@@ -285,7 +285,7 @@ export const foods: FoodItem[] = [
     tags: ["sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 104, protein: 17, carbs: 2, fat: 2, vitaminB12: 0.8, zinc: 1.2, iron: 1 }),
-    supermarkets: [product("Mercadona", "Charcuteria", 2.15, 200), product("Consum", "Charcuteria", 2.25, 200)],
+    supermarkets: [product("Mercadona", "Charcuteria", 2.15, 200, "alta", "https://tienda.mercadona.es/product/60243/pechuga-pavo-bajo-sal-hacendado-finas-lonchas-paquete"), product("Consum", "Charcuteria", 2.25, 200)],
     alternativeIds: ["chicken", "tofu"]
   },
   {
@@ -295,7 +295,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 86, protein: 1.6, carbs: 20.1, fat: 0.1, fiber: 3, vitaminA: 709, vitaminC: 2.4, magnesium: 25 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.85, 1000), product("Consum", "Frutas y verduras", 1.95, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.85, 1000, "alta", "https://tienda.mercadona.es/product/69239/batata-pieza"), product("Consum", "Frutas y verduras", 1.95, 1000)],
     alternativeIds: ["pumpkin", "carrot"]
   },
   {
@@ -305,7 +305,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 41, protein: 0.9, carbs: 9.6, fat: 0.2, fiber: 2.8, vitaminA: 835, vitaminC: 5.9, vitaminK: 13.2, magnesium: 12 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.15, 1000), product("Consum", "Frutas y verduras", 1.25, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.15, 1000, "alta", "https://tienda.mercadona.es/product/69586/zanahorias-paquete"), product("Consum", "Frutas y verduras", 1.25, 1000)],
     alternativeIds: ["pumpkin", "sweet_potato"]
   },
   {
@@ -315,7 +315,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: ["sesamo"],
     nutrientsPer100g: n({ calories: 166, protein: 7.9, carbs: 14.3, fat: 9.6, fiber: 6, iron: 2.4, calcium: 49, magnesium: 29 }),
-    supermarkets: [product("Mercadona", "Refrigerados", 1.55, 240), product("Consum", "Refrigerados", 1.65, 240)],
+    supermarkets: [product("Mercadona", "Refrigerados", 1.55, 240, "alta", "https://tienda.mercadona.es/product/80858/hummus-garbanzos-hacendado-receta-clasica-tarrina"), product("Consum", "Refrigerados", 1.65, 240)],
     alternativeIds: ["chickpeas", "tofu"]
   },
   {
@@ -335,7 +335,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, vitaminA: 42, vitaminC: 14, vitaminK: 7.9 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.85, 1000), product("Consum", "Frutas y verduras", 1.95, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.85, 1000, "alta", "https://tienda.mercadona.es/product/69971/tomates-malla"), product("Consum", "Frutas y verduras", 1.95, 1000)],
     alternativeIds: ["pumpkin"]
   },
   {
@@ -345,7 +345,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 22, protein: 3.1, carbs: 3.3, fat: 0.3, fiber: 1, vitaminD: 10, vitaminB12: 0, magnesium: 9 }),
-    supermarkets: [product("Mercadona", "Setas y verduras", 2.15, 300), product("Consum", "Setas y verduras", 2.25, 300)],
+    supermarkets: [product("Mercadona", "Setas y verduras", 2.15, 300, "alta", "https://tienda.mercadona.es/product/69519/champinon-laminado-limpio-bandeja"), product("Consum", "Setas y verduras", 2.25, 300)],
     alternativeIds: ["broccoli", "spinach"]
   },
   {
@@ -355,7 +355,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 325, protein: 45, carbs: 35, fat: 5, fiber: 20, vitaminB12: 17, zinc: 7, iron: 5, magnesium: 180 }),
-    supermarkets: [product("Mercadona", "Dieteticos", 3.45, 150, "media"), product("Consum", "Dieteticos", 3.7, 150, "media")],
+    supermarkets: [product("Mercadona", "Dieteticos", 3.45, 150, "media", "https://tienda.mercadona.es/product/35517/levadura-nutricional-copos-deliplus-paquete"), product("Consum", "Dieteticos", 3.7, 150, "media")],
     alternativeIds: ["soy_milk"]
   },
   {
@@ -365,7 +365,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 26, protein: 1, carbs: 6.5, fat: 0.1, fiber: 0.5, vitaminA: 426, vitaminC: 9, vitaminE: 1.1, magnesium: 12 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 1.6, 1000), product("Consum", "Frutas y verduras", 1.7, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 1.6, 1000, "alta", "https://tienda.mercadona.es/product/69853/media-calabaza-cacahuete-12-pieza"), product("Consum", "Frutas y verduras", 1.7, 1000)],
     alternativeIds: ["sweet_potato", "carrot"]
   },
   {
@@ -375,7 +375,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 348, protein: 13, carbs: 67, fat: 2.5, fiber: 8, iron: 3.6, magnesium: 85, zinc: 1.8 }),
-    supermarkets: [product("Mercadona", "Pastas", 1.25, 500), product("Consum", "Pastas", 1.35, 500)],
+    supermarkets: [product("Mercadona", "Pastas", 1.25, 500, "alta", "https://tienda.mercadona.es/product/35777/pasta-penne-integral-hacendado-paquete"), product("Consum", "Pastas", 1.35, 500)],
     alternativeIds: ["gluten_free_pasta"]
   },
   {
@@ -406,7 +406,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano"],
     allergens: [],
     nutrientsPer100g: n({ calories: 228, protein: 20, carbs: 58, fat: 14, iron: 13.9, magnesium: 228 }),
-    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.45, 200), product("Consum", "Cacao y chocolates", 2.65, 200)],
+    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.45, 200, "alta", "https://tienda.mercadona.es/product/22580/cacao-puro-polvo-chocolatera-0-azucares-anadidos-bote"), product("Consum", "Cacao y chocolates", 2.65, 200)],
     alternativeIds: []
   },
   {
@@ -426,7 +426,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano"],
     allergens: [],
     nutrientsPer100g: n({ calories: 278, protein: 0.4, carbs: 69, fat: 0.1, fiber: 1, iron: 1.6 }),
-    supermarkets: [product("Mercadona", "Mermeladas y confituras", 1.85, 350), product("Consum", "Mermeladas", 2.05, 350)],
+    supermarkets: [product("Mercadona", "Mermeladas y confituras", 1.85, 350, "alta", "https://tienda.mercadona.es/product/15091/mermelada-fresa-hacendado-tarro"), product("Consum", "Mermeladas", 2.05, 350)],
     alternativeIds: ["honey"]
   },
   {
@@ -436,7 +436,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["lactosa"],
     nutrientsPer100g: n({ calories: 717, protein: 0.9, carbs: 0.1, fat: 81, vitaminA: 684 }),
-    supermarkets: [product("Mercadona", "Refrigerados", 2.25, 250), product("Consum", "Mantequilla y margarina", 2.45, 250)],
+    supermarkets: [product("Mercadona", "Refrigerados", 2.25, 250, "alta", "https://tienda.mercadona.es/product/20716/mantequilla-sin-sal-anadida-hacendado-pastilla"), product("Consum", "Mantequilla y margarina", 2.45, 250)],
     alternativeIds: ["olive_oil"]
   },
   {
@@ -446,7 +446,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 379, protein: 7, carbs: 84, fat: 1.8, fiber: 7, iron: 14 }),
-    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.15, 375), product("Consum", "Cereales", 2.35, 375)],
+    supermarkets: [product("Mercadona", "Cereales y desayuno", 2.15, 375, "alta", "https://tienda.mercadona.es/product/9362/cereales-copos-maiz-corn-flakes-hacendado-caja"), product("Consum", "Cereales", 2.35, 375)],
     alternativeIds: ["oats"]
   },
   {
@@ -456,7 +456,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 52, protein: 0.3, carbs: 14, fat: 0.2, fiber: 2.4, vitaminC: 4.6 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 2.25, 1000), product("Consum", "Frutas", 2.45, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 2.25, 1000, "alta", "https://tienda.mercadona.es/product/3028/manzana-golden-pieza"), product("Consum", "Frutas", 2.45, 1000)],
     alternativeIds: ["banana", "orange"]
   },
   {
@@ -466,7 +466,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 364, protein: 10, carbs: 76, fat: 1, fiber: 2.7, iron: 4.6 }),
-    supermarkets: [product("Mercadona", "Harinas", 0.85, 1000), product("Consum", "Harinas", 0.95, 1000)],
+    supermarkets: [product("Mercadona", "Harinas", 0.85, 1000, "alta", "https://tienda.mercadona.es/product/29100/harina-trigo-hacendado-paquete"), product("Consum", "Harinas", 0.95, 1000)],
     alternativeIds: ["oats"]
   },
   {
@@ -476,7 +476,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 304, protein: 0.3, carbs: 82, fat: 0, iron: 0.4 }),
-    supermarkets: [product("Mercadona", "Miel y derivados", 3.45, 500), product("Consum", "Miel", 3.65, 500)],
+    supermarkets: [product("Mercadona", "Miel y derivados", 3.45, 500, "alta", "https://tienda.mercadona.es/product/15430/miel-flores-hacendado-bote"), product("Consum", "Miel", 3.65, 500)],
     alternativeIds: ["mermelada"]
   },
   {
@@ -486,7 +486,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 32, protein: 1.3, carbs: 6.5, fat: 0.3, fiber: 1.5, vitaminC: 7 }),
-    supermarkets: [product("Mercadona", "Salsas", 1.15, 390), product("Consum", "Salsas", 1.25, 390)],
+    supermarkets: [product("Mercadona", "Salsas", 1.15, 390, "alta", "https://tienda.mercadona.es/product/52859/salsa-tomate-con-albahaca-hacendado-tarro"), product("Consum", "Salsas", 1.25, 390)],
     alternativeIds: ["tomato"]
   },
   {
@@ -506,7 +506,7 @@ export const foods: FoodItem[] = [
     tags: [],
     allergens: [],
     nutrientsPer100g: n({ calories: 96, protein: 17, carbs: 1.5, fat: 2.5, vitaminB12: 1, iron: 1.2 }),
-    supermarkets: [product("Mercadona", "Charcuteria", 3.85, 200), product("Consum", "Jamon cocido", 4.15, 200)],
+    supermarkets: [product("Mercadona", "Charcuteria", 3.85, 200, "alta", "https://tienda.mercadona.es/product/59256/jamon-cocido-hacendado-lonchas-paquete"), product("Consum", "Jamon cocido", 4.15, 200)],
     alternativeIds: ["chicken"]
   },
   {
@@ -516,7 +516,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["lactosa", "leche"],
     nutrientsPer100g: n({ calories: 300, protein: 17, carbs: 3, fat: 24, calcium: 500, vitaminB12: 1.5 }),
-    supermarkets: [product("Mercadona", "Quesos", 2.65, 200), product("Consum", "Quesos", 2.85, 200)],
+    supermarkets: [product("Mercadona", "Quesos", 2.65, 200, "alta", "https://tienda.mercadona.es/product/50371/queso-lonchas-fundido-sandwich-mezcla-hacendado-paquete"), product("Consum", "Quesos", 2.85, 200)],
     alternativeIds: []
   },
   {
@@ -526,7 +526,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 15, protein: 1.4, carbs: 2.9, fat: 0.2, fiber: 1.3, vitaminA: 370, vitaminC: 18 }),
-    supermarkets: [product("Mercadona", "Verduras refrigeradas", 1.45, 300), product("Consum", "Lechugas", 1.55, 300)],
+    supermarkets: [product("Mercadona", "Verduras refrigeradas", 1.45, 300, "alta", "https://tienda.mercadona.es/product/69670/lechuga-iceberg-paquete"), product("Consum", "Lechugas", 1.55, 300)],
     alternativeIds: ["spinach"]
   },
   {
@@ -536,7 +536,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["leche", "gluten"],
     nutrientsPer100g: n({ calories: 535, protein: 8, carbs: 59, fat: 30, iron: 2 }),
-    supermarkets: [product("Mercadona", "Chocolate", 1.85, 200), product("Consum", "Chocolates", 2.05, 200)],
+    supermarkets: [product("Mercadona", "Chocolate", 1.85, 200, "alta", "https://tienda.mercadona.es/product/80517/chocolate-con-leche-classic-hacendado-tableta"), product("Consum", "Chocolates", 2.05, 200)],
     alternativeIds: []
   },
   {
@@ -546,7 +546,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["leche"],
     nutrientsPer100g: n({ calories: 321, protein: 8, carbs: 54, fat: 8, calcium: 284 }),
-    supermarkets: [product("Mercadona", "Leche condensada", 1.65, 250), product("Consum", "Leche condensada", 1.85, 250)],
+    supermarkets: [product("Mercadona", "Leche condensada", 1.65, 250, "alta", "https://tienda.mercadona.es/product/60347/leche-condensada-hacendado-bote"), product("Consum", "Leche condensada", 1.85, 250)],
     alternativeIds: ["honey"]
   },
   {
@@ -556,7 +556,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten", "frutos secos"],
     nutrientsPer100g: n({ calories: 400, protein: 6, carbs: 70, fat: 10, fiber: 4, iron: 5 }),
-    supermarkets: [product("Mercadona", "Barritas", 1.45, 120), product("Consum", "Barritas", 1.65, 120)],
+    supermarkets: [product("Mercadona", "Barritas", 1.45, 120, "alta", "https://tienda.mercadona.es/product/9350/barritas-cereales-hacendado-chocolate-con-leche-caja"), product("Consum", "Barritas", 1.65, 120)],
     alternativeIds: ["cookies"]
   },
   {
@@ -566,7 +566,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
     nutrientsPer100g: n({ calories: 40, protein: 1.1, carbs: 9.3, fat: 0.1, fiber: 1.7, vitaminC: 7.4 }),
-    supermarkets: [product("Mercadona", "Frutas y verduras", 0.95, 1000), product("Consum", "Verduras", 1.05, 1000)],
+    supermarkets: [product("Mercadona", "Frutas y verduras", 0.95, 1000, "alta", "https://tienda.mercadona.es/product/69079/cebollas-malla"), product("Consum", "Verduras", 1.05, 1000)],
     alternativeIds: ["carrot"]
   },
   {
@@ -576,7 +576,7 @@ export const foods: FoodItem[] = [
     tags: ["sin_gluten"],
     allergens: ["pescado"],
     nutrientsPer100g: n({ calories: 86, protein: 18.5, carbs: 0, fat: 1, vitaminB12: 2, vitaminD: 1 }),
-    supermarkets: [product("Mercadona", "Pescaderia", 5.45, 400), product("Consum", "Pescado fresco", 5.85, 400)],
+    supermarkets: [product("Mercadona", "Pescaderia", 5.45, 400, "alta", "https://tienda.mercadona.es/product/62228/filetes-merluza-cabo-sin-piel-hacendado-ultracongelados-paquete"), product("Consum", "Pescado fresco", 5.85, 400)],
     alternativeIds: ["chicken", "egg"]
   },
   {
@@ -596,7 +596,7 @@ export const foods: FoodItem[] = [
     tags: [],
     allergens: [],
     nutrientsPer100g: n({ calories: 541, protein: 37, carbs: 1.4, fat: 42, vitaminB12: 1.1, iron: 1.4 }),
-    supermarkets: [product("Mercadona", "Charcuteria", 3.45, 200), product("Consum", "Bacon", 3.65, 200)],
+    supermarkets: [product("Mercadona", "Charcuteria", 3.45, 200, "alta", "https://tienda.mercadona.es/product/7791/bacon-hacendado-cintas-pack-2"), product("Consum", "Bacon", 3.65, 200)],
     alternativeIds: ["ham"]
   },
   {
@@ -606,7 +606,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano"],
     allergens: ["gluten"],
     nutrientsPer100g: n({ calories: 370, protein: 13, carbs: 75, fat: 1.5, fiber: 3, iron: 4 }),
-    supermarkets: [product("Mercadona", "Pastas", 0.95, 500), product("Consum", "Pastas", 1.05, 500)],
+    supermarkets: [product("Mercadona", "Pastas", 0.95, 500, "alta", "https://tienda.mercadona.es/product/13577/fideo-cabello-angel-hacendado-paquete"), product("Consum", "Pastas", 1.05, 500)],
     alternativeIds: ["rice"]
   }
 ];
