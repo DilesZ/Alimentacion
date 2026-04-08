@@ -115,7 +115,7 @@ export const foods: FoodItem[] = [
     tags: ["vegetariano", "sin_gluten"],
     allergens: ["huevo"],
     nutrientsPer100g: n({ calories: 143, protein: 12.6, carbs: 0.7, fat: 9.5, vitaminA: 140, vitaminB12: 1.1, vitaminD: 2.2, vitaminE: 1.1, iron: 1.8, zinc: 1.1 }),
-    supermarkets: [product("Mercadona", "Huevos", 3.55, 12, "alta", "https://tienda.mercadona.es/product/30167/huevos-tamanos-diferentes-paquete")],
+    supermarkets: [product("Mercadona", "Huevos", 3.55, 600, "alta", "https://tienda.mercadona.es/product/30167/huevos-tamanos-diferentes-paquete")],
     alternativeIds: ["tofu"]
   },
   {
