@@ -1183,9 +1183,9 @@ export const recipes: Recipe[] = [
     "dinner-tortilla-patata",
     "Tortilla de patatas grande",
     "cena",
-    25,
+    20,
     ["vegetariano"],
-    [["egg", 350], ["potato", 400], ["olive_oil", 25]],
+    [["egg", 350], ["potato", 400], ["olive_oil", 20]],
     [
       "Fríe las patatas cortadas en rodajas.",
       "Bate los huevos y mézclalos con las patatas.",
@@ -1196,12 +1196,12 @@ export const recipes: Recipe[] = [
     "dinner-sopa",
     "Sopa de verduras abundante",
     "cena",
-    25,
+    20,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["carrot", 150], ["potato", 200], ["onion", 100], ["pasta", 100], ["olive_oil", 10]],
+    [["carrot", 150], ["potato", 200], ["onion", 100], ["olive_oil", 10]],
     [
       "Pica las verduras en trozos pequeños.",
-      "Hierve con la pasta en agua con sal.",
+      "Hierve en agua con sal.",
       "Sirve caliente."
     ]
   ),
@@ -1209,9 +1209,9 @@ export const recipes: Recipe[] = [
     "dinner-pescado",
     "Pescado al horno con patatas",
     "cena",
-    30,
+    20,
     ["sin_gluten"],
-    [["fish", 300], ["potato", 350], ["olive_oil", 20]],
+    [["fish", 300], ["potato", 350], ["olive_oil", 15]],
     [
       "Coloca el pescado y las rodajas de patata en una fuente.",
       "Rocía con aceite y hornea a 200C.",
@@ -1220,11 +1220,11 @@ export const recipes: Recipe[] = [
   ),
   recipe(
     "dinner-pollo-asado",
-    "Pollo asado con verduras abundantes",
+    "Pollo con verduras",
     "cena",
-    35,
+    20,
     ["sin_gluten"],
-    [["chicken", 400], ["carrot", 200], ["potato", 300], ["olive_oil", 20]],
+    [["chicken", 400], ["carrot", 200], ["potato", 250], ["olive_oil", 15]],
     [
       "Coloca el pollo en una fuente con las verduras.",
       "Rocía con aceite y hornea a 200C.",
@@ -1233,15 +1233,15 @@ export const recipes: Recipe[] = [
   ),
   recipe(
     "dinner-crema",
-    "Crema de verduras con pan",
+    "Crema de verduras",
     "cena",
-    30,
+    20,
     ["vegetariano", "vegano", "sin_gluten"],
-    [["pumpkin", 350], ["carrot", 200], ["potato", 200], ["whole_bread", 80]],
+    [["pumpkin", 350], ["carrot", 200], ["potato", 200], ["olive_oil", 10]],
     [
       "Hierve todas las verduras.",
       "Tritura con la batidora.",
-      "Sirve caliente con pan."
+      "Sirve caliente."
     ]
   ),
   recipe(
@@ -1259,14 +1259,14 @@ export const recipes: Recipe[] = [
   ),
   recipe(
     "dinner-arroz-blanco",
-    "Arroz con huevo y pollo",
+    "Arroz con pollo",
     "cena",
     20,
-    ["vegetariano"],
-    [["rice", 200], ["egg", 150], ["chicken", 150], ["olive_oil", 12]],
+    [],
+    [["rice", 200], ["chicken", 200], ["olive_oil", 12]],
     [
       "Cuece el arroz.",
-      "Fríe el pollo y el huevo.",
+      "Saltea el pollo.",
       "Mezcla todo y sirve."
     ]
   ),
@@ -1276,11 +1276,50 @@ export const recipes: Recipe[] = [
     "cena",
     20,
     ["vegetariano"],
-    [["whole_pasta", 200], ["egg", 200], ["bacon", 100], ["cheese", 60], ["butter", 15]],
+    [["whole_pasta", 200], ["egg", 150], ["bacon", 80], ["cheese", 50]],
     [
       "Cuece la pasta.",
       "Saltea el bacon y añade los huevos revueltos.",
       "Mezcla con la pasta y el queso."
+    ]
+  ),
+  recipe(
+    "dinner-ensalada-vegana",
+    "Ensalada completa vegana",
+    "cena",
+    10,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["lettuce", 200], ["tomato", 150], ["carrot", 100], ["olive_oil", 15]],
+    [
+      "Lava y corta las verduras.",
+      "Mezcla en un bowl.",
+      "Aliña con aceite y sirve."
+    ]
+  ),
+  recipe(
+    "dinner-tostadas",
+    "Tostadas con jamón y queso",
+    "cena",
+    10,
+    [],
+    [["whole_bread", 180], ["ham", 100], ["cheese", 80], ["butter", 15]],
+    [
+      "Tosta el pan con mantequilla.",
+      "Añade el jamón y el queso.",
+      "Sirve caliente."
+    ]
+  ),
+  recipe(
+    "dinner-sardinas",
+    "Sardinas con pan",
+    "cena",
+    15,
+    ["sin_gluten"],
+    [["canned_fish", 200], ["whole_bread", 120], ["olive_oil", 15]],
+    [
+      "Calienta las sardinas.",
+      "Tosta el pan.",
+      "Come insieme con aceite."
     ]
   )
 ];
