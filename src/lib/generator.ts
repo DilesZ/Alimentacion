@@ -154,7 +154,8 @@ const toShoppingList = (days: DayPlan[]): { shoppingList: ShoppingSectionGroup[]
 
   const items: ShoppingListItem[] = Array.from(gramsByFood.entries()).map(([foodId, gramsNeeded]) => {
     const food = findFood(foodId);
-    const chosenProduct = [...food.supermarkets].sort((left, right) => left.price / left.packSizeGrams - right.price / right.packSizeGrams)[0];
+    const mercadonaProduct = food.supermarkets.find(p => p.chain === "Mercadona");
+    const chosenProduct = mercadonaProduct ?? [...food.supermarkets].sort((left, right) => left.price / left.packSizeGrams - right.price / left.packSizeGrams)[0];
     const packsNeeded = Math.max(1, Math.ceil(gramsNeeded / chosenProduct.packSizeGrams));
     const estimatedCost = round(packsNeeded * chosenProduct.price);
 
