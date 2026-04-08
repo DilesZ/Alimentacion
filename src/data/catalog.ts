@@ -1164,6 +1164,82 @@ export const recipes: Recipe[] = [
       "Come las galletas mojando en la leche."
     ]
   ),
+  recipe(
+    "snack-yogur-fruta",
+    "Yogur con fruta y miel",
+    "merienda",
+    2,
+    ["vegetariano", "sin_gluten"],
+    [["greek_yogurt", 250], ["banana", 150], ["honey", 30]],
+    [
+      "Sirve el yogur en un bol.",
+      "Añade el plátano troceado.",
+      "Riega con miel."
+    ]
+  ),
+  recipe(
+    "snack-tostada-mermelada",
+    "Tostada con mermelada y mantequilla",
+    "merienda",
+    3,
+    ["vegetariano"],
+    [["whole_bread", 120], ["mermelada", 40], ["butter", 15]],
+    [
+      "Tosta el pan.",
+      "Unta con mantequilla.",
+      "Añade mermelada por encima."
+    ]
+  ),
+  recipe(
+    "snack-barrita-leche",
+    "Barrita de cereales con leche",
+    "merienda",
+    2,
+    ["vegetariano"],
+    [["cereals_bar", 80], ["milk", 300]],
+    [
+      "Sirve la leche en un vaso.",
+      "Come las barritas junto con la leche."
+    ]
+  ),
+  recipe(
+    "snack-fruta-seca",
+    "Fruta fresca con frutos secos",
+    "merienda",
+    1,
+    ["vegetariano", "vegano", "sin_gluten"],
+    [["apple", 200], ["banana", 150], ["almonds", 40]],
+    [
+      "Lava y pela la fruta.",
+      "Come con las almendras."
+    ]
+  ),
+  recipe(
+    "snack-cereales-leche",
+    "Cereales con leche",
+    "merienda",
+    2,
+    ["vegetariano"],
+    [["cereals", 80], ["milk", 300]],
+    [
+      "Vierte los cereales en un bowl.",
+      "Añade la leche fría.",
+      "Come directamente."
+    ]
+  ),
+  recipe(
+    "snack-chocolate-leche",
+    "Chocolate con leche",
+    "merienda",
+    2,
+    ["vegetariano"],
+    [["chocolate", 50], ["milk", 300]],
+    [
+      "Derrites el chocolate en un vaso.",
+      "Añade la leche caliente.",
+      "Remueve y sirve."
+    ]
+  ),
 
   // CENAS - abundantes
   recipe(

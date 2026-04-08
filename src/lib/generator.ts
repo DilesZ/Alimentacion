@@ -13,14 +13,14 @@ import {
 } from "../types";
 import { addNutrients, buildProgress, defaultDailyTarget, emptyNutrients, ingredientsToNutrients, multiplyNutrients, percentage, round } from "./nutrition";
 
-const mealOrder: MealType[] = ["desayuno", "comida", "cena"];
+const mealOrder: MealType[] = ["desayuno", "comida", "merienda", "cena"];
 
 const mealWeights: Record<MealType, number> = {
   desayuno: 0.25,
   media_manana: 0,
-  comida: 0.4,
-  merienda: 0,
-  cena: 0.35
+  comida: 0.35,
+  merienda: 0.1,
+  cena: 0.3
 };
 
 const disallowedFoodIds = new Set([
