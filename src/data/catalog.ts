@@ -495,7 +495,7 @@ export const foods: FoodItem[] = [
     category: "verduras",
     tags: ["vegetariano", "vegano", "sin_gluten"],
     allergens: [],
-    nutrientsPer100g: n({ calories: 77, protein: 2, carbs: 17, fat: 0.1, fiber: 2, potassium: 421 }),
+    nutrientsPer100g: n({ calories: 77, protein: 2, carbs: 17, fat: 0.1, fiber: 2 }),
     supermarkets: [product("Mercadona", "Patatas", 1.35, 1500, "alta", "https://tienda.mercadona.es/product/69555/patatas-bag-malla")],
     alternativeIds: ["sweet_potato"]
   },
